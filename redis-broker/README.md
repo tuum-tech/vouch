@@ -1,7 +1,7 @@
 # Redis Broker
 
 ## PoC
-[PoC Setup](redis-broker/poc.md)
+[PoC Setup](./poc.md)
 
 ## Research
-[Research Links](redis-broker/research.md)
+[Research Links](./research.md)
