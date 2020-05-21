@@ -1,0 +1,25 @@
+
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+body {
+    font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h4{
+    text-align: center;
+    font:  600 20px/30px Poppins;
+    letter-spacing: 0px;
+    /*color: #4D2CC8;*/
+    opacity: 1;
+    margin-bottom:0;
+}
+h5,h2,.List-Header{
+  font:  normal  18px/25px Poppins;
+    letter-spacing: 0px;
+    /*color: #4D2CC8;*/
+    opacity: 1;
+    margin-top:0;
+    text-transform: capitalize;
+    color:black;
+    font-size:600;
+}

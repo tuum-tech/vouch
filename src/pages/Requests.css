@@ -1,0 +1,25 @@
+.request-Item{
+  padding-right:0px;
+}
+
+ion-item button.item-native{
+
+  margin:0 !important;
+  padding:0 !important;
+
+}
+
+
+.Providers-List ion-thumbnail{
+margin-right:10px;
+}
+.Providers-List img{
+
+width:44px;
+height:44px;
+margin:12px 5px 12px 0px;
+}
+.Providers-List  .item-native{
+  margin:0;
+  padding:0;
+}

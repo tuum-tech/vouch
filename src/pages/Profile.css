@@ -1,0 +1,22 @@
+
+.main-content{
+    margin-top:-10px;
+}
+.dark{
+    --background: #4D2CC8;
+}
+.round-top{
+    border-top-left-radius:13px;
+    border-top-right-radius:13px;
+    
+}
+
+ion-list-header{
+    margin:0;
+    padding:0;
+}
+
+.sign-out-button{
+    width:20px;
+    margin-right:20px;
+}

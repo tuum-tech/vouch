@@ -1,0 +1,14 @@
+.SplashScreen .background {
+    --background: #4D2CC8;
+    --background: url('assets/SplashScreen/bg-dark.svg') no-repeat center/cover fixed;    
+}
+
+.SplashScreen .logo {
+    width: 224px;
+    height: 179px;
+    opacity: 1; 
+}
+
+.SplashScreen .spacer{
+    margin-top:200px;
+}

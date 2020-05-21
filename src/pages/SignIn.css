@@ -1,0 +1,35 @@
+.SignIn .background {
+    --background: #FFF;
+    --background: url('assets/OnBoarding/bg-light.svg') no-repeat center/cover fixed;    
+}
+
+.SignIn .logo2 {
+    width: 250px;
+   
+    opacity: 1; 
+}
+
+.SignIn .navigateToSignIn {
+    width: 295px;
+    height: 50px;
+    background: #4D2CC8 0% 0% no-repeat padding-box;
+    border-radius: 25px;
+    opacity: 1;
+    
+    text-align: center;
+    font: SemiBold 14px/21px Poppins;
+    letter-spacing: 0px;
+    color: #FFFFFF;    
+}
+
+.did-icon{
+    width: 20px;
+height: 20px;
+margin-right:10px;
+}
+.SignIn .spacer{
+    margin-top:200px;
+}
+.custom-margin-01{
+    margin-top:150px;
+}

@@ -1,0 +1,74 @@
+{
+  "id": "org.elastos.vouch",
+  "version": "0.0.1",
+  "version_code": 1,
+  "name": "Vouch dApp",
+  "short_name": "Vouch dApp",
+  "short_description": "Get your information Verified",
+  "description": "Get your information Verified",
+  "start_url": "index.html",
+  "type": "app",
+  "start_visible": "hide",
+  "category": "identity",
+  "icons": [
+    {
+      "src": "assets/images/app_logos/icon_36.png",
+      "sizes": "36x36",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/app_logos/icon_48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/app_logos/icon_72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },    
+    {
+      "src": "assets/images/app_logos/icon_96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/app_logos/icon_144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/app_logos/icon_192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },    
+    {
+      "src": "assets/images/app_logos/icon_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/app_logos/icon_1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }    
+  ],
+  "author": {
+    "name": "Waqas Ahmed",
+    "email": "wakqasahmed@gmail.com",
+    "website": "https://wakqasahmed.com"
+  },
+  "default_locale": "en",
+  "plugins": [
+    "Device",
+    "SplashScreen",
+    "DIDPlugin",
+    "CarrierPlugin",
+    "NetworkStatus"
+  ],
+  "urls": [
+    "http://192.168.0.104/*"
+  ],
+  "background_color": "#5432D3",
+  "theme_display": "show",
+  "theme_color": "#FFFFFF"
+}
