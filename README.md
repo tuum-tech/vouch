@@ -48,7 +48,7 @@ Now, that all the above pre-requsites are up and running, run the following comm
 git clone https://github.com/tuum-tech/vouch-capsule.git
 cd vouch-capsule
 git checkout dev
-trinity0cli run -p android
+trinity-cli run -p android
 ```
 
 # About
