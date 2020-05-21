@@ -25,7 +25,7 @@ cd did-email-validator
 git checkout dev
 ```
 
-* Open `emailValidator.py` and change line#6 to the following:
+* Open `emailValidator.py` and change line#8 to the following:
 ```
 callbackUrl = "http://192.168.0.104:8080/callback"
 ```
