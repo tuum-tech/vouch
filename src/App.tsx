@@ -44,6 +44,8 @@ import '../node_modules/animate.css/animate.min.css';
 import './theme/variables.css';
 import './theme/fonts.css';
 
+declare let appManager: any;
+
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
@@ -82,5 +84,9 @@ const App: React.FC = () => (
     </IonReactRouter>
   </IonApp>
 );
+
+document.addEventListener("deviceready", () => {
+  appManager.setVisible("show");
+}, false);
 
 export default App;
