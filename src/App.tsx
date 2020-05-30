@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -43,8 +43,18 @@ import '../node_modules/animate.css/animate.min.css';
 /* Theme variables */
 import './theme/variables.css';
 import './theme/fonts.css';
+import { useDispatch } from 'react-redux';
+import { authCheckStatus } from './store/auth';
 
-const App: React.FC = () => (
+declare let appManager: AppManagerPlugin.AppManager;
+
+const App: React.FC = () => {
+
+  useEffect(()=>{
+    appManager.setVisible("show");
+  })
+
+  return (
   <IonApp>
     <IonReactRouter>
     <IonRouterOutlet>
@@ -81,6 +91,7 @@ const App: React.FC = () => (
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
-);
+  );
+};
 
 export default App;

@@ -37,6 +37,14 @@ export const emailValidationSuccess = (txn: any): TxnActionTypes => ({
     payload: txn
 });
 
+export const showNotification = (text: any): TxnActionTypes => ({
+    type: 'SHOW_NOTIFICATION', 
+    payload: text
+})
+
+export const hideNotification = (): TxnActionTypes => ({
+    type: 'HIDE_NOTIFICATION'
+})
 
 export const getAllRequests = (txn: any, callback: any = noop): ThunkAction<
     void,
