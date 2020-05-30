@@ -7,7 +7,8 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
-  IonImg
+  IonImg,
+  useIonViewWillEnter
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
@@ -45,8 +46,11 @@ import './theme/variables.css';
 import './theme/fonts.css';
 
 declare let appManager: any;
+declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
-const App: React.FC = () => (
+const App: React.FC = () => {
+
+  return (
   <IonApp>
     <IonReactRouter>
     <IonRouterOutlet>
@@ -83,10 +87,15 @@ const App: React.FC = () => (
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
-);
+  );
+};
 
 document.addEventListener("deviceready", () => {
   appManager.setVisible("show");
+
+  titleBarManager.setTitle("Vouch dApp");
+  titleBarManager.setBackgroundColor("#5432D3");
+
 }, false);
 
 export default App;
