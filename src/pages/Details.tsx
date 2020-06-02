@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 
 const RequestsPage: React.FC = () => {
 
-  const requests = useSelector((state:AppState) => state.txn)
+  const requests = useSelector((state:AppState) => state.requests)
   const { id } = useParams()
 
   console.log("Request ID: " + id);
@@ -21,7 +21,7 @@ const RequestsPage: React.FC = () => {
       <IonHeader className="main-header">
         <IonToolbar>
         <IonButtons slot="start">
-          <IonBackButton icon="arrowBack" text="Back" />
+          <IonBackButton icon={arrowBack} text="" />
         </IonButtons>
         </IonToolbar>
       </IonHeader>

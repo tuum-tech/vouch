@@ -6,6 +6,10 @@ export const GET_ALL_REQUESTS_SUCCESS = "GET_ALL_REQUESTS_SUCCESS";
 
 export interface TxnState {
   txn: any;
+  pending_txn: any;
+  approved_txn: any;
+  rejected_txn: any;
+  expired_txn: any;
 }
 
 interface EmailValidationRequestAction {
