@@ -22,22 +22,13 @@ export const txnReducer = (
   switch (type) {
     case EMAIL_VALIDATION_REQUEST_SUCCESS:
       {
-      console.log("State in reducer")
-      console.log(state)
-      //TODO: 
-      console.log("Now attempt to push txn to array")
-
-      let all_txn = state.txn || []
-      let pending_txn = state.pending_txn || []
-
-      return { ...state, txn: all_txn.push(payload), pending_txn: pending_txn.push(payload) };
-      // return { ...state };
+        return { ...state, 
+          txn: [...state.txn, payload], 
+          pending_txn: [...state.pending_txn, payload] 
+        };
       }
       case GET_ALL_REQUESTS_SUCCESS:
         {
-
-          console.log("Debug me");          
-          console.log(payload);
           let pending_txn = payload.filter((txn:any) => txn.status === "Pending");
           let approved_txn = payload.filter((txn:any) => txn.status === "Success");
           let rejected_txn = payload.filter((txn:any) => txn.status === "Rejected");
