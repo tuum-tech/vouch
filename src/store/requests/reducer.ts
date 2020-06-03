@@ -2,11 +2,14 @@ import {
   TxnState,
   TxnActionTypes,
   EMAIL_VALIDATION_REQUEST_SUCCESS,
-  GET_ALL_REQUESTS_SUCCESS
+  GET_ALL_REQUESTS_SUCCESS,
+  SHOW_NOTIFICATION,
+  HIDE_NOTIFICATION
 } from "./types";
 
 const initialState: TxnState = {
   txn: null,
+  newTxnAdded: false
 };
 
 export const txnReducer = (
@@ -23,12 +26,20 @@ export const txnReducer = (
       //TODO: 
       // console.log("Now attempt to push txn to array")
       // return { ...state, txn: state.txn.push(payload) };
-      return { ...state };
+      return { ...state, newTxnAdded: true };
       }
       case GET_ALL_REQUESTS_SUCCESS:
         {
           return { ...state, txn: payload };
         }
+      case SHOW_NOTIFICATION:
+        {
+          return {...state, newTxnAdded: true}
+        }
+        case HIDE_NOTIFICATION:
+          {
+            return {...state, newTxnAdded: false}
+          }        
       default:
         return state;
   }
