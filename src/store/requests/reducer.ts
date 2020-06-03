@@ -9,6 +9,10 @@ import {
 
 const initialState: TxnState = {
   txn: null,
+  pending_txn: null,
+  approved_txn: null,
+  rejected_txn: null,
+  expired_txn: null
   newTxnAdded: false
 };
 
@@ -21,26 +25,37 @@ export const txnReducer = (
   switch (type) {
     case EMAIL_VALIDATION_REQUEST_SUCCESS:
       {
-      console.log("State in reducer")
-      console.log(state)
-      //TODO: 
-      // console.log("Now attempt to push txn to array")
-      // return { ...state, txn: state.txn.push(payload) };
-      return { ...state, newTxnAdded: true };
+        return { ...state, 
+          txn: [...state.txn, payload], 
+          pending_txn: [...state.pending_txn, payload],
+          newTxnAdded: true
+        };
       }
-      case GET_ALL_REQUESTS_SUCCESS:
-        {
-          return { ...state, txn: payload };
-        }
-      case SHOW_NOTIFICATION:
-        {
-          return {...state, newTxnAdded: true}
-        }
-        case HIDE_NOTIFICATION:
-          {
-            return {...state, newTxnAdded: false}
-          }        
-      default:
-        return state;
+    case GET_ALL_REQUESTS_SUCCESS:
+      {
+        let pending_txn = payload.filter((txn:any) => txn.status === "Pending");
+        let approved_txn = payload.filter((txn:any) => txn.status === "Success");
+        let rejected_txn = payload.filter((txn:any) => txn.status === "Rejected");
+        let expired_txn = payload.filter((txn:any) => txn.status === "Expired");
+
+        return { 
+          ...state, 
+          txn: payload, 
+          pending_txn: pending_txn, 
+          approved_txn: approved_txn,
+          rejected_txn: rejected_txn,
+          expired_txn: expired_txn
+        };
+      }
+    case SHOW_NOTIFICATION:
+      {
+        return {...state, newTxnAdded: true}
+      }
+    case HIDE_NOTIFICATION:
+      {
+        return {...state, newTxnAdded: false}
+      }        
+    default:
+      return state;
   }
 };

@@ -9,6 +9,10 @@ export const HIDE_NOTIFICATION = "HIDE_NOTIFICATION";
 
 export interface TxnState {
   txn: any;
+  pending_txn: any;
+  approved_txn: any;
+  rejected_txn: any;
+  expired_txn: any;
   newTxnAdded: boolean;
 }
 

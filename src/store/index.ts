@@ -8,10 +8,10 @@ import { txnReducer } from "./requests";
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  txn: txnReducer
+  requests: txnReducer
 });
 
-export default  createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
+export default createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
 export type AppState = ReturnType<typeof rootReducer>;
 
