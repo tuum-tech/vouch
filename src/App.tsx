@@ -7,7 +7,8 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
-  IonImg
+  IonImg,
+  useIonViewWillEnter
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
@@ -47,6 +48,7 @@ import { useDispatch } from 'react-redux';
 import { authCheckStatus } from './store/auth';
 
 declare let appManager: AppManagerPlugin.AppManager;
+declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
 const App: React.FC = () => {
 
@@ -96,6 +98,10 @@ const App: React.FC = () => {
 
 document.addEventListener("deviceready", () => {
   appManager.setVisible("show");
+
+  titleBarManager.setTitle("Vouch dApp");
+  titleBarManager.setBackgroundColor("#5432D3");
+
 }, false);
 
 export default App;
