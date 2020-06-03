@@ -13,7 +13,8 @@ import {
   IonButton,
   IonGrid,
   IonItem,
-  IonThumbnail
+  IonThumbnail,
+  IonToast
 
 
 } from '@ionic/react';
@@ -35,12 +36,11 @@ const HomePage: React.FC = ({ history }: any) => {
     const dispatch = useDispatch()
   
     const user = useSelector((state:AppState) => state.auth.user)  
-    const requests = useSelector((state:AppState) => state.txn)
+    const requests = useSelector((state:AppState) => state.requests)
 
+    
     console.log("State in home")
     console.log(requests)
-
-
 
     const [sendGetAllRequestsReq] = useRequests((txn:any) => { 
 
@@ -73,13 +73,13 @@ const HomePage: React.FC = ({ history }: any) => {
     [history],
   );
 
-
     return (
       <IonPage>
         <IonHeader className="main-header">
           <IonToolbar>
             <IonImg className="Navbar-Logo" src="/assets/images/ui components/empty.png"></IonImg>
           </IonToolbar>
+          <IonToast color="success" position="bottom" isOpen={requests.newTxnAdded} message="Request submitted successfully" />
         </IonHeader>
         <IonContent>
           <IonToolbar className="sub-header">
@@ -145,7 +145,7 @@ const HomePage: React.FC = ({ history }: any) => {
               </IonCol>
               <IonCol>
                 {/* Items Active */}
-                {requests.txn && requests.txn.map((txn: any) =>
+                {requests.pending_txn && requests.pending_txn.map((txn: any) => 
                   <IonItem className="request-Item" routerLink={`/requests/details/${txn._id}`} key={txn._id} >
                   <IonThumbnail slot="start">
                     <img src="/assets/images/ui components/icon-Email--request.svg" alt="" />
@@ -156,6 +156,7 @@ const HomePage: React.FC = ({ history }: any) => {
                   </IonLabel>
                 <IonButton fill="outline" slot="end">{txn.status}</IonButton>
                 </IonItem>
+
                 )}
 
                 {/* <IonItem className="request-Item" button onClick={() => { }} >
