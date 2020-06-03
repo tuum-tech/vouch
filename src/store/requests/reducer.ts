@@ -12,7 +12,7 @@ const initialState: TxnState = {
   pending_txn: null,
   approved_txn: null,
   rejected_txn: null,
-  expired_txn: null
+  expired_txn: null,
   newTxnAdded: false
 };
 
