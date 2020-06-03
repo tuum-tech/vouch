@@ -94,4 +94,8 @@ const App: React.FC = () => {
   );
 };
 
+document.addEventListener("deviceready", () => {
+  appManager.setVisible("show");
+}, false);
+
 export default App;
