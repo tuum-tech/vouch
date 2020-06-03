@@ -41,7 +41,7 @@ const OnBoardingPage: React.FC = () => {
           <IonCol className="ion-align-items-center">
             <div>
               <h4>DID Validation Services</h4>
-              <h5>Email, Name, Location, Phone</h5>
+              <h5>Email, Name, Phone</h5>
             </div>
           </IonCol>
         </IonRow>
