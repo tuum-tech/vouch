@@ -5,7 +5,7 @@ import { IonContent, IonHeader,IonListHeader, IonPage, IonTitle, IonGrid, IonBut
 import './ServiceInvoke.css';
 
 import { useEmailValidation } from '../hooks/useEmailValidation'
-import { emailValidation } from '../store/requests'
+import { emailValidation, showNotification, hideNotification } from '../store/requests'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../store'
@@ -32,6 +32,10 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
       console.log("Service Invoked TSX")
       console.log(txn)
       dispatch(emailValidation(txn, () => goTo('/home')))
+      dispatch(showNotification("Request submitted successfully."))
+      setTimeout(() => {
+        dispatch(hideNotification())
+      }, 5000)      
     } else {
       console.log("TXN _id not found");
     }
