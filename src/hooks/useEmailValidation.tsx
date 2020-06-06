@@ -33,7 +33,7 @@ export function useEmailValidation(optionalCallback: any = noop) {
         }
       }
 
-      postData('http://192.168.0.104:8080/start', txn)
+      postData(`${process.env.REACT_APP_SUBMIT_VALIDATION_REQUEST}`, txn)
         .then(data => {
           // console.log("API response");
           // console.log(data); // JSON data parsed by `response.json()` call

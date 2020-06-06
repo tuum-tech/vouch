@@ -26,7 +26,7 @@ export function useRequests(optionalCallback: any = noop) {
       }
 
       if(userinfo){
-        getData('http://192.168.0.104:8080/get?didid=' + userinfo.id)
+        getData(`${process.env.REACT_APP_GET_ALL_VALIDATION_REQUESTS}` + userinfo.id)
         .then(data => {
           // console.log("API response");
           // console.log(data); // JSON data parsed by `response.json()` call

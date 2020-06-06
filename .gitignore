@@ -6,7 +6,7 @@ www/
 build/
 
 # Environments
-.env
+.env.development
 venv/
 
 # pycharm
