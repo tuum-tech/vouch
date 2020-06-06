@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -7,8 +7,7 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
-  IonImg,
-  useIonViewWillEnter
+  IonImg
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
@@ -44,17 +43,11 @@ import '../node_modules/animate.css/animate.min.css';
 /* Theme variables */
 import './theme/variables.css';
 import './theme/fonts.css';
-import { useDispatch } from 'react-redux';
-import { authCheckStatus } from './store/auth';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
 const App: React.FC = () => {
-
-  useEffect(()=>{
-    appManager.setVisible("show");
-  })
 
   return (
   <IonApp>

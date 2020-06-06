@@ -5,7 +5,7 @@ import { arrowBack } from 'ionicons/icons';
 
 import { useSelector } from 'react-redux';
 import { AppState } from '../store'
-import RequestBlocks from './RequestBlocks';
+// import RequestBlocks from './RequestBlocks';
 
 
 const RequestsPage: React.FC = () => {

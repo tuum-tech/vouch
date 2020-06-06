@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle,IonChip,IonButtons,IonListHeader,IonBackButton,IonGrid,IonRow,IonCol,IonLabel,IonToolbar, IonImg } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle,IonChip,IonButtons,IonListHeader,IonBackButton,IonGrid,IonRow,IonCol,IonLabel,IonToolbar } from '@ionic/react';
 import './Details.css';
 import { arrowBack } from 'ionicons/icons';
 

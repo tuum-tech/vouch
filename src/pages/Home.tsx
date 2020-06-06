@@ -18,7 +18,7 @@ import {
 
 
 } from '@ionic/react';
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import './Home.css';
 
 import { useDispatch, useSelector } from 'react-redux';
