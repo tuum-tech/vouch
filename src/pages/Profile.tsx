@@ -43,8 +43,8 @@ const ProfilePage: React.FC = ({ history }: any) => {
             <IonCol>
               <IonListHeader>
                 <div><h2>Your DID <br /><br /> 
-                {/* <strong>iajQJHQXUaABC56SHDGhsg28</strong> */}
-                {user && user.id}
+                <strong>iajQJHQXUaABC56SHDGhsg28iajQJHQXUaABC56SHDGhsg28</strong>
+                {/* {user && user.id} */}
                 </h2></div>
              </IonListHeader>
             </IonCol>
@@ -54,20 +54,22 @@ const ProfilePage: React.FC = ({ history }: any) => {
           
           
           </IonList>
-            {user && user.name &&          
+            {/* {user && user.name &&           */}
               <IonCol size="12">Name 
                 <IonItem>
-                  <IonLabel>{user.name}</IonLabel> 
+                  <IonLabel>John Doe</IonLabel> 
+                  {/* <IonLabel>{user.name}</IonLabel>  */}
                 </IonItem>
               </IonCol>
-            }
-            {user && user.email &&          
+            {/* } */}
+            {/* {user && user.email &&           */}
               <IonCol size="12">Email 
                 <IonItem>
-                  <IonLabel>{user.email}</IonLabel>
+                  <IonLabel>john.doe@elastos.com</IonLabel>                   
+                  {/* <IonLabel>{user.email}</IonLabel> */}
                 </IonItem>
               </IonCol>
-            }
+            {/* } */}
             {user && user.telephone &&          
               <IonCol size="12">Phone 
                 <IonItem>
