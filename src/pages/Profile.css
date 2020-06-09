@@ -20,3 +20,54 @@ ion-list-header{
     width:20px;
     margin-right:20px;
 }
+
+.Profile .userdid {
+    margin-top: -5px;
+    padding-top: 0;
+    padding-left: 0;
+}
+
+.Profile h2 {
+    font-weight: bold;
+}
+
+.Profile #userDID {
+    text-align: left;
+    font: Regular 12px/18px Poppins;
+    letter-spacing: 0px;
+    color: #484848;
+    opacity: 1;
+}
+
+.Profile .fieldContainer {
+    background: #F9F9F9 0% 0% no-repeat padding-box;
+    border-radius: 4px;
+    opacity: 1;
+    padding: 20px 10px;
+    margin-bottom: 10px;
+}
+
+.Profile .fieldContainer .label {
+    text-align: left;
+    font: SemiBold 12px/18px Poppins;
+    letter-spacing: 0px;
+    color: #484848;
+    opacity: 1;
+    font-weight: bold;
+}
+
+.Profile .fieldContainer .label .vertical-top{
+    vertical-align: middle;
+}
+
+.Profile .fieldContainer .label .icon-divider{
+    padding-left: 5px;
+}
+
+.Profile .fieldContainer .value {
+    text-align: right;
+    font: Regular 12px/18px Poppins;
+    letter-spacing: 0px;
+    color: #484848;
+    opacity: 1;
+}
