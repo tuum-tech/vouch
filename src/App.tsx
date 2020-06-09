@@ -56,8 +56,8 @@ const App: React.FC = () => {
       <Route path="/splashscreen" component={SplashScreen} exact={true} />
       <Route path="/onboarding" component={OnBoarding} exact={true} />                
       <Route path="/signin" component={SignIn} exact={true} />                      
-      {/* <Route exact path="/" render={() => <Redirect to="/splashscreen" />} /> */}
-      <Route exact path="/" render={() => <Redirect to="/profile" />} />
+      <Route exact path="/" render={() => <Redirect to="/splashscreen" />} />
+      {/* <Route exact path="/" render={() => <Redirect to="/profile" />} /> */}
       <IonTabs>
         <IonRouterOutlet>
           <Route path="/home" component={Home} exact={true} />
