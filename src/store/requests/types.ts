@@ -7,8 +7,11 @@ export const GET_ALL_REQUESTS_SUCCESS = "GET_ALL_REQUESTS_SUCCESS";
 export const SHOW_NOTIFICATION = "SHOW_NOTIFICATION";
 export const HIDE_NOTIFICATION = "HIDE_NOTIFICATION";
 
+export const SET_SELECTED_TAB_REQUESTS = "SET_SELECTED_TAB_REQUESTS";
+
 export interface TxnState {
   txn: any;
+  selected_tab_txn: any;
   pending_txn: any;
   approved_txn: any;
   rejected_txn: any;
@@ -36,6 +39,11 @@ interface GetAllRequestsSuccessAction {
     payload?: any
 }  
 
+interface SetSelectedTabRequestsAction {
+    type: typeof SET_SELECTED_TAB_REQUESTS;
+    payload?: any
+}  
+
 interface ShowNotificationAction {
     type: typeof SHOW_NOTIFICATION;
     payload?: any
@@ -51,5 +59,6 @@ export type TxnActionTypes =
     | EmailValidationRequestSuccessAction
     | GetAllRequestsAction
     | GetAllRequestsSuccessAction
+    | SetSelectedTabRequestsAction
     | ShowNotificationAction
     | HideNotificationAction    

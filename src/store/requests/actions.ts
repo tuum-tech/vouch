@@ -3,7 +3,8 @@ import { Plugins } from '@capacitor/core';
 import {
     TxnActionTypes,
     EMAIL_VALIDATION_REQUEST_SUCCESS,
-    GET_ALL_REQUESTS_SUCCESS
+    GET_ALL_REQUESTS_SUCCESS,
+    SET_SELECTED_TAB_REQUESTS
 } from "./types";
   
 import { ThunkAction } from "redux-thunk";
@@ -34,6 +35,11 @@ const { Storage } = Plugins;
   
 export const emailValidationSuccess = (txn: any): TxnActionTypes => ({
     type: EMAIL_VALIDATION_REQUEST_SUCCESS,
+    payload: txn
+});
+
+export const setSelectedTabRequests = (txn: any): TxnActionTypes => ({
+    type: SET_SELECTED_TAB_REQUESTS,
     payload: txn
 });
 

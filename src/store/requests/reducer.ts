@@ -4,11 +4,13 @@ import {
   EMAIL_VALIDATION_REQUEST_SUCCESS,
   GET_ALL_REQUESTS_SUCCESS,
   SHOW_NOTIFICATION,
-  HIDE_NOTIFICATION
+  HIDE_NOTIFICATION,
+  SET_SELECTED_TAB_REQUESTS
 } from "./types";
 
 const initialState: TxnState = {
   txn: null,
+  selected_tab_txn: null,
   pending_txn: null,
   approved_txn: null,
   rejected_txn: null,
@@ -31,6 +33,12 @@ export const txnReducer = (
           newTxnAdded: true
         };
       }
+      case SET_SELECTED_TAB_REQUESTS:
+        {
+          return { ...state, 
+            selected_tab_txn: payload
+          };
+        }            
     case GET_ALL_REQUESTS_SUCCESS:
       {
         let pending_txn = payload.filter((txn:any) => txn.status === "Pending");
@@ -40,7 +48,8 @@ export const txnReducer = (
 
         return { 
           ...state, 
-          txn: payload, 
+          txn: payload,
+          selected_tab_txn: payload, 
           pending_txn: pending_txn, 
           approved_txn: approved_txn,
           rejected_txn: rejected_txn,
