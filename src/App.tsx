@@ -43,12 +43,17 @@ import '../node_modules/animate.css/animate.min.css';
 /* Theme variables */
 import './theme/variables.css';
 import './theme/fonts.css';
+import { useSelector } from 'react-redux';
+import { AppState } from './store';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
 const App: React.FC = () => {
 
+  const user = useSelector((state:AppState) => state.auth.user)
+  console.log(user)
+  
   return (
   <IonApp>
     <IonReactRouter>
@@ -56,7 +61,7 @@ const App: React.FC = () => {
       <Route path="/splashscreen" component={SplashScreen} exact={true} />
       <Route path="/onboarding" component={OnBoarding} exact={true} />                
       <Route path="/signin" component={SignIn} exact={true} />                      
-      <Route exact path="/" render={() => <Redirect to="/splashscreen" />} />
+      <Route exact path="/" render={user === null ? () => <Redirect to="/splashscreen" /> : () => <Redirect to="/home" />} />
       {/* <Route exact path="/" render={() => <Redirect to="/profile" />} /> */}
       <IonTabs>
         <IonRouterOutlet>
