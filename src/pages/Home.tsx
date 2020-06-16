@@ -14,11 +14,12 @@ import {
   IonGrid,
   IonItem,
   IonThumbnail,
-  IonToast
+  IonToast,
+  IonAlert
 
 
 } from '@ionic/react';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import './Home.css';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,11 +28,15 @@ import { AppState } from '../store'
 import { useRequests } from '../hooks/useRequests'
 import { getAllRequests } from '../store/requests'
 
-
+import { logout } from '../store/auth'
 
 // class HomePage extends React.Component {
 const HomePage: React.FC = ({ history }: any) => {
   // render() {
+
+    const [showAlertNameValidation, setShowAlertNameValidation] = useState(false);
+    const [showAlertEmailValidation, setShowAlertEmailValidation] = useState(false);
+    const [showAlertPhoneValidation, setShowAlertPhoneValidation] = useState(false);
 
     const dispatch = useDispatch()
   
@@ -93,11 +98,23 @@ const HomePage: React.FC = ({ history }: any) => {
                 </IonListHeader>
               </IonCol>
               <IonCol size="6">
-                <IonCard routerLink={user && user.email ? '/home/service-invoke' : ''}>
+                {/* <IonCard routerLink={user && user.email ? '/home/service-invoke' : ''}> */}
+                <IonCard onClick={e => {
+                          e.preventDefault();
+                          if(user && user.email){
+                            console.log("Go to email validation");
+                            history.push('/home/service-invoke');
+                          } else { 
+                            //show alert
+                            console.log("Show email validation popup");
+                            setShowAlertEmailValidation(true);
+                          }
+                        }}>
                   <IonCardContent>
                     <IonRow>
                       <IonCol>
-                        <IonImg src={user && user.email ? "/assets/images/ui components/icon-Email.svg" : "/assets/images/ui components/icon-Email--Disabled.svg"}></IonImg>
+                        {/* <IonImg src={user && user.email ? "/assets/images/ui components/icon-Email.svg" : "/assets/images/ui components/icon-Email--Disabled.svg"}></IonImg> */}
+                        <IonImg src="/assets/images/ui components/icon-Email.svg"></IonImg>
                       </IonCol>
                       <IonCol>
                         Email <br />  Validation 
@@ -108,12 +125,13 @@ const HomePage: React.FC = ({ history }: any) => {
                 </IonCard>
               </IonCol>
                 <IonCol size="6">
-                {/* <IonCard button onClick={() => { }}> */}
-                <IonCard routerLink={user && user.telephone ? '/home/service-invoke' : ''}>                
+                {/* <IonCard routerLink={user && user.telephone ? '/home/service-invoke' : ''}>                 */}
+                <IonCard onClick={() => setShowAlertPhoneValidation(true)}>
                   <IonCardContent>
                     <IonRow>
                       <IonCol>
-                        <IonImg src={user && user.telephone ? "/assets/images/ui components/icon-Phone.svg" : "/assets/images/ui components/icon-Phone--Disabled.svg"}></IonImg>
+                        {/* <IonImg src={user && user.telephone ? "/assets/images/ui components/icon-Phone.svg" : "/assets/images/ui components/icon-Phone--Disabled.svg"}></IonImg>                         */}
+                        <IonImg src="/assets/images/ui components/icon-Phone.svg"></IonImg>
                       </IonCol>
                       <IonCol>
                         Phone <br />  Validation
@@ -121,12 +139,13 @@ const HomePage: React.FC = ({ history }: any) => {
                     </IonRow>
                   </IonCardContent>
                 </IonCard></IonCol><IonCol size="6">
-                {/* <IonCard button onClick={() => { }}> */}
-                <IonCard routerLink={user && user.name ? '/home/service-invoke' : ''}>
+                {/* <IonCard routerLink={user && user.telephone ? '/home/service-invoke' : ''}>                 */}
+                <IonCard onClick={() => setShowAlertNameValidation(true)}>
                   <IonCardContent>
                     <IonRow>
                       <IonCol>
-                        <IonImg src={user && user.name ? "/assets/images/ui components/icon-name.svg" : "/assets/images/ui components/icon-name--Disabled.svg"}></IonImg>
+                        {/* <IonImg src={user && user.name ? "/assets/images/ui components/icon-name.svg" : "/assets/images/ui components/icon-name--Disabled.svg"}></IonImg> */}
+                        <IonImg src="/assets/images/ui components/icon-name.svg"></IonImg>
                       </IonCol>
                       <IonCol>
                         Name <br />  Validation
@@ -183,6 +202,53 @@ const HomePage: React.FC = ({ history }: any) => {
             </IonRow>
           </IonGrid>
         </IonContent>
+
+        <IonAlert
+          isOpen={showAlertEmailValidation}
+          onDidDismiss={() => setShowAlertEmailValidation(false)}
+          cssClass='service-popup-alert'
+          header={'Could not read the Email'}
+          subHeader={'Please provide access to read Email'}
+          message={'In order to proceed with Email validation, Please resign and provide permission to access your email address.'}
+          buttons={[
+            {
+              text: 'Resign In',
+              handler: () => {
+                console.log('Sign him out and take him to sign in screen');
+                dispatch(logout(() => goTo('/signin')))
+              }
+            },
+            {
+              text: 'Close',
+              role: 'cancel',
+              cssClass: 'secondary',
+              handler: blah => {
+                console.log('Close');
+              }
+            }            
+          ]}
+        />        
+
+        <IonAlert
+          isOpen={showAlertPhoneValidation}
+          onDidDismiss={() => setShowAlertPhoneValidation(false)}
+          cssClass='service-popup-alert'
+          header={'Service Unavailable'}
+          subHeader={'No Phone Validator Found'}
+          message={'There are currently no validators available to validate phone numbers.'}
+          buttons={['Close']}
+        />
+
+        <IonAlert
+          isOpen={showAlertNameValidation}
+          onDidDismiss={() => setShowAlertNameValidation(false)}
+          cssClass='service-popup-alert'
+          header={'Service Unavailable'}
+          subHeader={'No Name Validator Found'}
+          message={'There are currently no validators available to validate name.'}
+          buttons={['Close']}
+        />        
+
       </IonPage>
     );
   }
