@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { IonButton, IonGrid, IonRow, IonCol, IonListHeader, IonLabel, IonHeader, IonToolbar, IonImg, IonPage, IonTitle, IonContent, IonTextarea, IonIcon, IonItem } from '@ionic/react';
+import { IonButton, IonGrid, IonRow, IonCol, IonListHeader, IonLabel, IonHeader, IonToolbar, IonImg, IonPage, IonTitle, IonContent, IonTextarea, IonIcon } from '@ionic/react';
 import './Profile.css';
 
 import { useDispatch, useSelector } from 'react-redux';

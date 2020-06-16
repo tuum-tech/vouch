@@ -19,7 +19,12 @@ const SignInPage: React.FC = ({ history }: any) => {
 
   const [signIn] = useDID((credentials:any) => { 
     if(credentials.length) {
-      const user = credentials[0].credentialSubject
+      console.log("Users credentials")
+      const credSubjects = credentials.map((cred:any) => cred.credentialSubject)
+      console.log(credSubjects)
+      // const user = credentials[0].credentialSubject
+      const user = Object.assign({}, ...credSubjects)
+      console.log(user) 
       dispatch(login(user, () => goTo('/home')))
     }
    })
