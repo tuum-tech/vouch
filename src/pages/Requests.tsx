@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonContent, IonHeader, IonPage,IonSegment, IonSegmentButton, IonTitle,IonGrid,IonRow,IonCol,IonLabel, IonThumbnail,IonButton, IonItem,IonToolbar, IonButtons, IonBackButton } from '@ionic/react';
+import { IonContent, IonHeader, IonPage,IonSegment, IonSegmentButton, IonTitle,IonGrid,IonRow,IonCol,IonLabel, IonThumbnail,IonButton, IonItem,IonToolbar, IonButtons, IonBackButton, IonImg } from '@ionic/react';
 import './Requests.css';
 import { arrowBack } from 'ionicons/icons';
 
@@ -38,9 +38,10 @@ const RequestsPage: React.FC = () => {
     <IonPage>
       <IonHeader className="main-header">
         <IonToolbar>
-        <IonButtons slot="start">
-          <IonBackButton icon={arrowBack} text="" />
-        </IonButtons>
+          <IonButtons slot="start">
+            <IonBackButton icon={arrowBack} text="" />
+          </IonButtons>
+          <IonImg className="Navbar-Logo" src="/assets/images/ui components/empty.png"></IonImg>
         </IonToolbar>
       </IonHeader>
       <IonContent>
