@@ -4,8 +4,9 @@ import './Profile.css';
 
 import { useDispatch, useSelector } from 'react-redux';
 
-import { logout } from '../store/auth'
 import { AppState } from '../store'
+import { useDID } from '../hooks/useDID';
+import { login } from '../store/auth';
 
 declare global{
   interface Window {
@@ -16,15 +17,26 @@ declare global{
 const ProfilePage: React.FC = ({ history }: any) => {
 
   const dispatch = useDispatch()
-  
-  const user = useSelector((state:AppState) => state.auth.user)
 
+  const [signIn] = useDID((credentials:any) => { 
+    if(credentials.length) {
+      const credSubjects = credentials.map((cred:any) => cred.credentialSubject)
+      const user = Object.assign({}, ...credSubjects)
+      dispatch(login(user, () => goTo('/profile')))
+    }
+   })
+  
   const goTo = useCallback(
     (path: string) => {
       history.push(path, { direction: 'forward' });
     },
     [history],
   );
+
+
+
+  
+  const user = useSelector((state:AppState) => state.auth.user)
 
   const copyText = function (elementId: any){
     let copyText:any = document.querySelector("#" + elementId);
@@ -91,8 +103,8 @@ const ProfilePage: React.FC = ({ history }: any) => {
           </IonRow>
           <IonRow className="text-center">
             <IonCol>
-              <IonButton className="signOut text-center" color="light" onClick={() => { dispatch(logout(() => goTo('/signin'))) }}>
-                <IonImg className="sign-out-button" src="/assets/images/ui components/icon-Sign-out.svg" ></IonImg> Sign Out
+              <IonButton className="signOut text-center" color="light" onClick={() => signIn({ name: false, email: false, telephone: false })}>              
+                <IonImg className="sign-out-button" src="/assets/images/ui components/icon-Sign-out.svg" ></IonImg> Refresh Credentials
               </IonButton>
             </IonCol>
           </IonRow>

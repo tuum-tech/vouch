@@ -1,8 +1,29 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { IonPage, IonImg, IonGrid, IonRow, IonCol, IonContent, IonButton } from '@ionic/react';
 import './OnBoarding.css';
+import { useDispatch } from 'react-redux';
+import { useDID } from '../hooks/useDID';
+import { login } from '../store/auth';
 
-const OnBoardingPage: React.FC = () => {
+const OnBoardingPage: React.FC = ({ history }: any) => {
+
+  const dispatch = useDispatch()
+
+  const [signIn] = useDID((credentials:any) => { 
+    if(credentials.length) {
+      const credSubjects = credentials.map((cred:any) => cred.credentialSubject)
+      const user = Object.assign({}, ...credSubjects)
+      dispatch(login(user, () => goTo('/home')))
+    }
+   })
+  
+  const goTo = useCallback(
+    (path: string) => {
+      history.push(path, { direction: 'forward' });
+    },
+    [history],
+  );
+
   return (
     <IonPage className="OnBoarding">
       <IonContent className="background" fullscreen>
@@ -53,7 +74,7 @@ const OnBoardingPage: React.FC = () => {
         <IonRow className="ion-text-center">
           <IonCol className="ion-align-items-center">
             <div>
-              <IonButton className="button cta" routerLink='/signin'>Take me to App</IonButton>
+              <IonButton className="button cta" onClick={() => { signIn({ name: false, email: false, telephone: false })}}>Take me to App</IonButton>            
             </div>
           </IonCol>
         </IonRow>
