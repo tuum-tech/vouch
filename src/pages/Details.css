@@ -3,3 +3,108 @@
   display: block;
   padding-top:15px;
 }
+
+.Details .status-tooltip {
+  border-radius: 4px;
+  opacity: 1;
+}
+
+.Details .pending-tooltip {
+  background: #FFF9D8 0% 0% no-repeat padding-box;
+  font: SemiBold 10px/16px Poppins;
+  letter-spacing: 0px;
+  color: #C4803C;
+  opacity: 1;
+  margin-bottom: 10px;
+  padding: 5px 5px;
+  border-radius: 5px;  
+}
+
+.Details .approved-tooltip {
+  background: #94FCA8 0% 0% no-repeat padding-box;
+  font: SemiBold 10px/16px Poppins;
+  letter-spacing: 0px;
+  color: #0EA52B;
+  opacity: 1;  
+  margin-bottom: 10px;
+  padding: 5px 5px; 
+  border-radius: 5px;   
+}
+
+.Details .rejected-tooltip {
+  background: #F76D8D 0% 0% no-repeat padding-box;
+  font: SemiBold 10px/16px Poppins;
+  letter-spacing: 0px;
+  color: #FFFFFF;
+  opacity: 1;
+  margin-bottom: 10px;
+  padding: 5px 5px; 
+  border-radius: 5px;   
+}
+
+.Details .expired-tooltip {
+  background: #484848 0% 0% no-repeat padding-box;
+  font: SemiBold 10px/16px Poppins;
+  letter-spacing: 0px;
+  color: #FFFFFF;
+  opacity: 1;
+  margin-bottom: 10px;
+  padding: 5px 5px; 
+  border-radius: 5px;     
+}
+
+.Details .userdid {
+  margin-top: -5px;
+  padding-top: 0;
+  padding-left: 0;
+}
+
+.Details h2 {
+  font-weight: bold;
+}
+
+.Details #userDID {
+  text-align: left;
+  font: Regular 12px/18px Poppins;
+  letter-spacing: 0px;
+  color: #484848;
+  opacity: 1;
+}
+
+
+.Details .fieldContainer {
+  background: #F9F9F9 0% 0% no-repeat padding-box;
+  border-radius: 4px;
+  opacity: 1;
+  padding: 5px 5px;
+  margin-bottom: 5px;
+}
+
+.Details .fieldContainer2 {
+  margin-bottom: 0;
+}
+
+.Details .fieldContainer .label {
+  text-align: left;
+  font: SemiBold 12px/18px Poppins;
+  letter-spacing: 0px;
+  color: #484848;
+  opacity: 1;
+  font-weight: bold;
+}
+
+.Details .fieldContainer .label .vertical-top{
+  vertical-align: middle;
+}
+
+.Details .fieldContainer .label .icon-divider{
+  padding-left: 5px;
+}
+
+.Details .fieldContainer .value {
+  text-align: right;
+  font: Regular 12px/18px Poppins;
+  letter-spacing: 0px;
+  color: #484848;
+  opacity: 1;
+}

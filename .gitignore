@@ -19,6 +19,6 @@ __pycache__
 # idea
 .idea/
 
-capacitor.config.json
+capicitor.config.json
 .gradle
 android
