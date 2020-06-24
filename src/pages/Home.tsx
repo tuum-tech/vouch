@@ -17,7 +17,7 @@ import {
   IonToast,
   IonAlert
 } from '@ionic/react';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 
 import './Home.css';
 
@@ -26,6 +26,7 @@ import { AppState } from '../store'
 
 import { useRequests } from '../hooks/useRequests'
 import { getAllRequests } from '../store/requests'
+import { logout } from '../store/auth';
 
 const HomePage: React.FC = ({ history }: any) => {
 
