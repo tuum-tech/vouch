@@ -7,8 +7,6 @@ export function useProvider(optionalCallback: any = noop) {
 
       async function getData(url = '') {
 
-        console.log("URL" + url)
-        // Default options are marked with *
         const response = await fetch(url, {
           method: 'GET',
           mode: 'cors',

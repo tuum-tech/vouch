@@ -32,11 +32,8 @@ import { useProvider } from '../hooks/useProvider'
 import { getEmailValidationProviders } from '../store/providers'
 
 import { logout } from '../store/auth'
-// import { useProvider } from '../hooks/useProvider';
 
-// class HomePage extends React.Component {
 const HomePage: React.FC = ({ history }: any) => {
-  // render() {
 
     const [showAlertNameValidation, setShowAlertNameValidation] = useState(false);
     const [showAlertEmailValidation, setShowAlertEmailValidation] = useState(false);
@@ -78,8 +75,6 @@ const HomePage: React.FC = ({ history }: any) => {
     //Get the list of email validation providers
     const [sendGetEmailValidationProvidersReq] = useProvider((emailValidationProviders:any) => { 
       if(emailValidationProviders) {
-        console.log("Service Invoked TSX Get Email Validation providers")
-        console.log(emailValidationProviders)
         dispatch(getEmailValidationProviders(emailValidationProviders))
       }  
     })   

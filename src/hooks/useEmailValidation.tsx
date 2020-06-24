@@ -33,9 +33,6 @@ export function useEmailValidation(optionalCallback: any = noop) {
         }
       }
 
-      console.log("Sending validation request to Tumm Tech")
-      console.log(txn)
-
       postData(`${process.env.REACT_APP_SUBMIT_VALIDATION_REQUEST}`, txn)
         .then(data => {
           // console.log("API response");
