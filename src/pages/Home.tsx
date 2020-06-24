@@ -18,9 +18,9 @@ import {
   IonAlert,
   IonRefresher,
   IonRefresherContent
-
 } from '@ionic/react';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
+
 import './Home.css';
 
 import { RefresherEventDetail } from '@ionic/core';
@@ -30,12 +30,9 @@ import { AppState } from '../store'
 
 import { useRequests } from '../hooks/useRequests'
 import { getAllRequests } from '../store/requests'
+import { logout } from '../store/auth';
 
-import { logout } from '../store/auth'
-
-// class HomePage extends React.Component {
 const HomePage: React.FC = ({ history }: any) => {
-  // render() {
 
     const [showAlertNameValidation, setShowAlertNameValidation] = useState(false);
     const [showAlertEmailValidation, setShowAlertEmailValidation] = useState(false);
@@ -45,8 +42,7 @@ const HomePage: React.FC = ({ history }: any) => {
   
     const user = useSelector((state:AppState) => state.auth.user)  
     const requests = useSelector((state:AppState) => state.requests)
-
-    
+   
     console.log("State in home")
     console.log(requests)
 
@@ -59,28 +55,21 @@ const HomePage: React.FC = ({ history }: any) => {
     }
 
     const [sendGetAllRequestsReq] = useRequests((txn:any) => { 
-
       if(txn) {
-
         console.log("Service Invoked TSX Get Requests")
         console.log(txn)
-        dispatch(getAllRequests(txn))
-      } else {
-        console.log("TXN is blank or not found");
-      }
-  
+        dispatch(getAllRequests(txn, () => goTo('/home')))
+      }  
      })   
-  
-    if(!requests.txn){
-      // console.log("Calling get request");
-      // const userinfo = {
-      //     "id": "did:elastos:ia7ooqJoKVQTfndxdHtcYep3XmLM1k85ta",
-      //     "email": "testing@testing.com"
-      // };
-      // sendGetAllRequestsReq(userinfo)
-      sendGetAllRequestsReq(user)
-    }
 
+    useEffect(() => {
+        if(!requests.txn){
+          sendGetAllRequestsReq(user)
+        }
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      []
+    );
 
   const goTo = useCallback(
     (path: string) => {
@@ -197,27 +186,6 @@ const HomePage: React.FC = ({ history }: any) => {
                 </IonItem>
 
                 )}
-
-                {/* <IonItem className="request-Item" button onClick={() => { }} >
-                  <IonThumbnail slot="start">
-                    <img src="/assets/images/ui components/icon-Email@3x.png" alt="" />
-                  </IonThumbnail>
-                  <IonLabel>
-                    <h2>Email Validation</h2>
-                    <p>{requests.txn && requests.txn.txn && requests.txn.txn[0]}</p>
-                  </IonLabel>
-                  <IonButton fill="outline" slot="end">Pending</IonButton>
-                </IonItem> */}
-                {/* <IonItem className="request-Item" button onClick={() => { }}>
-                  <IonThumbnail slot="start">
-                    <img src="/assets/images/ui components/icon-name--request.svg" alt="" />
-                  </IonThumbnail>
-                  <IonLabel>
-                    <h2>Name Validation</h2>
-                    <p>23 Minutes Ago</p>
-                  </IonLabel>
-                  <IonButton fill="outline" slot="end">Pending</IonButton>
-                </IonItem> */}
               </IonCol>
             </IonRow>
           </IonGrid>
@@ -272,11 +240,5 @@ const HomePage: React.FC = ({ history }: any) => {
       </IonPage>
     );
   }
-
-  // closeApp() {
-  //   console.log("dApp is closing!")
-  //   appManager.close();
-  // }
-// }
 
 export default HomePage;

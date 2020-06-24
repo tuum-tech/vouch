@@ -46,7 +46,7 @@ export const logoutSuccess = (): AuthActionTypes => ({
     type: LOGOUT_SUCCESS
 });
 
-export const authCheckStatus = (callback: any = noop): ThunkAction<
+export const authCheckStatus = (callback: any = noop, callback2: any = noop): ThunkAction<
     void,
     AppState,
     null,
@@ -59,6 +59,8 @@ export const authCheckStatus = (callback: any = noop): ThunkAction<
             // TOOD is user credential expired ?
             dispatch(loginSuccess(JSON.parse(user.value)));
             callback()
+          } else {
+              callback2()
           }
     })()
   };
