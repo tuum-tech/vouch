@@ -28,7 +28,11 @@ import { AppState } from '../store'
 import { useRequests } from '../hooks/useRequests'
 import { getAllRequests } from '../store/requests'
 
+import { useProvider } from '../hooks/useProvider'
+import { getEmailValidationProviders } from '../store/providers'
+
 import { logout } from '../store/auth'
+// import { useProvider } from '../hooks/useProvider';
 
 // class HomePage extends React.Component {
 const HomePage: React.FC = ({ history }: any) => {
@@ -42,7 +46,7 @@ const HomePage: React.FC = ({ history }: any) => {
   
     const user = useSelector((state:AppState) => state.auth.user)  
     const requests = useSelector((state:AppState) => state.requests)
-
+    const validationProviders = useSelector((state:AppState) => state.validationProviders)
     
     console.log("State in home")
     console.log(requests)
@@ -69,6 +73,23 @@ const HomePage: React.FC = ({ history }: any) => {
       // sendGetAllRequestsReq(userinfo)
       sendGetAllRequestsReq(user)
     }
+
+
+    //Get the list of email validation providers
+    const [sendGetEmailValidationProvidersReq] = useProvider((emailValidationProviders:any) => { 
+      if(emailValidationProviders) {
+        console.log("Service Invoked TSX Get Email Validation providers")
+        console.log(emailValidationProviders)
+        dispatch(getEmailValidationProviders(emailValidationProviders))
+      }  
+    })   
+  
+    if(!validationProviders.emailValidationProviders){
+      sendGetEmailValidationProvidersReq('email')
+    }
+
+
+
 
 
   const goTo = useCallback(

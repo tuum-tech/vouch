@@ -5,10 +5,12 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { authReducer } from "./auth";
 import { txnReducer } from "./requests";
+import { validationProviderReducer } from "./providers";
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  requests: txnReducer
+  requests: txnReducer,
+  validationProviders: validationProviderReducer
 });
 
 export default createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));

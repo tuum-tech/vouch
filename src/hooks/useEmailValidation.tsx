@@ -1,6 +1,6 @@
 export function useEmailValidation(optionalCallback: any = noop) {
 
-  const emailValidationRequest = (userinfo: any) => {
+  const emailValidationRequest = (userinfo: any, providerId: any) => {
     /**
      * Request email validation to the backend API.
      */
@@ -24,14 +24,20 @@ export function useEmailValidation(optionalCallback: any = noop) {
         return response.json(); // parses JSON response into native JavaScript objects
       }
 
+      console.log("Selected Provider")
+      console.log(providerId)
+
       const txn = {
         "validationType": "email",
-        "providerId": "eyvc79BEYdycHYQFhqCKXKsdzqt",
+        "providerId": providerId,
         "params": {
           "didId": userinfo.user.id,
           "email": userinfo.user.email
         }
       }
+
+      console.log("Sending validation request to Tumm Tech")
+      console.log(txn)
 
       postData(`${process.env.REACT_APP_SUBMIT_VALIDATION_REQUEST}`, txn)
         .then(data => {

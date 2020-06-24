@@ -16,7 +16,8 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
   const dispatch = useDispatch()
 
   const user = useSelector((state:AppState) => state.auth.user)
-  
+  const validationProviders = useSelector((state:AppState) => state.validationProviders)
+
   const [sendEmailValidationRequest] = useEmailValidation((txn:any) => { 
     // console.log("requests");
     // console.log(requests);
@@ -69,16 +70,19 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
                   <IonLabel className="List-Header">Choose a validation provider from the list</IonLabel>
                 </IonListHeader>
 <br/>
-        <IonItem className="" onClick={() => { sendEmailValidationRequest({ user })}}>
+
+                {validationProviders.emailValidationProviders && validationProviders.emailValidationProviders.map((emailValidationProvider: any) => 
+                <IonItem key={emailValidationProvider._id} data-providerid={emailValidationProvider._id} className="" onClick={(e) => { sendEmailValidationRequest({ user: user, provider: e.currentTarget.getAttribute('data-providerid') })}}>
                   <IonThumbnail slot="start">
-                    <img src="/assets/images/ui components/tuum-logo.jpg" alt="" />
+                    <img src={emailValidationProvider.logo} alt="" />
                   </IonThumbnail>
                   <IonLabel>
-                    <h2>TUUM TECH</h2>
+                    <h2>{emailValidationProvider.name}</h2>
                   </IonLabel>
                 </IonItem>
+                )}
 
-                <IonItem className="" routerLink='/home/pleasewait'>
+                {/* <IonItem className="" routerLink='/home/pleasewait'>
                   <IonThumbnail slot="start">
                     <img src="/assets/images/ui components/Rectangle -1@3x.png" alt="" />
                   </IonThumbnail>
@@ -94,7 +98,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
                   <IonLabel>
                     <h2>Validator Name</h2>
                   </IonLabel>
-                </IonItem>
+                </IonItem> */}
                
         </IonCol>
         </IonRow>
