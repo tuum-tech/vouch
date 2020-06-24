@@ -24,9 +24,6 @@ export function useEmailValidation(optionalCallback: any = noop) {
         return response.json(); // parses JSON response into native JavaScript objects
       }
 
-      console.log("Selected Provider")
-      console.log(data.providerId)
-
       const txn = {
         "validationType": "email",
         "providerId": data.providerId,
