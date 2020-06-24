@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonContent, IonHeader, IonPage, IonSegment, IonSegmentButton, IonTitle,IonGrid,IonRow,IonCol,IonLabel, IonThumbnail,IonButton, IonItem,IonToolbar, IonButtons, IonBackButton, IonImg } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonSegment, IonSegmentButton, IonTitle,IonGrid,IonRow,IonCol,IonLabel, IonToolbar, IonButtons, IonBackButton, IonImg, IonRefresher, IonRefresherContent } from '@ionic/react';
 import './Requests.css';
 import { arrowBack } from 'ionicons/icons';
 
@@ -7,11 +7,33 @@ import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../store'
 import RequestBlocks from './RequestBlocks';
 import { setSelectedTabRequests } from '../store/requests';
+import { RefresherEventDetail } from '@ionic/core';
+
+import { useRequests } from '../hooks/useRequests'
+import { getAllRequests } from '../store/requests'
 
 const RequestsPage: React.FC = () => {
 
   const dispatch = useDispatch()  
   const requests = useSelector((state:AppState) => state.requests)
+  const user = useSelector((state:AppState) => state.auth.user)  
+
+  const doRefresh = (event: CustomEvent<RefresherEventDetail>) => {
+    // console.log('Begin async operation');
+    sendGetAllRequestsReq(user)
+
+    setTimeout(() => {
+      // console.log('Async operation has ended');
+      //alert("event detail complete");
+      event.detail.complete();
+    }, 2000);
+  }
+
+  const [sendGetAllRequestsReq] = useRequests((txn:any) => { 
+    if(txn) {
+      dispatch(getAllRequests(txn))
+    }
+   })   
 
   const handleClick = function(tab_event: any) {
     // console.log(tab_event);
@@ -45,6 +67,15 @@ const RequestsPage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+
+        <IonRefresher className="refresher" slot="fixed" onIonRefresh={doRefresh} pullFactor={0.5} pullMin={100} pullMax={200}>
+            <IonRefresherContent
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing Requests Status...">
+            </IonRefresherContent>
+        </IonRefresher>
+
       <IonToolbar className="sub-header">
           <IonTitle className="ion-text-start">Request</IonTitle>
         </IonToolbar>

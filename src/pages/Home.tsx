@@ -15,11 +15,15 @@ import {
   IonItem,
   IonThumbnail,
   IonToast,
-  IonAlert
+  IonAlert,
+  IonRefresher,
+  IonRefresherContent
 } from '@ionic/react';
 import React, { useCallback, useState, useEffect } from 'react';
 
 import './Home.css';
+
+import { RefresherEventDetail } from '@ionic/core';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../store'
@@ -38,9 +42,22 @@ const HomePage: React.FC = ({ history }: any) => {
   
     const user = useSelector((state:AppState) => state.auth.user)  
     const requests = useSelector((state:AppState) => state.requests)
-     
+   
+    console.log("State in home")
+    console.log(requests)
+
+    const doRefresh = (event: CustomEvent<RefresherEventDetail>) => {
+      sendGetAllRequestsReq(user)
+
+      setTimeout(() => {
+        event.detail.complete();
+      }, 2000);
+    }
+
     const [sendGetAllRequestsReq] = useRequests((txn:any) => { 
       if(txn) {
+        console.log("Service Invoked TSX Get Requests")
+        console.log(txn)
         dispatch(getAllRequests(txn, () => goTo('/home')))
       }  
      })   
@@ -70,6 +87,15 @@ const HomePage: React.FC = ({ history }: any) => {
           <IonToast color="success" position="bottom" isOpen={requests.newTxnAdded} message="Request submitted successfully" />
         </IonHeader>
         <IonContent>
+
+        <IonRefresher className="refresher" slot="fixed" onIonRefresh={doRefresh} pullFactor={0.5} pullMin={100} pullMax={200}>
+            <IonRefresherContent
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing Requests Status...">
+            </IonRefresherContent>
+        </IonRefresher>
+
           <IonToolbar className="sub-header">
     <IonTitle className="ion-text-start Iontitle-Big">Welcome, <br /> <strong> {user && user.name}</strong></IonTitle>
           </IonToolbar>
