@@ -10,11 +10,17 @@ import { useParams } from 'react-router-dom';
 const RequestsPage: React.FC = () => {
 
   const requests = useSelector((state:AppState) => state.requests)
+  const validationProviders = useSelector((state:AppState) => state.validationProviders)
   const { id } = useParams()
 
   console.log("Request ID: " + id);
   const requestDetails = requests.txn.filter((txn: any) => txn._id === id)[0]
   console.log(requestDetails)
+
+  let providerName = '';  
+  if(requestDetails.validationType === 'email'){
+     providerName = validationProviders.emailValidationProviders.filter((provider:any) => provider._id === requestDetails.providerId)[0].name
+  }
 
   const copyText = function (elementId: any){
     let copyText:any = document.querySelector("#" + elementId);
@@ -96,7 +102,7 @@ const RequestsPage: React.FC = () => {
                 <IonLabel className="label">Validator</IonLabel>
               </IonCol>                
               <IonCol size="8">
-                <IonLabel className="value">{requestDetails.providerId}</IonLabel>
+                <IonLabel className="value">{providerName}</IonLabel>
               </IonCol>                
             </IonListHeader>
             }

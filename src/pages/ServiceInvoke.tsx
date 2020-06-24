@@ -50,6 +50,11 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
     [history],
   );
 
+  const handleValidationProviderClick = (e: any) => {
+    let providerid = e.currentTarget.getAttribute('data-providerid');
+    sendEmailValidationRequest({ user: user, providerId: providerid });
+  }
+
   return (
     <IonPage>
       <IonHeader className="main-header">
@@ -72,7 +77,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
 <br/>
 
                 {validationProviders.emailValidationProviders && validationProviders.emailValidationProviders.map((emailValidationProvider: any) => 
-                <IonItem key={emailValidationProvider._id} data-providerid={emailValidationProvider._id} className="" onClick={(e) => { sendEmailValidationRequest({ user: user, provider: e.currentTarget.getAttribute('data-providerid') })}}>
+                <IonItem key={emailValidationProvider._id} data-providerid={emailValidationProvider._id} className="" onClick={(e) => handleValidationProviderClick(e)}>
                   <IonThumbnail slot="start">
                     <img src={emailValidationProvider.logo} alt="" />
                   </IonThumbnail>

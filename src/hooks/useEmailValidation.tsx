@@ -1,6 +1,6 @@
 export function useEmailValidation(optionalCallback: any = noop) {
 
-  const emailValidationRequest = (userinfo: any, providerId: any) => {
+  const emailValidationRequest = (data: any) => {
     /**
      * Request email validation to the backend API.
      */
@@ -25,14 +25,14 @@ export function useEmailValidation(optionalCallback: any = noop) {
       }
 
       console.log("Selected Provider")
-      console.log(providerId)
+      console.log(data.providerId)
 
       const txn = {
         "validationType": "email",
-        "providerId": providerId,
+        "providerId": data.providerId,
         "params": {
-          "didId": userinfo.user.id,
-          "email": userinfo.user.email
+          "didId": data.user.id,
+          "email": data.user.email
         }
       }
 
