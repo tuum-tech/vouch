@@ -14,12 +14,12 @@ const RequestsPage: React.FC = () => {
   const { id } = useParams()
 
   console.log("Request ID: " + id);
-  const requestDetails = requests.txn.filter((txn: any) => txn._id === id)[0]
+  const requestDetails = requests.txn.filter((txn: any) => txn.id === id)[0]
   console.log(requestDetails)
 
   let providerName = '';  
   if(requestDetails.validationType === 'email'){
-     providerName = validationProviders.emailValidationProviders.filter((provider:any) => provider._id === requestDetails.providerId)[0].name
+     providerName = validationProviders.emailValidationProviders.filter((provider:any) => provider.id === requestDetails.providerId)[0].name
   }
 
   const copyText = function (elementId: any){
@@ -76,13 +76,13 @@ const RequestsPage: React.FC = () => {
 
 
           <IonRow>
-            { requestDetails && requestDetails._id &&           
+            { requestDetails && requestDetails.id &&           
             <IonListHeader className="fieldContainer">
               <IonCol size="4">
                 <IonLabel className="label">Request ID</IonLabel>
               </IonCol>
               <IonCol size="8">
-                <IonLabel className="value">{requestDetails._id}</IonLabel>
+                <IonLabel className="value">{requestDetails.id}</IonLabel>
               </IonCol>
             </IonListHeader>
             }            

@@ -181,7 +181,7 @@ const HomePage: React.FC = ({ history }: any) => {
               <IonCol>
                 {/* Items Active */}
                 {requests.pending_txn && requests.pending_txn.map((txn: any) => 
-                  <IonItem className="request-Item" routerLink={`/requests/details/${txn._id}`} key={txn._id} >
+                  <IonItem className="request-Item" routerLink={`/requests/details/${txn.id}`} key={txn.id} >
                   <IonThumbnail slot="start">
                     <img src="/assets/images/ui components/icon-Email--request.svg" alt="" />
                   </IonThumbnail>

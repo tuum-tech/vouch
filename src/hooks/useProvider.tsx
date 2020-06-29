@@ -13,7 +13,8 @@ export function useProvider(optionalCallback: any = noop) {
           cache: 'no-cache',
           credentials: 'same-origin',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'vouch-restapi-secret-key'
           },
           redirect: 'follow',
           referrerPolicy: 'no-referrer'
@@ -24,8 +25,11 @@ export function useProvider(optionalCallback: any = noop) {
 
       if(validationType === 'email' || validationType === 'phone' || validationType === 'name'){
         getData(`${process.env.REACT_APP_GET_PROVIDERS_BY_VALIDATION_TYPE}` + validationType)
-        .then(data => {
-          optionalCallback(data);          
+        .then(response => {
+          if(response.meta.code === 200) {
+            optionalCallback(response.data);          
+          }
+
         });
       }
 

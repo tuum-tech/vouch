@@ -15,7 +15,8 @@ export function useRequests(optionalCallback: any = noop) {
           cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
           credentials: 'same-origin', // include, *same-origin, omit
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': 'vouch-restapi-secret-key'
           },
           redirect: 'follow', // manual, *follow, error
           referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
@@ -26,12 +27,17 @@ export function useRequests(optionalCallback: any = noop) {
       }
 
       if(userinfo){
-        getData(`${process.env.REACT_APP_GET_ALL_VALIDATION_REQUESTS}` + userinfo.id)
-        .then(data => {
+        // console.log(userinfo);
+        const did = userinfo.id.split(':').pop();
+        // console.log(did);
+        getData(`${process.env.REACT_APP_GET_ALL_VALIDATION_REQUESTS}` + did)
+        .then(response => {
           // console.log("API response");
           // console.log(data); // JSON data parsed by `response.json()` call
           //return data;
-          optionalCallback(data);          
+          if(response.meta.code === 200){
+            optionalCallback(response.data);          
+          }
         });
       }
 

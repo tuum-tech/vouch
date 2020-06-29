@@ -18,10 +18,13 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
   const user = useSelector((state:AppState) => state.auth.user)
   const validationProviders = useSelector((state:AppState) => state.validationProviders)
 
+  console.log("Validation providers list");
+  console.log(validationProviders.emailValidationProviders);
+
   const [sendEmailValidationRequest] = useEmailValidation((txn:any) => { 
     // console.log("requests");
     // console.log(requests);
-    if(txn._id) {
+    if(txn.id) {
       // const txn = {
       //   "validationType": "email",
       //   "validatorId": "tuumtech",
@@ -38,7 +41,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
         dispatch(hideNotification())
       }, 5000)      
     } else {
-      console.log("TXN _id not found");
+      console.log("TXN id not found");
     }
 
    })
@@ -77,7 +80,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
 <br/>
 
                 {validationProviders.emailValidationProviders && validationProviders.emailValidationProviders.map((emailValidationProvider: any) => 
-                <IonItem key={emailValidationProvider._id} data-providerid={emailValidationProvider._id} className="" onClick={(e) => handleValidationProviderClick(e)}>
+                <IonItem key={emailValidationProvider.id} data-providerid={emailValidationProvider.id} className="" onClick={(e) => handleValidationProviderClick(e)}>
                   <IonThumbnail slot="start">
                     <img src={emailValidationProvider.logo} alt="" />
                   </IonThumbnail>
