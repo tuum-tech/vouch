@@ -30,8 +30,6 @@ import { AppState } from '../store'
 
 import { useRequests } from '../hooks/useRequests'
 import { getAllRequests } from '../store/requests'
-import { logout } from '../store/auth';
-
 import { useProvider } from '../hooks/useProvider'
 import { getEmailValidationProviders } from '../store/providers'
 
