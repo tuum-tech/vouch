@@ -13,8 +13,9 @@ export function useProvider(optionalCallback: any = noop) {
           cache: 'no-cache',
           credentials: 'same-origin',
           headers: {
+            'Authorization': `${process.env.BACKEND_API_KEY}`,
             'Content-Type': 'application/json',
-            'Authorization': 'vouch-restapi-secret-key'
+            'Accept': 'application/json',
           },
           redirect: 'follow',
           referrerPolicy: 'no-referrer'
