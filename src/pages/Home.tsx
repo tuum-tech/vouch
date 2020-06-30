@@ -30,7 +30,10 @@ import { AppState } from '../store'
 
 import { useRequests } from '../hooks/useRequests'
 import { getAllRequests } from '../store/requests'
-import { logout } from '../store/auth';
+import { useProvider } from '../hooks/useProvider'
+import { getEmailValidationProviders } from '../store/providers'
+
+import { logout } from '../store/auth'
 
 const HomePage: React.FC = ({ history }: any) => {
 
@@ -42,7 +45,8 @@ const HomePage: React.FC = ({ history }: any) => {
   
     const user = useSelector((state:AppState) => state.auth.user)  
     const requests = useSelector((state:AppState) => state.requests)
-   
+    const validationProviders = useSelector((state:AppState) => state.validationProviders)
+
     console.log("State in home")
     console.log(requests)
 
@@ -70,6 +74,21 @@ const HomePage: React.FC = ({ history }: any) => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       []
     );
+
+    //Get the list of email validation providers
+    const [sendGetEmailValidationProvidersReq] = useProvider((emailValidationProviders:any) => { 
+      if(emailValidationProviders) {
+        dispatch(getEmailValidationProviders(emailValidationProviders))
+      }  
+    })   
+  
+    if(!validationProviders.emailValidationProviders){
+      sendGetEmailValidationProvidersReq('email')
+    }
+
+
+
+
 
   const goTo = useCallback(
     (path: string) => {
@@ -174,7 +193,7 @@ const HomePage: React.FC = ({ history }: any) => {
               <IonCol>
                 {/* Items Active */}
                 {requests.pending_txn && requests.pending_txn.map((txn: any) => 
-                  <IonItem className="request-Item" routerLink={`/requests/details/${txn._id}`} key={txn._id} >
+                  <IonItem className="request-Item" routerLink={`/requests/details/${txn.id}`} key={txn.id} >
                   <IonThumbnail slot="start">
                     <img src="/assets/images/ui components/icon-Email--request.svg" alt="" />
                   </IonThumbnail>

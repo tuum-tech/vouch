@@ -10,7 +10,7 @@ const RequestBlocks = (props: any) => {
         requests_txn.map((txn: any) =>
           <IonRow>
           <IonCol className="Providers-List">
-          <IonItem routerLink={`/requests/details/${txn._id}`} key={txn._id}>
+          <IonItem routerLink={`/requests/details/${txn.id}`} key={txn.id}>
                     <IonThumbnail slot="start">
                       <img src="/assets/images/ui components/icon-Email--request.svg" alt="" />
                     </IonThumbnail>

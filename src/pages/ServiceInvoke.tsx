@@ -16,11 +16,15 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
   const dispatch = useDispatch()
 
   const user = useSelector((state:AppState) => state.auth.user)
-  
+  const validationProviders = useSelector((state:AppState) => state.validationProviders)
+
+  console.log("Validation providers list");
+  console.log(validationProviders.emailValidationProviders);
+
   const [sendEmailValidationRequest] = useEmailValidation((txn:any) => { 
     // console.log("requests");
     // console.log(requests);
-    if(txn._id) {
+    if(txn.id) {
       // const txn = {
       //   "validationType": "email",
       //   "validatorId": "tuumtech",
@@ -37,7 +41,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
         dispatch(hideNotification())
       }, 5000)      
     } else {
-      console.log("TXN _id not found");
+      console.log("TXN id not found");
     }
 
    })
@@ -48,6 +52,11 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
     },
     [history],
   );
+
+  const handleValidationProviderClick = (e: any) => {
+    let providerid = e.currentTarget.getAttribute('data-providerid');
+    sendEmailValidationRequest({ user: user, providerId: providerid });
+  }
 
   return (
     <IonPage>
@@ -69,16 +78,19 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
                   <IonLabel className="List-Header">Choose a validation provider from the list</IonLabel>
                 </IonListHeader>
 <br/>
-        <IonItem className="" onClick={() => { sendEmailValidationRequest({ user })}}>
+
+                {validationProviders.emailValidationProviders && validationProviders.emailValidationProviders.map((emailValidationProvider: any) => 
+                <IonItem key={emailValidationProvider.id} data-providerid={emailValidationProvider.id} className="" onClick={(e) => handleValidationProviderClick(e)}>
                   <IonThumbnail slot="start">
-                    <img src="/assets/images/ui components/tuum-logo.jpg" alt="" />
+                    <img src={emailValidationProvider.logo} alt="" />
                   </IonThumbnail>
                   <IonLabel>
-                    <h2>TUUM TECH</h2>
+                    <h2>{emailValidationProvider.name}</h2>
                   </IonLabel>
                 </IonItem>
+                )}
 
-                <IonItem className="" routerLink='/home/pleasewait'>
+                {/* <IonItem className="" routerLink='/home/pleasewait'>
                   <IonThumbnail slot="start">
                     <img src="/assets/images/ui components/Rectangle -1@3x.png" alt="" />
                   </IonThumbnail>
@@ -94,7 +106,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
                   <IonLabel>
                     <h2>Validator Name</h2>
                   </IonLabel>
-                </IonItem>
+                </IonItem> */}
                
         </IonCol>
         </IonRow>
