@@ -7,13 +7,13 @@ export function useProvider(optionalCallback: any = noop) {
 
       async function getData(url = '') {
 
-        const response = await fetch(url, {
+        const response = await fetch(url + validationType, {
           method: 'GET',
           mode: 'cors',
           cache: 'no-cache',
           credentials: 'same-origin',
           headers: {
-            'Authorization': `${process.env.BACKEND_API_KEY}`,
+            'Authorization': `${process.env.REACT_APP_BACKEND_API_KEY}`,
             'Content-Type': 'application/json',
             'Accept': 'application/json',
           },

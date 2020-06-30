@@ -15,7 +15,7 @@ export function useRequests(optionalCallback: any = noop) {
           cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
           credentials: 'same-origin', // include, *same-origin, omit
           headers: {
-            'Authorization': `${process.env.BACKEND_API_KEY}`,
+            'Authorization': `${process.env.REACT_APP_BACKEND_API_KEY}`,
             'Content-Type': 'application/json',
             'Accept': 'application/json',
           },
