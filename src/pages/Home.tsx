@@ -15,18 +15,22 @@ import {
   IonItem,
   IonThumbnail,
   IonToast,
-  IonAlert
-
-
+  IonAlert,
+  IonRefresher,
+  IonRefresherContent
 } from '@ionic/react';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
+
 import './Home.css';
+
+import { RefresherEventDetail } from '@ionic/core';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../store'
 
 import { useRequests } from '../hooks/useRequests'
 import { getAllRequests } from '../store/requests'
+import { logout } from '../store/auth';
 
 import { useProvider } from '../hooks/useProvider'
 import { getEmailValidationProviders } from '../store/providers'
@@ -44,33 +48,34 @@ const HomePage: React.FC = ({ history }: any) => {
     const user = useSelector((state:AppState) => state.auth.user)  
     const requests = useSelector((state:AppState) => state.requests)
     const validationProviders = useSelector((state:AppState) => state.validationProviders)
-    
+
     console.log("State in home")
     console.log(requests)
 
+    const doRefresh = (event: CustomEvent<RefresherEventDetail>) => {
+      sendGetAllRequestsReq(user)
+
+      setTimeout(() => {
+        event.detail.complete();
+      }, 2000);
+    }
+
     const [sendGetAllRequestsReq] = useRequests((txn:any) => { 
-
       if(txn) {
-
         console.log("Service Invoked TSX Get Requests")
         console.log(txn)
         dispatch(getAllRequests(txn, () => goTo('/home')))
-      } else {
-        console.log("TXN is blank or not found");
-      }
-  
+      }  
      })   
-  
-    if(!requests.txn){
-      // console.log("Calling get request");
-      // const userinfo = {
-      //     "id": "did:elastos:ia7ooqJoKVQTfndxdHtcYep3XmLM1k85ta",
-      //     "email": "testing@testing.com"
-      // };
-      // sendGetAllRequestsReq(userinfo)
-      sendGetAllRequestsReq(user)
-    }
 
+    useEffect(() => {
+        if(!requests.txn){
+          sendGetAllRequestsReq(user)
+        }
+      },
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      []
+    );
 
     //Get the list of email validation providers
     const [sendGetEmailValidationProvidersReq] = useProvider((emailValidationProviders:any) => { 
@@ -103,6 +108,15 @@ const HomePage: React.FC = ({ history }: any) => {
           <IonToast color="success" position="bottom" isOpen={requests.newTxnAdded} message="Request submitted successfully" />
         </IonHeader>
         <IonContent>
+
+        <IonRefresher className="refresher" slot="fixed" onIonRefresh={doRefresh} pullFactor={0.5} pullMin={100} pullMax={200}>
+            <IonRefresherContent
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing Requests Status...">
+            </IonRefresherContent>
+        </IonRefresher>
+
           <IonToolbar className="sub-header">
     <IonTitle className="ion-text-start Iontitle-Big">Welcome, <br /> <strong> {user && user.name}</strong></IonTitle>
           </IonToolbar>
@@ -193,27 +207,6 @@ const HomePage: React.FC = ({ history }: any) => {
                 </IonItem>
 
                 )}
-
-                {/* <IonItem className="request-Item" button onClick={() => { }} >
-                  <IonThumbnail slot="start">
-                    <img src="/assets/images/ui components/icon-Email@3x.png" alt="" />
-                  </IonThumbnail>
-                  <IonLabel>
-                    <h2>Email Validation</h2>
-                    <p>{requests.txn && requests.txn.txn && requests.txn.txn[0]}</p>
-                  </IonLabel>
-                  <IonButton fill="outline" slot="end">Pending</IonButton>
-                </IonItem> */}
-                {/* <IonItem className="request-Item" button onClick={() => { }}>
-                  <IonThumbnail slot="start">
-                    <img src="/assets/images/ui components/icon-name--request.svg" alt="" />
-                  </IonThumbnail>
-                  <IonLabel>
-                    <h2>Name Validation</h2>
-                    <p>23 Minutes Ago</p>
-                  </IonLabel>
-                  <IonButton fill="outline" slot="end">Pending</IonButton>
-                </IonItem> */}
               </IonCol>
             </IonRow>
           </IonGrid>
@@ -268,11 +261,5 @@ const HomePage: React.FC = ({ history }: any) => {
       </IonPage>
     );
   }
-
-  // closeApp() {
-  //   console.log("dApp is closing!")
-  //   appManager.close();
-  // }
-// }
 
 export default HomePage;
