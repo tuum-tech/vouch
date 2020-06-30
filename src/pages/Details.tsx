@@ -19,7 +19,7 @@ const RequestsPage: React.FC = () => {
 
   let providerName = '';  
   if(requestDetails.validationType === 'email'){
-     providerName = validationProviders.emailValidationProviders.filter((provider:any) => provider.id === requestDetails.providerId)[0].name
+     providerName = validationProviders.emailValidationProviders.filter((provider:any) => provider.id === requestDetails.provider)[0].name
   }
 
   const copyText = function (elementId: any){
@@ -124,40 +124,40 @@ const RequestsPage: React.FC = () => {
               <IonLabel className="label">DID</IonLabel>
             </IonCol>            
             <IonCol size="8" className="userdid">
-              <IonTextarea rows={2} cols={12} id="userDID" readonly value={requestDetails && requestDetails.didid}>
+              <IonTextarea rows={2} cols={12} id="userDID" readonly value={requestDetails && requestDetails.did}>
               </IonTextarea>
             </IonCol>
             <IonCol size="1" style={{margin: 'auto'}}>
               <IonIcon name="copy-outline" src="/assets/images/icons/copy-outline.svg" onClick={(e:any) => copyText("userDID")} />
             </IonCol>           
             </IonListHeader> 
-            { requestDetails && requestDetails.params.name &&          
+            { requestDetails && requestDetails.requestParams.name &&          
             <IonListHeader className="fieldContainer">
               <IonCol size="3">
                 <IonLabel className="label">Name</IonLabel>
               </IonCol>
               <IonCol size="9">
-                <IonLabel className="value">{requestDetails.params.name}</IonLabel>
+                <IonLabel className="value">{requestDetails.requestParams.name}</IonLabel>
               </IonCol>
             </IonListHeader>
             }
-            { requestDetails && requestDetails.params.email &&          
+            { requestDetails && requestDetails.requestParams.email &&          
             <IonListHeader className="fieldContainer">
               <IonCol size="3">
                 <IonLabel className="label">Email</IonLabel>
               </IonCol>
               <IonCol size="9">
-                <IonLabel className="value">{requestDetails.params.email}</IonLabel>
+                <IonLabel className="value">{requestDetails.requestParams.email}</IonLabel>
               </IonCol>
             </IonListHeader>
             }
-            { requestDetails && requestDetails.params.telephone &&          
+            { requestDetails && requestDetails.requestParams.telephone &&          
             <IonListHeader className="fieldContainer">
               <IonCol size="3">
                 <IonLabel className="label">Mobile Phone</IonLabel>
               </IonCol>
               <IonCol size="9">
-                <IonLabel className="value">{requestDetails.params.telephone}</IonLabel>
+                <IonLabel className="value">{requestDetails.requestParams.telephone}</IonLabel>
               </IonCol>
             </IonListHeader>
             }                        
