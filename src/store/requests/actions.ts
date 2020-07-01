@@ -21,13 +21,6 @@ const { Storage } = Plugins;
     (async function(){
         await Storage.set({ key: 'txn', value: JSON.stringify(txn)})
 
-        // console.log("Actions email validation");
-        // console.log(txn);
-
-        // const txn2 = await Storage.get({ key: 'txn' })
-        // console.log("From storage")
-        // console.log(txn2)
-
         dispatch(emailValidationSuccess(txn));
         callback();
     })()
@@ -61,13 +54,6 @@ export const getAllRequests = (txn: any, callback: any = noop): ThunkAction<
     (async function(){
         await Storage.set({ key: 'txn', value: JSON.stringify(txn)})
 
-        // console.log("Actions email validation");
-        // console.log(txn);
-
-        // const txn2 = await Storage.get({ key: 'txn' })
-        // console.log("From storage getting all requests")
-        // console.log(txn2)
-
         dispatch(getAllRequestsSuccess(txn));
         callback();
     })()
@@ -87,8 +73,6 @@ export const txnCheckStatus = (callback: any = noop): ThunkAction<
     (async function(){
         const txn = await Storage.get({ key: 'txn' })
 
-        // console.log("Actions TXN check status");
-        // console.log(txn);
         if (txn && txn.value) {
             dispatch(emailValidationSuccess(JSON.parse(txn.value)));
             callback()

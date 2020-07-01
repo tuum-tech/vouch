@@ -16,7 +16,7 @@ export interface TxnState {
   approved_txn: any;
   rejected_txn: any;
   expired_txn: any;
-  newTxnAdded: boolean;
+  notification: any;
 }
 
 interface EmailValidationRequestAction {

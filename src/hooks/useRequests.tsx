@@ -7,7 +7,6 @@ export function useRequests(optionalCallback: any = noop) {
 
       async function getData(url = '') {
 
-        console.log("URL" + url)
         // Default options are marked with *
         const response = await fetch(url, {
           method: 'GET', // *GET, POST, PUT, DELETE, etc.
@@ -28,14 +27,9 @@ export function useRequests(optionalCallback: any = noop) {
       }
 
       if(userinfo){
-        // console.log(userinfo);
         const did = userinfo.id.split(':').pop();
-        // console.log(did);
         getData(`${process.env.REACT_APP_GET_ALL_VALIDATION_REQUESTS}` + did)
         .then(response => {
-          // console.log("API response");
-          // console.log(data); // JSON data parsed by `response.json()` call
-          //return data;
           if(response.meta.code === 200){
             optionalCallback(response.data);          
           }

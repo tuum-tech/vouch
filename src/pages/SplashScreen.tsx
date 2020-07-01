@@ -2,7 +2,6 @@ import React, { useCallback, useEffect } from 'react';
 import { IonPage, IonGrid, IonRow, IonCol, IonContent, IonImg } from '@ionic/react';
 import './SplashScreen.css';
 import { useDispatch } from 'react-redux';
-// import { AppState } from './store';
 import { authCheckStatus } from '../store/auth'
 
 const SplashScreenPage: React.FC = ({ history }: any) => {
@@ -28,7 +27,6 @@ const SplashScreenPage: React.FC = ({ history }: any) => {
   );  
 
   useEffect(() => {
-    console.log('process.env.NODE_ENV', process.env.NODE_ENV)
     document.addEventListener('deviceready', onDeviceReady, false);
 
     return () => {
@@ -47,13 +45,6 @@ const SplashScreenPage: React.FC = ({ history }: any) => {
               </div>
             </IonCol>
           </IonRow>
-          {/* <IonRow className="ion-text-center">
-            <IonCol className="ion-align-items-center">
-              <div>
-                <IonButton className="animated zoomIn delay-5s button cta" routerLink='/onboarding'></IonButton>
-              </div>
-            </IonCol>
-          </IonRow> */}
         </IonGrid>
       </IonContent>
     </IonPage>

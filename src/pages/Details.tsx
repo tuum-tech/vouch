@@ -13,9 +13,7 @@ const RequestsPage: React.FC = () => {
   const validationProviders = useSelector((state:AppState) => state.validationProviders)
   const { id } = useParams()
 
-  console.log("Request ID: " + id);
   const requestDetails = requests.txn.filter((txn: any) => txn.id === id)[0]
-  console.log(requestDetails)
 
   let providerName = '';  
   if(requestDetails.validationType === 'email'){
@@ -49,7 +47,7 @@ const RequestsPage: React.FC = () => {
 
           <IonRow 
           className={`text-center 
-          ${requestDetails.status === "Success" ? "approved-tooltip" : ""} 
+          ${requestDetails.status === "Approved" ? "approved-tooltip" : ""} 
           ${requestDetails.status === "Pending" ? "pending-tooltip" : ""}
           ${requestDetails.status === "Rejected" ? "rejected-tooltip" : ""}
           ${requestDetails.status === "Expired" ? "expired-tooltip" : ""}
@@ -57,7 +55,7 @@ const RequestsPage: React.FC = () => {
             <IonCol>
               <IonIcon src=
               {`
-                ${requestDetails.status === "Success" ? "/assets/images/icons/icon-check.svg" : ""} 
+                ${requestDetails.status === "Approved" ? "/assets/images/icons/icon-check.svg" : ""} 
                 ${requestDetails.status === "Pending" ? "/assets/images/icons/icon-wait.svg" : ""}
                 ${requestDetails.status === "Rejected" ? "/assets/images/icons/icon-rejected.svg" : ""}
                 ${requestDetails.status === "Expired" ? "/assets/images/icons/icon-expired.svg" : ""}
@@ -65,7 +63,7 @@ const RequestsPage: React.FC = () => {
               ></IonIcon>
               <IonLabel>
               {`
-                ${requestDetails.status === "Success" ? "Approved" : ""} 
+                ${requestDetails.status === "Approved" ? "Approved" : ""} 
                 ${requestDetails.status === "Pending" ? "Waiting for Approval" : ""}
                 ${requestDetails.status === "Rejected" ? "Rejected" : ""}
                 ${requestDetails.status === "Expired" ? "Expired" : ""}

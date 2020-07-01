@@ -36,19 +36,14 @@ export function useEmailValidation(optionalCallback: any = noop) {
         }
       }
 
-// console.log("Sending email validation request")
-// console.log(txn)
-
       postData(`${process.env.REACT_APP_SUBMIT_VALIDATION_REQUEST}`, txn)
         .then(response => {
-          // console.log("API response");
-          // console.log(data); // JSON data parsed by `response.json()` call
-          //return data;
-          // console.log("Reseponse")
-          // console.log(response)
-          if(response.meta.code === 200){
-            // console.log(response.data);
-            optionalCallback(response.data);          
+          if(response.meta.code === 200) {
+            if(response.data.duplicate === false){
+              optionalCallback({"data": response.data.validationtx, "message": "Request submitted successfully."});          
+            } else {
+              optionalCallback({"data": null, "message": "Previous request already in progress."});          
+            }
           }
         });
   }

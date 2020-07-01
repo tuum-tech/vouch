@@ -103,7 +103,7 @@ const HomePage: React.FC = ({ history }: any) => {
           <IonToolbar>
             <IonImg className="Navbar-Logo" src="/assets/images/ui components/empty.png"></IonImg>
           </IonToolbar>
-          <IonToast color="success" position="bottom" isOpen={requests.newTxnAdded} message="Request submitted successfully" />
+          <IonToast color={requests.notification.type} position="bottom" isOpen={requests.notification.show} message={requests.notification.message} />
         </IonHeader>
         <IonContent>
 
@@ -130,11 +130,9 @@ const HomePage: React.FC = ({ history }: any) => {
                 <IonCard onClick={e => {
                           e.preventDefault();
                           if(user && user.email){
-                            console.log("Go to email validation");
                             history.push('/home/service-invoke');
                           } else { 
                             //show alert
-                            console.log("Show email validation popup");
                             setShowAlertEmailValidation(true);
                           }
                         }}>
@@ -221,7 +219,7 @@ const HomePage: React.FC = ({ history }: any) => {
             {
               text: 'Resign In',
               handler: () => {
-                console.log('Sign him out and take him to sign in screen');
+                // 'Sign him out and take him to sign in screen'
                 dispatch(logout(() => goTo('/signin')))
               }
             },

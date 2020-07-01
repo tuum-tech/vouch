@@ -15,7 +15,11 @@ const initialState: TxnState = {
   approved_txn: null,
   rejected_txn: null,
   expired_txn: null,
-  newTxnAdded: false
+  notification: {
+    show: false,
+    message: '',
+    type: ''
+  }
 };
 
 export const txnReducer = (
@@ -27,10 +31,15 @@ export const txnReducer = (
   switch (type) {
     case EMAIL_VALIDATION_REQUEST_SUCCESS:
       {
+        state.txn = null ?? []
+        state.pending_txn = null ?? []
+
         return { ...state, 
           txn: [...state.txn, payload], 
           pending_txn: [...state.pending_txn, payload],
-          newTxnAdded: true
+          notification: {
+            show: true
+          }
         };
       }
       case SET_SELECTED_TAB_REQUESTS:
@@ -42,7 +51,7 @@ export const txnReducer = (
     case GET_ALL_REQUESTS_SUCCESS:
       {
         let pending_txn = payload.filter((txn:any) => txn.status === "Pending");
-        let approved_txn = payload.filter((txn:any) => txn.status === "Success");
+        let approved_txn = payload.filter((txn:any) => txn.status === "Approved");
         let rejected_txn = payload.filter((txn:any) => txn.status === "Rejected");
         let expired_txn = payload.filter((txn:any) => txn.status === "Expired");
 
@@ -58,11 +67,23 @@ export const txnReducer = (
       }
     case SHOW_NOTIFICATION:
       {
-        return {...state, newTxnAdded: true}
+        return {...state,           
+          notification: {
+            show: true,
+            message: payload.message,
+            type: payload.type
+          }}
       }
     case HIDE_NOTIFICATION:
       {
-        return {...state, newTxnAdded: false}
+        return {...state, 
+          notification: {
+            show: false,
+            message: '', 
+            type: ''
+          }        
+        
+        }
       }        
     default:
       return state;

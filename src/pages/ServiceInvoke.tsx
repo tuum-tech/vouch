@@ -18,32 +18,21 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
   const user = useSelector((state:AppState) => state.auth.user)
   const validationProviders = useSelector((state:AppState) => state.validationProviders)
 
-  console.log("Validation providers list");
-  console.log(validationProviders.emailValidationProviders);
-
   const [sendEmailValidationRequest] = useEmailValidation((txn:any) => { 
-    // console.log("requests");
-    // console.log(requests);
-    if(txn.id) {
-      // const txn = {
-      //   "validationType": "email",
-      //   "validatorId": "tuumtech",
-      //   "params": {
-      //     "didId": "did:elastos:1234567891",
-      //     "email": "test@test.com"
-      //   }
-      // }
-      console.log("Service Invoked TSX")
-      console.log(txn)
-      dispatch(emailValidation(txn, () => goTo('/home')))
-      dispatch(showNotification("Request submitted successfully."))
+    if(txn.data) {
+      dispatch(emailValidation(txn.data, () => goTo('/home')))
+      dispatch(showNotification({"message": txn.message, "type": "success"}))
       setTimeout(() => {
         dispatch(hideNotification())
       }, 5000)      
-    } else {
-      console.log("TXN id not found");
+    } 
+    else {
+      history.push('/home');
+      dispatch(showNotification({"message": txn.message, "type": "warning"}))
+      setTimeout(() => {
+        dispatch(hideNotification())
+      }, 5000) 
     }
-
    })
 
   const goTo = useCallback(
@@ -88,26 +77,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
                     <h2>{emailValidationProvider.name}</h2>
                   </IonLabel>
                 </IonItem>
-                )}
-
-                {/* <IonItem className="" routerLink='/home/pleasewait'>
-                  <IonThumbnail slot="start">
-                    <img src="/assets/images/ui components/Rectangle -1@3x.png" alt="" />
-                  </IonThumbnail>
-                  <IonLabel>
-                    <h2>Validator Name</h2>
-                  </IonLabel>
-                </IonItem>
-
-                <IonItem className="" button onClick={() => { }}>
-                  <IonThumbnail slot="start">
-                    <img src="/assets/images/ui components/Rectangle -2@3x.png" alt="" />
-                  </IonThumbnail>
-                  <IonLabel>
-                    <h2>Validator Name</h2>
-                  </IonLabel>
-                </IonItem> */}
-               
+                )}               
         </IonCol>
         </IonRow>
 

@@ -19,12 +19,9 @@ const RequestsPage: React.FC = () => {
   const user = useSelector((state:AppState) => state.auth.user)  
 
   const doRefresh = (event: CustomEvent<RefresherEventDetail>) => {
-    // console.log('Begin async operation');
     sendGetAllRequestsReq(user)
 
     setTimeout(() => {
-      // console.log('Async operation has ended');
-      //alert("event detail complete");
       event.detail.complete();
     }, 2000);
   }
@@ -36,8 +33,6 @@ const RequestsPage: React.FC = () => {
    })   
 
   const handleClick = function(tab_event: any) {
-    // console.log(tab_event);
-    // alert(tab_event);
     let clicked_tab = tab_event;
     if(clicked_tab === 'all'){
       dispatch(setSelectedTabRequests(requests.txn))
