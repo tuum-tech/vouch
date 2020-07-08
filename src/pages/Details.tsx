@@ -3,11 +3,16 @@ import { IonContent, IonHeader, IonPage, IonTitle,IonListHeader,IonBackButton,Io
 import './Details.css';
 import { arrowBack } from 'ionicons/icons';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../store';
 import { useParams } from 'react-router-dom';
+import { useCredSaver } from '../hooks/useCredSaver';
+import { useCredSaved } from '../hooks/useCredSaved';
+import { showNotification, hideNotification, credSaved } from '../store/requests';
 
 const RequestsPage: React.FC = () => {
+
+  const dispatch = useDispatch()
 
   const requests = useSelector((state:AppState) => state.requests)
   const validationProviders = useSelector((state:AppState) => state.validationProviders)
@@ -26,6 +31,41 @@ const RequestsPage: React.FC = () => {
     inputField.select();
     document.execCommand("copy");    
   }
+
+  const [sendCredSaveIntent] = useCredSaver((credentials:any) => { 
+      console.log(credentials)
+      console.log("Request details")
+      console.log(requestDetails)
+      const confirmation_id = requestDetails.id
+      sendCredSaved({ confirmation_id });
+   })
+
+   const [sendCredSaved] = useCredSaved((response:any) => {
+    dispatch(credSaved(response))
+    dispatch(showNotification({"message": response.message, "type": "success"}))
+    setTimeout(() => {
+      dispatch(hideNotification())
+    }, 5000)           
+   })
+
+  const handleSaveCredClick = (e: any) => {
+
+    let verifiedCredential = requestDetails.verifiedCredential
+
+    //Build request for credimport intent
+    // as found at https://developer.elastos.org/build/elastos_scheme/#request-parameters-2        
+    verifiedCredential.credentialSubject.email = requestDetails.requestParams.email
+    // verifiedCredential.proof.jws = verifiedCredential.proof.signature
+    // delete verifiedCredential.proof.signature
+    // verifiedCredential.proof.proofPurpose = "assertionMethod"
+
+    // verifiedCredential["@context"] = [
+    //   "https://www.w3.org/2018/credentials/v1",
+    //   "https://www.w3.org/2018/credentials/examples/v1"
+    // ]
+
+    sendCredSaveIntent({ verifiedCredential });
+  }  
 
   return (
     <>
@@ -162,10 +202,11 @@ const RequestsPage: React.FC = () => {
           </IonRow>
           <IonRow className="text-center">
             <IonCol>
-              <IonButton className="signOut text-center" 
-              color={requestDetails.status === "Success" ? 'success' : 'medium'}
-              disabled={requestDetails.status === "Success" ? false : true}
-              >Save Credentials</IonButton>
+              <IonButton className="btnCredentials text-center" 
+              onClick={(e) => handleSaveCredClick(e)}
+              color={requestDetails.isSavedOnProfile === true ? 'medium' : 'success'}
+              disabled={requestDetails.isSavedOnProfile === true ? true : false}
+          >{requestDetails.isSavedOnProfile === true ? 'Saved' : 'Save Credentials'}</IonButton>
             </IonCol>
           </IonRow>
         </IonGrid>

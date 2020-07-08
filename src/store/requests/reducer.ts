@@ -5,7 +5,8 @@ import {
   GET_ALL_REQUESTS_SUCCESS,
   SHOW_NOTIFICATION,
   HIDE_NOTIFICATION,
-  SET_SELECTED_TAB_REQUESTS
+  SET_SELECTED_TAB_REQUESTS,
+  CRED_SAVED_SUCCESS
 } from "./types";
 
 const initialState: TxnState = {
@@ -84,7 +85,19 @@ export const txnReducer = (
           }        
         
         }
-      }        
+      }
+      case CRED_SAVED_SUCCESS:
+        {
+          return { ...state }
+  
+          // return { ...state, 
+          //   txn: [...state.txn, payload], 
+          //   pending_txn: [...state.pending_txn, payload],
+          //   notification: {
+          //     show: true
+          //   }
+          // };
+        }              
     default:
       return state;
   }

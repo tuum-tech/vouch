@@ -4,7 +4,8 @@ import {
     TxnActionTypes,
     EMAIL_VALIDATION_REQUEST_SUCCESS,
     GET_ALL_REQUESTS_SUCCESS,
-    SET_SELECTED_TAB_REQUESTS
+    SET_SELECTED_TAB_REQUESTS,
+    CRED_SAVED_SUCCESS
 } from "./types";
   
 import { ThunkAction } from "redux-thunk";
@@ -61,6 +62,25 @@ export const getAllRequests = (txn: any, callback: any = noop): ThunkAction<
 
 export const getAllRequestsSuccess = (txn: any): TxnActionTypes => ({
     type: GET_ALL_REQUESTS_SUCCESS,
+    payload: txn
+});
+
+export const credSaved = (credentials: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    // await Storage.set({ key: 'txn', value: JSON.stringify(txn)})
+
+    dispatch(credSavedSuccess(credentials));
+    callback();
+})()
+};
+
+export const credSavedSuccess = (txn: any): TxnActionTypes => ({
+    type: CRED_SAVED_SUCCESS,
     payload: txn
 });
 

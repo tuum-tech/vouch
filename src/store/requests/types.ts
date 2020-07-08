@@ -9,6 +9,9 @@ export const HIDE_NOTIFICATION = "HIDE_NOTIFICATION";
 
 export const SET_SELECTED_TAB_REQUESTS = "SET_SELECTED_TAB_REQUESTS";
 
+export const CRED_SAVED = "CRED_SAVED";
+export const CRED_SAVED_SUCCESS = "CRED_SAVED_SUCCESS";
+
 export interface TxnState {
   txn: any;
   selected_tab_txn: any;
@@ -54,6 +57,16 @@ interface HideNotificationAction {
     payload?: any    
 }
 
+interface CredSavedAction {
+    type: typeof CRED_SAVED;
+    payload?: any
+}
+
+interface CredSavedSuccessAction {
+    type: typeof CRED_SAVED_SUCCESS;
+    payload?: any
+}  
+
 export type TxnActionTypes =
     | EmailValidationRequestAction
     | EmailValidationRequestSuccessAction
@@ -61,4 +74,6 @@ export type TxnActionTypes =
     | GetAllRequestsSuccessAction
     | SetSelectedTabRequestsAction
     | ShowNotificationAction
-    | HideNotificationAction    
+    | HideNotificationAction
+    | CredSavedAction
+    | CredSavedSuccessAction

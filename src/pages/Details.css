@@ -108,3 +108,7 @@
   color: #484848;
   opacity: 1;
 }
+
+.Details .btnCredentials {
+  width: 200px;
+}
