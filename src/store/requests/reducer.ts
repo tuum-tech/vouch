@@ -88,15 +88,16 @@ export const txnReducer = (
       }
       case CRED_SAVED_SUCCESS:
         {
-          return { ...state }
-  
-          // return { ...state, 
-          //   txn: [...state.txn, payload], 
-          //   pending_txn: [...state.pending_txn, payload],
-          //   notification: {
-          //     show: true
-          //   }
-          // };
+          return { ...state, 
+            txn: state.txn.map(
+              (t:any) => t.id === payload.data.id ? payload.data : t
+            ),
+            notification: {
+              show: true,
+              message: payload.message,
+              type: 'success'
+            }
+          };
         }              
     default:
       return state;

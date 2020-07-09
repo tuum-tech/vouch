@@ -204,8 +204,8 @@ const RequestsPage: React.FC = () => {
             <IonCol>
               <IonButton className="btnCredentials text-center" 
               onClick={(e) => handleSaveCredClick(e)}
-              color={requestDetails.isSavedOnProfile === true ? 'medium' : 'success'}
-              disabled={requestDetails.isSavedOnProfile === true ? true : false}
+              color={requestDetails.isSavedOnProfile === false && requestDetails.status === "Approved" ? 'success' : 'medium'}
+              disabled={requestDetails.isSavedOnProfile === false && requestDetails.status === "Approved" ? false : true}
           >{requestDetails.isSavedOnProfile === true ? 'Saved' : 'Save Credentials'}</IonButton>
             </IonCol>
           </IonRow>
