@@ -1,5 +1,5 @@
 {
-  "name": "vouch-dapp",
+  "name": "vouch",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
@@ -48,10 +48,11 @@
       "last 1 safari version"
     ]
   },
-  "description": "Vouch dApp",
+  "description": "Get your DID verified",
   "devDependencies": {
     "@capacitor/cli": "2.0.2",
     "@ionic/lab": "3.1.4",
+    "jscrambler": "^5.5.10",
     "react-scripts": "^3.4.1"
   }
 }

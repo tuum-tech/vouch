@@ -1,6 +1,6 @@
 {
   "appId": "tech.tuum.vouch",
-  "appName": "vouch-capsule",
+  "appName": "vouch",
   "webDir": "build",
   "npmClient": "yarn",
   "server": {
