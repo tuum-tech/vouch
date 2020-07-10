@@ -1,7 +1,6 @@
 import React from 'react';
-import { IonContent, IonHeader, IonPage, IonSegment, IonSegmentButton, IonTitle,IonGrid,IonRow,IonCol,IonLabel, IonToolbar, IonButtons, IonBackButton, IonImg, IonRefresher, IonRefresherContent } from '@ionic/react';
+import { IonContent, IonPage, IonSegment, IonSegmentButton, IonTitle,IonGrid,IonRow,IonCol,IonLabel, IonToolbar, IonRefresher, IonRefresherContent } from '@ionic/react';
 import './Requests.css';
-import { arrowBack } from 'ionicons/icons';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../store'
@@ -53,14 +52,6 @@ const RequestsPage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader className="main-header">
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton icon={arrowBack} text="" />
-          </IonButtons>
-          <IonImg className="Navbar-Logo" src="/assets/images/ui components/empty.png"></IonImg>
-        </IonToolbar>
-      </IonHeader>
       <IonContent>
 
         <IonRefresher className="refresher" slot="fixed" onIonRefresh={doRefresh} pullFactor={0.5} pullMin={100} pullMax={200}>
@@ -72,7 +63,7 @@ const RequestsPage: React.FC = () => {
         </IonRefresher>
 
       <IonToolbar className="sub-header">
-          <IonTitle className="ion-text-start">Request</IonTitle>
+          <IonTitle className="ion-text-start">Requests</IonTitle>
         </IonToolbar>
       <IonGrid className="pad-me--top thick-padding">
         <IonRow>

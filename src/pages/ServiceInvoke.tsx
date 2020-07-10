@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 
 
-import { IonContent, IonHeader,IonListHeader, IonPage, IonTitle, IonGrid, IonButtons, IonBackButton, IonRow, IonCol, IonLabel, IonThumbnail, IonItem, IonToolbar } from '@ionic/react';
+import { IonContent ,IonListHeader, IonPage, IonTitle, IonGrid, IonRow, IonCol, IonLabel, IonThumbnail, IonItem, IonToolbar, useIonViewWillEnter, useIonViewWillLeave } from '@ionic/react';
 import './ServiceInvoke.css';
 
 import { useEmailValidation } from '../hooks/useEmailValidation'
@@ -10,8 +10,41 @@ import { emailValidation, showNotification, hideNotification } from '../store/re
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../store'
 
+declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
 const ServiceInvokePage: React.FC = ({ history }: any) => {
+
+  const goTo = useCallback(
+    (path: string) => {
+      history.push(path, { direction: 'forward' });
+    },
+    [history],
+  );
+
+  let myIconListener = (menuIcon:any) => {
+    if (menuIcon.key === "back") {
+        goTo('/home')
+    }
+  };
+
+  useIonViewWillEnter(() => {    
+      titleBarManager.setIcon(1, {
+        key: "back",
+        iconPath: "back"
+      });
+
+      titleBarManager.addOnItemClickedListener(myIconListener);
+  });
+
+  useIonViewWillLeave(() => {
+    titleBarManager.removeOnItemClickedListener(myIconListener);    
+    titleBarManager.setIcon(1, {
+      key: '',
+      iconPath: ''
+    });
+  })
+
+
 
   const dispatch = useDispatch()
 
@@ -35,13 +68,6 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
     }
    })
 
-  const goTo = useCallback(
-    (path: string) => {
-      history.push(path, { direction: 'forward' });
-    },
-    [history],
-  );
-
   const handleValidationProviderClick = (e: any) => {
     let providerid = e.currentTarget.getAttribute('data-providerid');
     sendEmailValidationRequest({ user: user, providerId: providerid });
@@ -49,13 +75,6 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
 
   return (
     <IonPage>
-      <IonHeader className="main-header">
-        <IonToolbar>
-        <IonButtons slot="start">
-          <IonBackButton />
-        </IonButtons>
-        </IonToolbar>
-      </IonHeader>
       <IonContent>
       <IonToolbar className="sub-header">
           <IonTitle className="ion-text-start">Email Verification</IonTitle>
