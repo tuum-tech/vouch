@@ -19,6 +19,9 @@ __pycache__
 # idea
 .idea/
 
+# jscrambler
+.jscramblerrc
+
 capicitor.config.json
 .gradle
 android
