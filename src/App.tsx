@@ -93,6 +93,7 @@ document.addEventListener("deviceready", () => {
 
   titleBarManager.setTitle("Vouch dApp");
   titleBarManager.setBackgroundColor("#4D2CC8");
+  titleBarManager.setForegroundMode(0);
 
 }, false);
 
