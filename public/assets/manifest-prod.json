@@ -66,7 +66,7 @@
       "NetworkStatus"
     ],
     "urls": [
-      "http://vouch-restapi.us-east-1.elasticbeanstalk.com/*"
+      "https://vouch-app-restapi.tuum.tech/*"
     ],
     "background_color": "#5432D3",
     "theme_display": "show",
