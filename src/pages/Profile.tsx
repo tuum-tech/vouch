@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { IonButton, IonGrid, IonRow, IonCol, IonListHeader, IonLabel, IonHeader, IonToolbar, IonImg, IonPage, IonTitle, IonContent, IonTextarea, IonIcon } from '@ionic/react';
+import { IonButton, IonGrid, IonRow, IonCol, IonListHeader, IonLabel, IonToolbar, IonImg, IonPage, IonTitle, IonContent, IonTextarea, IonIcon } from '@ionic/react';
 import './Profile.css';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -48,19 +48,11 @@ const ProfilePage: React.FC = ({ history }: any) => {
   return (
     <>
     <IonPage className="Profile">
-      <IonHeader className="main-header">
-        <IonToolbar>
-          <IonImg className="Navbar-Logo" src="/assets/images/ui components/empty.png"></IonImg>
-        </IonToolbar>
-      </IonHeader>
       <IonContent>
         <IonToolbar className="sub-header">
           <IonTitle className="ion-text-start">My Account</IonTitle>
         </IonToolbar>
         <IonGrid className="pad-me--top thick-padding">
-
-
-
           <IonRow>
             <IonCol>
               <h2>Your DID</h2>

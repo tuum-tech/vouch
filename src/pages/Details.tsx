@@ -1,7 +1,6 @@
-import React from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle,IonListHeader,IonBackButton,IonGrid,IonRow,IonCol,IonLabel,IonToolbar, IonTextarea, IonIcon, IonImg, IonButton, IonButtons } from '@ionic/react';
+import React, { useCallback } from 'react';
+import { IonContent, IonPage, IonTitle,IonListHeader, IonGrid,IonRow,IonCol,IonLabel,IonToolbar, IonTextarea, IonIcon, IonButton, useIonViewWillEnter, useIonViewWillLeave } from '@ionic/react';
 import './Details.css';
-import { arrowBack } from 'ionicons/icons';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../store';
@@ -10,7 +9,39 @@ import { useCredSaver } from '../hooks/useCredSaver';
 import { useCredSaved } from '../hooks/useCredSaved';
 import { showNotification, hideNotification, credSaved } from '../store/requests';
 
-const RequestsPage: React.FC = () => {
+declare let titleBarManager: TitleBarPlugin.TitleBarManager;
+
+const RequestsPage: React.FC = ({ history }: any) => {
+
+  const goTo = useCallback(
+    (path: string) => {
+      history.push(path, { direction: 'forward' });
+    },
+    [history],
+  );
+
+  let myIconListener = (menuIcon:any) => {
+    if (menuIcon.key === "back") {
+        goTo('/requests')
+    }
+  };
+
+  useIonViewWillEnter(() => {    
+      titleBarManager.setIcon(1, {
+        key: "back",
+        iconPath: "back"
+      });
+
+      titleBarManager.addOnItemClickedListener(myIconListener);
+  });
+
+  useIonViewWillLeave(() => {
+    titleBarManager.removeOnItemClickedListener(myIconListener);    
+    titleBarManager.setIcon(1, {
+      key: '',
+      iconPath: ''
+    });
+  })
 
   const dispatch = useDispatch()
 
@@ -33,9 +64,6 @@ const RequestsPage: React.FC = () => {
   }
 
   const [sendCredSaveIntent] = useCredSaver((credentials:any) => { 
-      console.log(credentials)
-      console.log("Request details")
-      console.log(requestDetails)
       const confirmation_id = requestDetails.id
       sendCredSaved({ confirmation_id });
    })
@@ -70,14 +98,6 @@ const RequestsPage: React.FC = () => {
   return (
     <>
     <IonPage className="Details">
-      <IonHeader className="main-header">
-        <IonToolbar>
-        <IonButtons slot="start">
-          <IonBackButton icon={arrowBack} text="" />
-        </IonButtons>
-        <IonImg className="Navbar-Logo" src="/assets/images/ui components/empty.png"></IonImg>
-        </IonToolbar>
-      </IonHeader>
       <IonContent>
         <IonToolbar className="sub-header">
           <IonTitle className="ion-text-start">Request Details</IonTitle>
