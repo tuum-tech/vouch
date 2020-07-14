@@ -1,6 +1,6 @@
 .OnBoarding .background {
     --background: #FFF;
-    --background: url('/assets/Images/Ui components/bg-light.jpg') no-repeat left top fixed;
+    --background: url('/assets/images/UI Components/bg-light.jpg') no-repeat left top fixed;
     --background-size:cover;    
 }
 

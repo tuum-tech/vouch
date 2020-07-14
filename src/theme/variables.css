@@ -81,7 +81,7 @@ http://ionicframework.com/docs/theming/ */
 */
 /*Navbar*/
 .Navbar-Logo{
-  background:  url('/assets/images/ui components/Logo-Horizontal--White.svg') no-repeat;
+  background:  url('/assets/images/UI Components/Logo-Horizontal--White.svg') no-repeat;
   background-size:cover;
   height: 30px;
   width:156px;
@@ -127,33 +127,33 @@ ion-tab-bar {
   height:18px;
 }
 .tab-selected .icon-Home{
-  background: url('/assets/images/ui components/ti-home--selected.svg') no-repeat;
+  background: url('/assets/images/UI Components/ti-home--selected.svg') no-repeat;
   background-size:cover;
 }
 
 .icon-Home{
-  background: url('/assets/images/ui components/ti-home.svg') no-repeat;
+  background: url('/assets/images/UI Components/ti-home.svg') no-repeat;
   background-size:cover;
 
 }
 .tab-selected .icon-Requests{
-  background: url('/assets/images/ui components/ti-request--selected.svg') no-repeat;
+  background: url('/assets/images/UI Components/ti-request--selected.svg') no-repeat;
   background-size:cover;
 }
 
 .icon-Requests{
-  background: url('/assets/images/ui components/ti-request.svg') no-repeat;
+  background: url('/assets/images/UI Components/ti-request.svg') no-repeat;
   background-size:cover;
 
 }
 
 .tab-selected .icon-Profile{
-  background: url('/assets/images/ui components/ti-profile--selected.svg') no-repeat;
+  background: url('/assets/images/UI Components/ti-profile--selected.svg') no-repeat;
   background-size:cover;
 }
 
 .icon-Profile{
-  background: url('/assets/images/ui components/ti-profile.svg') no-repeat;
+  background: url('/assets/images/UI Components/ti-profile.svg') no-repeat;
   background-size:cover;
 
 }
@@ -175,7 +175,7 @@ margin-left:5px;
 margin-right:5px;
 margin-top:0px;
 margin-bottom:5px;
-background: url('/assets/images/ui components/btn-next.svg') 95% 90% no-repeat;
+background: url('/assets/images/UI Components/btn-next.svg') 95% 90% no-repeat;
 background-size: 22px;
 font-size:12px;
 color:black;

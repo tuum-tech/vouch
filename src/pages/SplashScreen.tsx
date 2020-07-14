@@ -41,7 +41,7 @@ const SplashScreenPage: React.FC = ({ history }: any) => {
           <IonRow className="ion-text-center">
             <IonCol className="ion-align-items-center">
               <div>
-                <IonImg className="animated zoomIn delay-2s logo text-center spacer" src="/assets/images/ui components/logo_vertical--white.svg" />
+                <IonImg className="animated zoomIn delay-2s logo text-center spacer" src="../assets/images/UI Components/logo_vertical--white.svg" />
               </div>
             </IonCol>
           </IonRow>
