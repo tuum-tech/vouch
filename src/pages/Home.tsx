@@ -103,11 +103,8 @@ const HomePage: React.FC = ({ history }: any) => {
 
     const relativeTime = function(request:any) {
       if (!request) return "";
-      
-      if (request.modified){
-        return moment(request.modified).fromNow()
-      }
-      return moment(request.created).fromNow()
+
+      return moment.utc(request.created).fromNow()
     }  
 
     return (

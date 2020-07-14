@@ -56,10 +56,43 @@ export const txnReducer = (
         let rejected_txn = payload.filter((txn:any) => txn.status === "Rejected");
         let expired_txn = payload.filter((txn:any) => txn.status === "Expired");
 
+        let all_txn = payload.sort((a:any, b:any) => {
+          let c:any = new Date(a.date).getTime();
+          let d:any = new Date(b.date).getTime();
+          return c > d ? 1 : -1;
+        });
+
+
+        pending_txn = pending_txn.sort((a:any, b:any) => {
+          let c:any = new Date(a.date).getTime();
+          let d:any = new Date(b.date).getTime();
+          return c > d ? 1 : -1;
+        });
+
+
+        approved_txn = approved_txn.sort((a:any, b:any) => {
+          let c:any = new Date(a.date).getTime();
+          let d:any = new Date(b.date).getTime();
+          return c > d ? 1 : -1;
+        });
+
+
+        rejected_txn = rejected_txn.sort((a:any, b:any) => {
+          let c:any = new Date(a.date).getTime();
+          let d:any = new Date(b.date).getTime();
+          return c > d ? 1 : -1;
+        });
+        
+        expired_txn = expired_txn.sort((a:any, b:any) => {
+          let c:any = new Date(a.date).getTime();
+          let d:any = new Date(b.date).getTime();
+          return c > d ? 1 : -1;
+        });        
+
         return { 
           ...state, 
-          txn: payload,
-          selected_tab_txn: payload, 
+          txn: all_txn,
+          selected_tab_txn: all_txn, 
           pending_txn: pending_txn, 
           approved_txn: approved_txn,
           rejected_txn: rejected_txn,
