@@ -3,9 +3,11 @@ import { IonPage, IonGrid, IonRow, IonCol, IonContent, IonImg } from '@ionic/rea
 import './SplashScreen.css';
 import { useDispatch } from 'react-redux';
 import { authCheckStatus } from '../store/auth'
+import { Plugins } from '@capacitor/core';
 
 const SplashScreenPage: React.FC = ({ history }: any) => {
 
+  const { Storage } = Plugins;
   const dispatch = useDispatch()
 
   const goTo = useCallback(
@@ -17,14 +19,30 @@ const SplashScreenPage: React.FC = ({ history }: any) => {
     [history],
   );
   
-  const onDeviceReady = useCallback(
-    () => {
-      setTimeout(() => {
-        dispatch(authCheckStatus(() => goTo('/home'), () => goTo('/onboarding')))
-      }, 3000)      
+  const onDeviceReady = useCallback(     
+    async () => {
+      const hasOnboarded = await Storage.get({ key: 'onboarded' })
+        setTimeout(async () => {
+          if(!hasOnboarded.value){
+            await Storage.set({ key: 'onboarded', value: 'true'})        
+            goTo('/onboarding')  
+          } else {
+            dispatch(authCheckStatus(() => goTo('/home')))
+          }
+        }, 3000)      
     },
-    [dispatch, goTo],
-  );  
+    [Storage, dispatch, goTo],
+  );
+
+
+  // const onDeviceReady = useCallback(
+  //   () => {
+  //     setTimeout(() => {
+  //       dispatch(authCheckStatus(() => goTo('/home'), () => goTo('/onboarding')))
+  //     }, 3000)      
+  //   },
+  //   [dispatch, goTo],
+  // );  
 
   useEffect(() => {
     document.addEventListener('deviceready', onDeviceReady, false);

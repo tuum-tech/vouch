@@ -60,7 +60,11 @@ const RequestsPage: React.FC = ({ history }: any) => {
     let copyText:any = document.querySelector("#" + elementId);
     let inputField = copyText.getElementsByTagName("textarea")[0];
     inputField.select();
-    document.execCommand("copy");    
+    document.execCommand("copy");   
+    dispatch(showNotification({"message": "Copied to clipboard", "type": "primary", "show": true})) 
+    setTimeout(() => {
+      dispatch(hideNotification())
+    }, 3000)           
   }
 
   const [sendCredSaveIntent] = useCredSaver((credentials:any) => { 
@@ -73,7 +77,7 @@ const RequestsPage: React.FC = ({ history }: any) => {
     dispatch(showNotification({"message": response.message, "type": "success"}))
     setTimeout(() => {
       dispatch(hideNotification())
-    }, 5000)           
+    }, 3000)           
    })
 
   const handleSaveCredClick = (e: any) => {
