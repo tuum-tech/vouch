@@ -12,7 +12,7 @@ const RequestBlocks = (props: any) => {
           <IonCol className="Providers-List">
           <IonItem routerLink={`/requests/details/${txn.id}`}>
                     <IonThumbnail slot="start">
-                      <img src="/assets/images/ui components/icon-Email--request.svg" alt="" />
+                      <img src="../assets/images/UI Components/icon-Email--request.svg" alt="" />
                     </IonThumbnail>
                     <IonLabel>
                       <h2>Email Validation</h2>

@@ -18,7 +18,7 @@ const PleaseWaitPage: React.FC = () => {
       <IonGrid className="pad-me--top">
         <IonRow>
         <IonCol className="Providers-List">
-        <IonImg className="loader text-center" src="/assets/images/ui components/loading.gif"></IonImg>
+        <IonImg className="loader text-center" src="../assets/images/UI Components/loading.gif"></IonImg>
         <IonListHeader>
           
                   <IonLabel className="List-Header">Please Wait… <br></br>

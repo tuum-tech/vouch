@@ -101,7 +101,7 @@ const HomePage: React.FC = ({ history }: any) => {
       <IonPage>
         <IonHeader className="main-header">
           <IonToolbar>
-            <IonImg className="Navbar-Logo" src="/assets/images/ui components/empty.png"></IonImg>
+            <IonImg className="Navbar-Logo" src="../assets/images/UI Components/empty.png"></IonImg>
           </IonToolbar>
           <IonToast color={requests.notification.type} position="bottom" isOpen={requests.notification.show} message={requests.notification.message} />
         </IonHeader>
@@ -139,8 +139,8 @@ const HomePage: React.FC = ({ history }: any) => {
                   <IonCardContent>
                     <IonRow>
                       <IonCol>
-                        {/* <IonImg src={user && user.email ? "/assets/images/ui components/icon-Email.svg" : "/assets/images/ui components/icon-Email--Disabled.svg"}></IonImg> */}
-                        <IonImg src="/assets/images/ui components/icon-Email.svg"></IonImg>
+                        {/* <IonImg src={user && user.email ? "../assets/images/UI Components/icon-Email.svg" : "../assets/images/UI Components/icon-Email--Disabled.svg"}></IonImg> */}
+                        <IonImg src="../assets/images/UI Components/icon-Email.svg"></IonImg>
                       </IonCol>
                       <IonCol>
                         Email <br />  Validation 
@@ -156,8 +156,8 @@ const HomePage: React.FC = ({ history }: any) => {
                   <IonCardContent>
                     <IonRow>
                       <IonCol>
-                        {/* <IonImg src={user && user.telephone ? "/assets/images/ui components/icon-Phone.svg" : "/assets/images/ui components/icon-Phone--Disabled.svg"}></IonImg>                         */}
-                        <IonImg src="/assets/images/ui components/icon-Phone.svg"></IonImg>
+                        {/* <IonImg src={user && user.telephone ? "../assets/images/UI Components/icon-Phone.svg" : "../assets/images/UI Components/icon-Phone--Disabled.svg"}></IonImg>                         */}
+                        <IonImg src="../assets/images/UI Components/icon-Phone.svg"></IonImg>
                       </IonCol>
                       <IonCol>
                         Phone <br />  Validation
@@ -170,8 +170,8 @@ const HomePage: React.FC = ({ history }: any) => {
                   <IonCardContent>
                     <IonRow>
                       <IonCol>
-                        {/* <IonImg src={user && user.name ? "/assets/images/ui components/icon-name.svg" : "/assets/images/ui components/icon-name--Disabled.svg"}></IonImg> */}
-                        <IonImg src="/assets/images/ui components/icon-name.svg"></IonImg>
+                        {/* <IonImg src={user && user.name ? "../assets/images/UI Components/icon-name.svg" : "../assets/images/UI Components/icon-name--Disabled.svg"}></IonImg> */}
+                        <IonImg src="../assets/images/UI Components/icon-name.svg"></IonImg>
                       </IonCol>
                       <IonCol>
                         Name <br />  Validation
@@ -193,7 +193,7 @@ const HomePage: React.FC = ({ history }: any) => {
                 {requests.pending_txn && requests.pending_txn.map((txn: any) => 
                   <IonItem className="request-Item" routerLink={`/requests/details/${txn.id}`} key={txn.id} >
                   <IonThumbnail slot="start">
-                    <img src="/assets/images/ui components/icon-Email--request.svg" alt="" />
+                    <img src="../assets/images/UI Components/icon-Email--request.svg" alt="" />
                   </IonThumbnail>
                   <IonLabel>
                     <h2>Email Validation</h2>
