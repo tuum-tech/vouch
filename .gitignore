@@ -21,6 +21,7 @@ __pycache__
 
 # jscrambler
 .jscramblerrc
+appdid
 
 capicitor.config.json
 .gradle
