@@ -1,8 +1,19 @@
 import React from 'react';
 import { IonRow,IonCol,IonLabel, IonThumbnail,IonButton, IonItem } from '@ionic/react';
 import './Requests.css';
+import moment from 'moment'
 
 const RequestBlocks = (props: any) => {
+
+  const relativeTime = function(request:any) {
+    if (!request) return "";
+    
+    if (request.modified){
+       return moment(request.modified).fromNow()
+    }
+    return moment(request.created).fromNow()
+  }    
+
   const requests_txn = props.requests
   return (
         <>
@@ -16,9 +27,10 @@ const RequestBlocks = (props: any) => {
                     </IonThumbnail>
                     <IonLabel>
                       <h2>Email Validation</h2>
-                      <p>{txn.createdIn}</p>
+                      <p>{relativeTime(txn)}</p>
                     </IonLabel>
-                    <IonButton fill="outline" slot="end">{txn.status}</IonButton>
+                    <IonButton shape="round" color={`${txn.status === "Approved" ? "success" : ""}${txn.status === "Pending" ? "light" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}`} 
+                    slot="end">{txn.status}</IonButton>
                   </IonItem>
           </IonCol>
           </IonRow>

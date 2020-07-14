@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../store'
 import { useDID } from '../hooks/useDID';
 import { login } from '../store/auth';
+import { showNotification, hideNotification } from '../store/requests';
 
 declare global{
   interface Window {
@@ -43,6 +44,10 @@ const ProfilePage: React.FC = ({ history }: any) => {
     let inputField = copyText.getElementsByTagName("textarea")[0];
     inputField.select();
     document.execCommand("copy");    
+    dispatch(showNotification({"message": "Copied to clipboard", "type": "primary", "show": true})) 
+    setTimeout(() => {
+      dispatch(hideNotification())
+    }, 3000)           
   }
 
   return (

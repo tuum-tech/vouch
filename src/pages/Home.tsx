@@ -20,6 +20,7 @@ import {
   IonRefresherContent
 } from '@ionic/react';
 import React, { useCallback, useState, useEffect } from 'react';
+import moment from 'moment'
 
 import './Home.css';
 
@@ -33,7 +34,8 @@ import { getAllRequests } from '../store/requests'
 import { useProvider } from '../hooks/useProvider'
 import { getEmailValidationProviders } from '../store/providers'
 
-import { logout } from '../store/auth'
+import { useDID } from '../hooks/useDID';
+import { login, logout } from '../store/auth';
 
 const HomePage: React.FC = ({ history }: any) => {
 
@@ -44,11 +46,10 @@ const HomePage: React.FC = ({ history }: any) => {
     const dispatch = useDispatch()
   
     const user = useSelector((state:AppState) => state.auth.user)  
-    const requests = useSelector((state:AppState) => state.requests)
+    const all_requests = useSelector((state:AppState) => state.requests.txn)
+    const pending_requests = useSelector((state:AppState) => state.requests.pending_txn)
+    const notification = useSelector((state:AppState) => state.requests.notification)
     const validationProviders = useSelector((state:AppState) => state.validationProviders)
-
-    console.log("State in home")
-    console.log(requests)
 
     const doRefresh = (event: CustomEvent<RefresherEventDetail>) => {
       sendGetAllRequestsReq(user)
@@ -60,20 +61,22 @@ const HomePage: React.FC = ({ history }: any) => {
 
     const [sendGetAllRequestsReq] = useRequests((txn:any) => { 
       if(txn) {
-        console.log("Service Invoked TSX Get Requests")
-        console.log(txn)
         dispatch(getAllRequests(txn, () => goTo('/home')))
       }  
      })   
 
-    useEffect(() => {
-        if(!requests.txn){
-          sendGetAllRequestsReq(user)
-        }
-      },
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      []
-    );
+     useEffect(() => {
+      if(!all_requests){
+        sendGetAllRequestsReq(user)
+      } 
+
+      if(!validationProviders.emailValidationProviders){
+        sendGetEmailValidationProvidersReq('email')
+      }
+     },
+     // eslint-disable-next-line react-hooks/exhaustive-deps
+     []
+   );
 
     //Get the list of email validation providers
     const [sendGetEmailValidationProvidersReq] = useProvider((emailValidationProviders:any) => { 
@@ -82,20 +85,30 @@ const HomePage: React.FC = ({ history }: any) => {
       }  
     })   
   
-    if(!validationProviders.emailValidationProviders){
-      sendGetEmailValidationProvidersReq('email')
-    }
+    const goTo = useCallback(
+      (path: string) => {
+        history.push(path, { direction: 'forward' });
+      },
+      [history],
+    );
 
+    const [signIn] = useDID((credentials:any) => {
+      console.log(credentials) 
+      if(credentials.length) {
+        const credSubjects = credentials.map((cred:any) => cred.credentialSubject)
+        const user = Object.assign({}, ...credSubjects)
+        dispatch(login(user, () => goTo('/home')))
+      }
+    })
 
-
-
-
-  const goTo = useCallback(
-    (path: string) => {
-      history.push(path, { direction: 'forward' });
-    },
-    [history],
-  );
+    const relativeTime = function(request:any) {
+      if (!request) return "";
+      
+      if (request.modified){
+        return moment(request.modified).fromNow()
+      }
+      return moment(request.created).fromNow()
+    }  
 
     return (
       <IonPage>
@@ -103,7 +116,7 @@ const HomePage: React.FC = ({ history }: any) => {
           <IonToolbar>
             <IonImg className="Navbar-Logo" src="/assets/images/ui components/empty.png"></IonImg>
           </IonToolbar>
-          <IonToast color={requests.notification.type} position="bottom" isOpen={requests.notification.show} message={requests.notification.message} />
+          <IonToast color={notification.type} position="bottom" isOpen={notification.show} message={notification.message} />
         </IonHeader>
         <IonContent>
 
@@ -190,16 +203,17 @@ const HomePage: React.FC = ({ history }: any) => {
               </IonCol>
               <IonCol>
                 {/* Items Active */}
-                {requests.pending_txn && requests.pending_txn.map((txn: any) => 
+                {pending_requests && pending_requests.map((txn: any) => 
                   <IonItem className="request-Item" routerLink={`/requests/details/${txn.id}`} key={txn.id} >
                   <IonThumbnail slot="start">
                     <img src="/assets/images/ui components/icon-Email--request.svg" alt="" />
                   </IonThumbnail>
                   <IonLabel>
                     <h2>Email Validation</h2>
-                    <p>{txn.createdIn}</p>
+                    <p>{relativeTime(txn)}</p>
                   </IonLabel>
-                <IonButton fill="outline" slot="end">{txn.status}</IonButton>
+                  <IonButton shape="round" color={`${txn.status === "Approved" ? "success" : ""}${txn.status === "Pending" ? "light" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}`} 
+                    slot="end">{txn.status}</IonButton>                  
                 </IonItem>
 
                 )}
@@ -214,13 +228,13 @@ const HomePage: React.FC = ({ history }: any) => {
           cssClass='service-popup-alert'
           header={'Could not read the Email'}
           subHeader={'Please provide access to read Email'}
-          message={'In order to proceed with Email validation, Please resign and provide permission to access your email address.'}
+          message={'In order to proceed with Email validation, Please set the visibility of your email address to Public.'}
           buttons={[
             {
               text: 'Resign In',
               handler: () => {
                 // 'Sign him out and take him to sign in screen'
-                dispatch(logout(() => goTo('/signin')))
+                dispatch(logout(() => signIn({ name: false, email: false, telephone: false })))                
               }
             },
             {

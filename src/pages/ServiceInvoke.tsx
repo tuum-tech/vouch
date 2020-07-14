@@ -24,14 +24,14 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
       dispatch(showNotification({"message": txn.message, "type": "success"}))
       setTimeout(() => {
         dispatch(hideNotification())
-      }, 5000)      
+      }, 3000)      
     } 
     else {
       history.push('/home');
       dispatch(showNotification({"message": txn.message, "type": "warning"}))
       setTimeout(() => {
         dispatch(hideNotification())
-      }, 5000) 
+      }, 3000) 
     }
    })
 

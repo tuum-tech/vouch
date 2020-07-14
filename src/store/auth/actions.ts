@@ -56,7 +56,6 @@ export const authCheckStatus = (callback: any = noop, callback2: any = noop): Th
         const user = await Storage.get({ key: 'user' })
 
         if (user && user.value) {
-            // TOOD is user credential expired ?
             dispatch(loginSuccess(JSON.parse(user.value)));
             callback()
           } else {
