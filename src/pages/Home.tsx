@@ -101,11 +101,11 @@ const HomePage: React.FC = ({ history }: any) => {
       }
     })
 
-    const relativeTime = function(request:any) {
-      if (!request) return "";
-
-      return moment.utc(request.created).fromNow()
-    }  
+    const relativeTime = function(datetime:any) {
+      if (!datetime) return "";
+  
+      return moment.utc(datetime).fromNow()
+    }
 
     return (
       <IonPage>
@@ -207,7 +207,7 @@ const HomePage: React.FC = ({ history }: any) => {
                   </IonThumbnail>
                   <IonLabel>
                     <h2>Email Validation</h2>
-                    <p>{relativeTime(txn)}</p>
+                    <p>{relativeTime(txn.created)}</p>
                   </IonLabel>
                   <IonButton shape="round" color={`${txn.status === "Approved" ? "success" : ""}${txn.status === "Pending" ? "light" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}`} 
                     slot="end">{txn.status}</IonButton>                  

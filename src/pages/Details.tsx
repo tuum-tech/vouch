@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import { useCredSaver } from '../hooks/useCredSaver';
 import { useCredSaved } from '../hooks/useCredSaved';
 import { showNotification, hideNotification, credSaved } from '../store/requests';
+import moment from 'moment'
 
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
@@ -66,6 +67,13 @@ const RequestsPage: React.FC = ({ history }: any) => {
       dispatch(hideNotification())
     }, 3000)           
   }
+
+  const formatTime = function(datetime:any) {
+    if (!datetime) return "";
+
+    return moment.utc(datetime).format('MMMM DD YYYY')    
+  }   
+
 
   const [sendCredSaveIntent] = useCredSaver((credentials:any) => { 
       const confirmation_id = requestDetails.id
@@ -138,49 +146,69 @@ const RequestsPage: React.FC = ({ history }: any) => {
 
 
           <IonRow>
-            { requestDetails && requestDetails.id &&           
-            <IonListHeader className="fieldContainer">
+          <h2>Request</h2>
+          { requestDetails && requestDetails.validationType &&           
+            <IonListHeader className="fieldContainer fieldContainer2">
               <IonCol size="4">
-                <IonLabel className="label">Request ID</IonLabel>
+                <IonLabel className="label">Validation Type</IonLabel>
               </IonCol>
               <IonCol size="8">
-                <IonLabel className="value">{requestDetails.id}</IonLabel>
-              </IonCol>
-            </IonListHeader>
-            }            
-            { requestDetails && requestDetails.validationType &&           
-            <IonListHeader className="fieldContainer">
-              <IonCol size="4">
-                <IonLabel className="label">Validation Service</IonLabel>
-              </IonCol>
-              <IonCol size="8">
-                <IonLabel className="value">{requestDetails.validationType.charAt(0).toUpperCase()}{requestDetails.validationType.slice(1)} Validation</IonLabel>
+                <IonLabel className="value">{requestDetails.validationType.charAt(0).toUpperCase()}{requestDetails.validationType.slice(1)}</IonLabel>
               </IonCol>
             </IonListHeader>
             }
-            { requestDetails && requestDetails.providerId &&           
+            { requestDetails && requestDetails.verifiedCredential.issuanceDate &&           
+            <IonListHeader className="fieldContainer fieldContainer2">
+              <IonCol size="4">
+                <IonLabel className="label">Issuance Date</IonLabel>
+              </IonCol>  
+              <IonCol size="8">
+                <IonLabel className="value">{formatTime(requestDetails.verifiedCredential.issuanceDate)}</IonLabel>
+              </IonCol>
+            </IonListHeader>
+            }
+            { requestDetails && requestDetails.verifiedCredential.expirationDate &&           
             <IonListHeader className="fieldContainer">
               <IonCol size="4">
-                <IonLabel className="label">Validator</IonLabel>
+                <IonLabel className="label">Expiration Date</IonLabel>
+              </IonCol>  
+              <IonCol size="8">
+                <IonLabel className="value">{formatTime(requestDetails.verifiedCredential.expirationDate)}</IonLabel>
+              </IonCol>
+            </IonListHeader>
+            }
+          </IonRow>
+
+          <IonRow>
+          <h2>Validator</h2>
+          { requestDetails && requestDetails.provider &&           
+            <IonListHeader className="fieldContainer fieldContainer2">
+              <IonCol size="4">
+                <IonLabel className="label">Name</IonLabel>
               </IonCol>                
               <IonCol size="8">
                 <IonLabel className="value">{providerName}</IonLabel>
               </IonCol>                
             </IonListHeader>
             }
-            { requestDetails && requestDetails.lastUpdate &&           
+            { requestDetails && requestDetails.verifiedCredential.issuer &&           
             <IonListHeader className="fieldContainer">
-              <IonCol size="4">
-                <IonLabel className="label">Last Updated</IonLabel>
-              </IonCol>  
-              <IonCol size="8">
-                <IonLabel className="value">{requestDetails.lastUpdate}</IonLabel>
-              </IonCol>
-            </IonListHeader>
-            }
+            <IonCol size="3">
+              <IonLabel className="label">DID</IonLabel>
+            </IonCol>            
+            <IonCol size="8" className="validatordid">
+              <IonTextarea rows={2} cols={12} id="validatorDID" readonly value={requestDetails && requestDetails.verifiedCredential.issuer}>
+              </IonTextarea>
+            </IonCol>
+            <IonCol size="1" style={{margin: 'auto'}}>
+              <IonIcon name="copy-outline" src="/assets/images/icons/copy-outline.svg" onClick={(e:any) => copyText("validatorDID")} />
+            </IonCol>           
+            </IonListHeader> 
+            }           
             </IonRow>
 
             <IonRow>
+            <h2>Your Credentials</h2>
             <IonListHeader className="fieldContainer fieldContainer2">
             <IonCol size="3">
               <IonLabel className="label">DID</IonLabel>
