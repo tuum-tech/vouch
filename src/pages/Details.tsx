@@ -71,7 +71,7 @@ const RequestsPage: React.FC = ({ history }: any) => {
   const formatTime = function(datetime:any) {
     if (!datetime) return "";
 
-    return moment.utc(datetime).format('MMMM DD YYYY')    
+    return moment.utc(datetime).format('MMMM Do YYYY, h:mm:ss a')    
   }   
 
 
