@@ -101,17 +101,17 @@ const HomePage: React.FC = ({ history }: any) => {
       }
     })
 
-    const relativeTime = function(request:any) {
-      if (!request) return "";
-
-      return moment.utc(request.created).fromNow()
-    }  
+    const relativeTime = function(datetime:any) {
+      if (!datetime) return "";
+  
+      return moment.utc(datetime).fromNow()
+    }
 
     return (
       <IonPage>
         <IonHeader className="main-header">
           <IonToolbar>
-            <IonImg className="Navbar-Logo" src="../assets/images/UI Components/empty.png"></IonImg>
+            <IonImg className="Navbar-Logo" src="../assets/images/components/empty.png"></IonImg>
           </IonToolbar>
           <IonToast color={notification.type} position="bottom" isOpen={notification.show} message={notification.message} />
         </IonHeader>
@@ -149,8 +149,8 @@ const HomePage: React.FC = ({ history }: any) => {
                   <IonCardContent>
                     <IonRow>
                       <IonCol>
-                        {/* <IonImg src={user && user.email ? "../assets/images/UI Components/icon-Email.svg" : "../assets/images/UI Components/icon-Email--Disabled.svg"}></IonImg> */}
-                        <IonImg src="../assets/images/UI Components/icon-Email.svg"></IonImg>
+                        {/* <IonImg src={user && user.email ? "../assets/images/components/icon-email.svg" : "../assets/images/components/icon-email--disabled.svg"}></IonImg> */}
+                        <IonImg src="../assets/images/components/icon-email.svg"></IonImg>
                       </IonCol>
                       <IonCol>
                         Email <br />  Validation 
@@ -166,8 +166,8 @@ const HomePage: React.FC = ({ history }: any) => {
                   <IonCardContent>
                     <IonRow>
                       <IonCol>
-                        {/* <IonImg src={user && user.telephone ? "../assets/images/UI Components/icon-Phone.svg" : "../assets/images/UI Components/icon-Phone--Disabled.svg"}></IonImg>                         */}
-                        <IonImg src="../assets/images/UI Components/icon-Phone.svg"></IonImg>
+                        {/* <IonImg src={user && user.telephone ? "../assets/images/components/icon-phone.svg" : "../assets/images/components/icon-phone--disabled.svg"}></IonImg>                         */}
+                        <IonImg src="../assets/images/components/icon-phone.svg"></IonImg>
                       </IonCol>
                       <IonCol>
                         Phone <br />  Validation
@@ -180,8 +180,8 @@ const HomePage: React.FC = ({ history }: any) => {
                   <IonCardContent>
                     <IonRow>
                       <IonCol>
-                        {/* <IonImg src={user && user.name ? "../assets/images/UI Components/icon-name.svg" : "../assets/images/UI Components/icon-name--Disabled.svg"}></IonImg> */}
-                        <IonImg src="../assets/images/UI Components/icon-name.svg"></IonImg>
+                        {/* <IonImg src={user && user.name ? "../assets/images/components/icon-name.svg" : "../assets/images/components/icon-name--disabled.svg"}></IonImg> */}
+                        <IonImg src="../assets/images/components/icon-name.svg"></IonImg>
                       </IonCol>
                       <IonCol>
                         Name <br />  Validation
@@ -203,11 +203,11 @@ const HomePage: React.FC = ({ history }: any) => {
                 {pending_requests && pending_requests.map((txn: any) => 
                   <IonItem className="request-Item" routerLink={`/requests/details/${txn.id}`} key={txn.id} >
                   <IonThumbnail slot="start">
-                    <img src="../assets/images/UI Components/icon-Email--request.svg" alt="" />
+                    <img src="../assets/images/components/icon-email--request.svg" alt="" />
                   </IonThumbnail>
                   <IonLabel>
                     <h2>Email Validation</h2>
-                    <p>{relativeTime(txn)}</p>
+                    <p>{relativeTime(txn.created)}</p>
                   </IonLabel>
                   <IonButton shape="round" color={`${txn.status === "Approved" ? "success" : ""}${txn.status === "Pending" ? "light" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}`} 
                     slot="end">{txn.status}</IonButton>                  

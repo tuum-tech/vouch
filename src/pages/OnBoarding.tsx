@@ -37,7 +37,7 @@ const OnBoardingPage: React.FC = ({ history }: any) => {
         <IonRow>
           <IonCol>
             <div className="">
-              <IonImg className="logo2 ion-text-center text-center" src="../assets/images/UI Components/logo-horizontal--black.svg" />
+              <IonImg className="logo2 ion-text-center text-center" src="../assets/images/components/logo-horizontal--black.svg" />
             </div>
           </IonCol>
         </IonRow>
@@ -49,7 +49,7 @@ const OnBoardingPage: React.FC = ({ history }: any) => {
         <IonRow>
           <IonCol>
             <div  className="ion-text-center">
-              <IonImg className="graphics-01 text-center" src="../assets/images/UI Components/graphics-01.svg" />
+              <IonImg className="graphics-01 text-center" src="../assets/images/components/graphics-01.svg" />
             </div>
           </IonCol>
         </IonRow>  

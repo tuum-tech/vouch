@@ -60,7 +60,7 @@ const SignInPage: React.FC = ({ history }: any) => {
         <IonRow>
           <IonCol>
             <div className="">
-              <IonImg className="logo2 ion-text-center text-center" src="../assets/images/UI Components/logo-horizontal--black.svg" />
+              <IonImg className="logo2 ion-text-center text-center" src="../assets/images/components/logo-horizontal--black.svg" />
             </div>
           </IonCol>
         </IonRow>
@@ -82,7 +82,7 @@ const SignInPage: React.FC = ({ history }: any) => {
           <IonCol className="ion-align-items-center">
             <div>
               <IonButton className="button cta" onClick={() => { signIn({ name: false, email: false, telephone: false })}}>
-                <IonImg src="../assets/images/UI Components/did-icon.svg" className="did-icon"></IonImg>
+                <IonImg src="../assets/images/components/did-icon.svg" className="did-icon"></IonImg>
                  Sign in with DID</IonButton>
             </div>
           </IonCol>

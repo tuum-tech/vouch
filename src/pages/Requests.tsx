@@ -65,7 +65,7 @@ const RequestsPage: React.FC = () => {
       <IonToolbar className="sub-header">
           <IonTitle className="ion-text-start">Requests</IonTitle>
         </IonToolbar>
-      <IonGrid className="pad-me--top thick-padding">
+      <IonGrid className="pad-me--top">
         <IonRow>
           <IonCol>
           {/* <IonSegment scrollable onIonChange={e => console.log('Segment selected', e.detail.value)} value="all"> */}
