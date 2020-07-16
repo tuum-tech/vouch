@@ -20,13 +20,13 @@ const RequestBlocks = (props: any) => {
           <IonCol className="Providers-List">
           <IonItem routerLink={`/requests/details/${txn.id}`}>
                     <IonThumbnail slot="start">
-                      <img src="../assets/images/UI Components/icon-Email--request.svg" alt="" />
+                      <img src="../assets/images/components/icon-email--request.svg" alt="" />
                     </IonThumbnail>
                     <IonLabel>
                       <h2>Email Validation</h2>
                       <p>{relativeTime(txn.created)}</p>
                     </IonLabel>
-                    <IonButton shape="round" color={`${txn.status === "Approved" ? "success" : ""}${txn.status === "Pending" ? "light" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}`} 
+                    <IonButton shape="round" style={{margin: 0}} color={`${txn.status === "Approved" ? "success" : ""}${txn.status === "Pending" ? "light" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}`} 
                     slot="end">{txn.status}</IonButton>
                   </IonItem>
           </IonCol>
@@ -35,7 +35,7 @@ const RequestBlocks = (props: any) => {
         
         <IonRow>
         <IonCol className="Providers-List">
-          <p>No requests made so far.</p>
+          <p>No request made so far.</p>
         </IonCol>
       </IonRow>
       }

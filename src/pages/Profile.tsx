@@ -101,7 +101,7 @@ const ProfilePage: React.FC = ({ history }: any) => {
           <IonRow className="text-center">
             <IonCol>
               <IonButton className="signOut text-center" color="light" onClick={() => signIn({ name: false, email: false, telephone: false })}>              
-                <IonImg className="sign-out-button" src="../assets/images/UI Components/icon-Sign-out.svg" ></IonImg> Refresh Credentials
+                <IonImg className="sign-out-button" src="../assets/images/components/icon-sign-out.svg" ></IonImg> Refresh Credentials
               </IonButton>
             </IonCol>
           </IonRow>

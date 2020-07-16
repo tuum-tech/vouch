@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { IonContent, IonPage, IonTitle,IonListHeader, IonGrid,IonRow,IonCol,IonLabel,IonToolbar, IonTextarea, IonIcon, IonButton, useIonViewWillEnter, useIonViewWillLeave } from '@ionic/react';
+import { IonContent, IonPage, IonTitle,IonListHeader, IonGrid,IonRow,IonCol,IonLabel,IonToolbar, IonTextarea, IonIcon, IonButton, useIonViewWillEnter, useIonViewWillLeave, IonImg } from '@ionic/react';
 import './Details.css';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -52,9 +52,9 @@ const RequestsPage: React.FC = ({ history }: any) => {
 
   const requestDetails = requests.txn.filter((txn: any) => txn.id === id)[0]
 
-  let providerName = '';  
+  let provider = {'name': '', 'logo': ''};  
   if(requestDetails.validationType === 'email'){
-     providerName = validationProviders.emailValidationProviders.filter((provider:any) => provider.id === requestDetails.provider)[0].name
+     provider = validationProviders.emailValidationProviders.filter((provider:any) => provider.id === requestDetails.provider)[0]
   }
 
   const copyText = function (elementId: any){
@@ -152,8 +152,13 @@ const RequestsPage: React.FC = ({ history }: any) => {
               <IonCol size="4">
                 <IonLabel className="label">Validation Type</IonLabel>
               </IonCol>
-              <IonCol size="8">
-                <IonLabel className="value">{requestDetails.validationType.charAt(0).toUpperCase()}{requestDetails.validationType.slice(1)}</IonLabel>
+              <IonCol size="8" className='ion-text-right'>
+                  <IonImg src={`
+                    ${requestDetails.validationType === "email" ? "../assets/images/components/icon-email.svg" : ""}
+                    ${requestDetails.validationType === "phone" ? "../assets/images/components/icon-phone.svg" : ""}
+                    ${requestDetails.validationType === "name" ? "../assets/images/components/icon-name.svg" : ""}
+                  `} style={{height: '32px', width: '32px', display: 'inline-block', verticalAlign: 'bottom'}}  /> 
+                  <IonLabel className="value" style={{verticalAlign: 'super'}}>{requestDetails.validationType.charAt(0).toUpperCase()}{requestDetails.validationType.slice(1)}</IonLabel>
               </IonCol>
             </IonListHeader>
             }
@@ -162,7 +167,7 @@ const RequestsPage: React.FC = ({ history }: any) => {
               <IonCol size="4">
                 <IonLabel className="label">Issuance Date</IonLabel>
               </IonCol>  
-              <IonCol size="8">
+              <IonCol size="8" className="ion-text-right">
                 <IonLabel className="value">{formatTime(requestDetails.verifiedCredential.issuanceDate)}</IonLabel>
               </IonCol>
             </IonListHeader>
@@ -172,7 +177,7 @@ const RequestsPage: React.FC = ({ history }: any) => {
               <IonCol size="4">
                 <IonLabel className="label">Expiration Date</IonLabel>
               </IonCol>  
-              <IonCol size="8">
+              <IonCol size="8" className="ion-text-right">
                 <IonLabel className="value">{formatTime(requestDetails.verifiedCredential.expirationDate)}</IonLabel>
               </IonCol>
             </IonListHeader>
@@ -186,9 +191,10 @@ const RequestsPage: React.FC = ({ history }: any) => {
               <IonCol size="4">
                 <IonLabel className="label">Name</IonLabel>
               </IonCol>                
-              <IonCol size="8">
-                <IonLabel className="value">{providerName}</IonLabel>
-              </IonCol>                
+              <IonCol size="8" className="ion-text-right">
+                <img src={provider.logo} style={{height: '32px', width: '32px', display: 'inline-block', verticalAlign: 'bottom', borderRadius: '50%'}} alt="" /> 
+                <IonLabel className="value ion-text-right" style={{paddingLeft: '5px', verticalAlign: 'super'}}>{provider.name}</IonLabel>
+              </IonCol>
             </IonListHeader>
             }
             { requestDetails && requestDetails.verifiedCredential.issuer &&           
@@ -196,7 +202,7 @@ const RequestsPage: React.FC = ({ history }: any) => {
             <IonCol size="3">
               <IonLabel className="label">DID</IonLabel>
             </IonCol>            
-            <IonCol size="8" className="validatordid">
+            <IonCol size="8" className="validatordid ion-text-right">
               <IonTextarea rows={2} cols={12} id="validatorDID" readonly value={requestDetails && requestDetails.verifiedCredential.issuer}>
               </IonTextarea>
             </IonCol>
@@ -213,7 +219,7 @@ const RequestsPage: React.FC = ({ history }: any) => {
             <IonCol size="3">
               <IonLabel className="label">DID</IonLabel>
             </IonCol>            
-            <IonCol size="8" className="userdid">
+            <IonCol size="8" className="userdid ion-text-right">
               <IonTextarea rows={2} cols={12} id="userDID" readonly value={requestDetails && requestDetails.did}>
               </IonTextarea>
             </IonCol>
@@ -226,7 +232,7 @@ const RequestsPage: React.FC = ({ history }: any) => {
               <IonCol size="3">
                 <IonLabel className="label">Name</IonLabel>
               </IonCol>
-              <IonCol size="9">
+              <IonCol size="9" className="ion-text-right">
                 <IonLabel className="value">{requestDetails.requestParams.name}</IonLabel>
               </IonCol>
             </IonListHeader>
@@ -236,7 +242,7 @@ const RequestsPage: React.FC = ({ history }: any) => {
               <IonCol size="3">
                 <IonLabel className="label">Email</IonLabel>
               </IonCol>
-              <IonCol size="9">
+              <IonCol size="9" className="ion-text-right">
                 <IonLabel className="value">{requestDetails.requestParams.email}</IonLabel>
               </IonCol>
             </IonListHeader>
@@ -246,7 +252,7 @@ const RequestsPage: React.FC = ({ history }: any) => {
               <IonCol size="3">
                 <IonLabel className="label">Mobile Phone</IonLabel>
               </IonCol>
-              <IonCol size="9">
+              <IonCol size="9" className="ion-text-right">
                 <IonLabel className="value">{requestDetails.requestParams.telephone}</IonLabel>
               </IonCol>
             </IonListHeader>
