@@ -17,6 +17,8 @@ declare global{
 
 const ProfilePage: React.FC = ({ history }: any) => {
 
+  console.log('Profile page called');
+
   const dispatch = useDispatch()
 
   const [signIn] = useDID((credentials:any) => { 
@@ -51,7 +53,6 @@ const ProfilePage: React.FC = ({ history }: any) => {
   }
 
   return (
-    <>
     <IonPage className="Profile">
       <IonContent>
         <IonToolbar className="sub-header">
@@ -109,8 +110,7 @@ const ProfilePage: React.FC = ({ history }: any) => {
 
       </IonContent>
     </IonPage>
-    </>
   );
 };
 
-export default ProfilePage;
+export default React.memo(ProfilePage);

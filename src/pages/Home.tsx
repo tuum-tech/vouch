@@ -39,6 +39,8 @@ import { login, logout } from '../store/auth';
 
 const HomePage: React.FC = ({ history }: any) => {
 
+  console.log('Home page called');
+
     const [showAlertNameValidation, setShowAlertNameValidation] = useState(false);
     const [showAlertEmailValidation, setShowAlertEmailValidation] = useState(false);
     const [showAlertPhoneValidation, setShowAlertPhoneValidation] = useState(false);
@@ -222,24 +224,24 @@ const HomePage: React.FC = ({ history }: any) => {
         <IonAlert
           isOpen={showAlertEmailValidation}
           onDidDismiss={() => setShowAlertEmailValidation(false)}
-          cssClass='service-popup-alert'
+          cssClass='service-popup-alert no-image'
           header={'Could not read the Email'}
-          subHeader={'Please provide access to read Email'}
           message={'In order to proceed with Email validation, Please set the visibility of your email address to Public.'}
           buttons={[
             {
-              text: 'Resign In',
+              text: 'Re-sign In',
+              cssClass: 'btn-resignin btn-center',
               handler: () => {
                 // 'Sign him out and take him to sign in screen'
                 dispatch(logout(() => signIn({ name: false, email: false, telephone: false })))                
               }
             },
             {
-              text: 'Close',
+              text: 'OK',
               role: 'cancel',
-              cssClass: 'secondary',
+              cssClass: 'btn-center',
               handler: blah => {
-                console.log('Close');
+                console.log('OK');
               }
             }            
           ]}
@@ -248,11 +250,10 @@ const HomePage: React.FC = ({ history }: any) => {
         <IonAlert
           isOpen={showAlertPhoneValidation}
           onDidDismiss={() => setShowAlertPhoneValidation(false)}
-          cssClass='service-popup-alert'
+          cssClass='service-popup-alert custom-info'
           header={'Service Unavailable'}
-          subHeader={'No Phone Validator Found'}
           message={'There are currently no validators available to validate phone numbers.'}
-          buttons={['Close']}
+          buttons={['OK']}
         />
 
         <IonAlert
@@ -262,11 +263,11 @@ const HomePage: React.FC = ({ history }: any) => {
           header={'Service Unavailable'}
           subHeader={'No Name Validator Found'}
           message={'There are currently no validators available to validate name.'}
-          buttons={['Close']}
+          buttons={['OK']}
         />        
 
       </IonPage>
     );
   }
 
-export default HomePage;
+export default React.memo(HomePage);

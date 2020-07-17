@@ -12,7 +12,7 @@ import moment from 'moment'
 
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
-const RequestsPage: React.FC = ({ history }: any) => {
+const DetailsPage: React.FC = ({ history }: any) => {
 
   const goTo = useCallback(
     (path: string) => {
@@ -274,4 +274,4 @@ const RequestsPage: React.FC = ({ history }: any) => {
   );
 };
 
-export default RequestsPage;
+export default DetailsPage;

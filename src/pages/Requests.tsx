@@ -13,6 +13,8 @@ import { getAllRequests } from '../store/requests'
 
 const RequestsPage: React.FC = () => {
 
+  console.log('Request page called');
+
   const dispatch = useDispatch()  
   const requests = useSelector((state:AppState) => state.requests)
   const user = useSelector((state:AppState) => state.auth.user)  
@@ -32,22 +34,22 @@ const RequestsPage: React.FC = () => {
    })   
 
   const handleClick = function(tab_event: any) {
-    let clicked_tab = tab_event;
-    if(clicked_tab === 'all'){
+    if(tab_event === 'all'){
       dispatch(setSelectedTabRequests(requests.txn))
     }
-    if(clicked_tab === 'active'){
+    if(tab_event === 'active'){
       dispatch(setSelectedTabRequests(requests.pending_txn))      
     }
-    if(clicked_tab === 'approved'){
+    if(tab_event === 'approved'){
       dispatch(setSelectedTabRequests(requests.approved_txn))            
     }
-    if(clicked_tab === 'rejected'){
+    if(tab_event === 'rejected'){
       dispatch(setSelectedTabRequests(requests.rejected_txn))            
     }
-    if(clicked_tab === 'expired'){
+    if(tab_event === 'expired'){
       dispatch(setSelectedTabRequests(requests.expired_txn))            
-    }            
+    }
+    return tab_event;            
   }  
 
   return (
@@ -65,11 +67,10 @@ const RequestsPage: React.FC = () => {
       <IonToolbar className="sub-header">
           <IonTitle className="ion-text-start">Requests</IonTitle>
         </IonToolbar>
-      <IonGrid className="pad-me--top">
+      <IonGrid>
         <IonRow>
           <IonCol>
-          {/* <IonSegment scrollable onIonChange={e => console.log('Segment selected', e.detail.value)} value="all"> */}
-          <IonSegment scrollable onIonChange={(e:any) => handleClick(e.detail.value)}>
+          <IonSegment className="custom-segment" scrollable onIonChange={(e:any) => handleClick(e.detail.value)} value="all">
           <IonSegmentButton value="all">
             <IonLabel>All</IonLabel>
           </IonSegmentButton>
@@ -98,4 +99,4 @@ const RequestsPage: React.FC = () => {
   );
 };
 
-export default RequestsPage;
+export default React.memo(RequestsPage);
