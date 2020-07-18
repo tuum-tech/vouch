@@ -13,8 +13,6 @@ import { getAllRequests } from '../store/requests'
 
 const RequestsPage: React.FC = () => {
 
-  console.log('Request page called');
-
   const dispatch = useDispatch()  
   const requests = useSelector((state:AppState) => state.requests)
   const user = useSelector((state:AppState) => state.auth.user)  

@@ -59,7 +59,7 @@ const App: React.FC = () => {
       <Route exact path="/" render={() => <Redirect to="/splashscreen" />} />
       <IonTabs>
         <IonRouterOutlet>
-          <Route path="/home" render={() => <Home />} exact={true} />
+          <Route path="/home" component={Home} exact={true} />
           <Route path="/home/service-invoke" component={ServiceInvoke} exact={true} />
           <Route path="/home/pleasewait" component={PleaseWait} exact={true} />
           <Route path="/requests" render={() => <Requests />} exact={true} />

@@ -19,7 +19,7 @@ import {
   IonRefresher,
   IonRefresherContent
 } from '@ionic/react';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import moment from 'moment'
 
 import './Home.css';
@@ -38,8 +38,6 @@ import { useDID } from '../hooks/useDID';
 import { login, logout } from '../store/auth';
 
 const HomePage: React.FC = ({ history }: any) => {
-
-  console.log('Home page called');
 
     const [showAlertNameValidation, setShowAlertNameValidation] = useState(false);
     const [showAlertEmailValidation, setShowAlertEmailValidation] = useState(false);
@@ -144,7 +142,6 @@ const HomePage: React.FC = ({ history }: any) => {
                   <IonCardContent>
                     <IonRow>
                       <IonCol>
-                        {/* <IonImg src={user && user.email ? "../assets/images/components/icon-email.svg" : "../assets/images/components/icon-email--disabled.svg"}></IonImg> */}
                         <IonImg src="../assets/images/components/icon-email.svg"></IonImg>
                       </IonCol>
                       <IonCol>
@@ -252,9 +249,8 @@ const HomePage: React.FC = ({ history }: any) => {
         <IonAlert
           isOpen={showAlertNameValidation}
           onDidDismiss={() => setShowAlertNameValidation(false)}
-          cssClass='service-popup-alert'
+          cssClass='service-popup-alert custom-info'
           header={'Service Unavailable'}
-          subHeader={'No Name Validator Found'}
           message={'There are currently no validators available to validate name.'}
           buttons={['OK']}
         />        
