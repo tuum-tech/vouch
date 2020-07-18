@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { IonButton, IonGrid, IonRow, IonCol, IonListHeader, IonLabel, IonToolbar, IonImg, IonPage, IonTitle, IonContent, IonTextarea, IonIcon } from '@ionic/react';
 import './Profile.css';
 
@@ -15,7 +15,7 @@ declare global{
   }
 }
 
-const ProfilePage: React.FC = ({ history }: any) => {
+const ProfilePage: React.FC = () => {
 
   const dispatch = useDispatch()
 
@@ -23,19 +23,9 @@ const ProfilePage: React.FC = ({ history }: any) => {
     if(credentials.length) {
       const credSubjects = credentials.map((cred:any) => cred.credentialSubject)
       const user = Object.assign({}, ...credSubjects)
-      dispatch(login(user, () => goTo('/profile')))
+      dispatch(login(user, () => '/profile'))
     }
    })
-  
-  const goTo = useCallback(
-    (path: string) => {
-      history.push(path, { direction: 'forward' });
-    },
-    [history],
-  );
-
-
-
   
   const user = useSelector((state:AppState) => state.auth.user)
 
@@ -51,7 +41,6 @@ const ProfilePage: React.FC = ({ history }: any) => {
   }
 
   return (
-    <>
     <IonPage className="Profile">
       <IonContent>
         <IonToolbar className="sub-header">
@@ -109,8 +98,7 @@ const ProfilePage: React.FC = ({ history }: any) => {
 
       </IonContent>
     </IonPage>
-    </>
   );
 };
 
-export default ProfilePage;
+export default React.memo(ProfilePage);

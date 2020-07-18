@@ -27,3 +27,18 @@ margin:12px 5px 12px 0px;
   margin:0;
   padding:0;
 }
+
+.Providers-List .item {
+    border-bottom: 1px solid rgba(0,0,0,0.13);
+    --inner-border-width: 0 0 0 0;
+    padding-bottom: 5px;
+    margin-top: -10px;
+}
+
+.custom-segment {
+  margin-bottom: 10px;
+}
+
+ion-segment-button.active-tab2::part(indicator) { 
+  opacity: 1 !important;
+}

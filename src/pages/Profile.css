@@ -54,6 +54,8 @@ ion-list-header{
     color: #484848;
     opacity: 1;
     font-weight: bold;
+    width: 50%;
+    flex-wrap: wrap;
 }
 
 .Profile .fieldContainer .label .vertical-top{

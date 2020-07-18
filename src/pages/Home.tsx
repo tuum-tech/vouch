@@ -19,7 +19,7 @@ import {
   IonRefresher,
   IonRefresherContent
 } from '@ionic/react';
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import moment from 'moment'
 
 import './Home.css';
@@ -61,7 +61,7 @@ const HomePage: React.FC = ({ history }: any) => {
 
     const [sendGetAllRequestsReq] = useRequests((txn:any) => { 
       if(txn) {
-        dispatch(getAllRequests(txn, () => goTo('/home')))
+        dispatch(getAllRequests(txn, () => '/home'))
       }  
      })   
 
@@ -85,19 +85,12 @@ const HomePage: React.FC = ({ history }: any) => {
       }  
     })   
   
-    const goTo = useCallback(
-      (path: string) => {
-        history.push(path, { direction: 'forward' });
-      },
-      [history],
-    );
-
     const [signIn] = useDID((credentials:any) => {
       console.log(credentials) 
       if(credentials.length) {
         const credSubjects = credentials.map((cred:any) => cred.credentialSubject)
         const user = Object.assign({}, ...credSubjects)
-        dispatch(login(user, () => goTo('/home')))
+        dispatch(login(user, () => '/home'))
       }
     })
 
@@ -149,7 +142,6 @@ const HomePage: React.FC = ({ history }: any) => {
                   <IonCardContent>
                     <IonRow>
                       <IonCol>
-                        {/* <IonImg src={user && user.email ? "../assets/images/components/icon-email.svg" : "../assets/images/components/icon-email--disabled.svg"}></IonImg> */}
                         <IonImg src="../assets/images/components/icon-email.svg"></IonImg>
                       </IonCol>
                       <IonCol>
@@ -222,24 +214,24 @@ const HomePage: React.FC = ({ history }: any) => {
         <IonAlert
           isOpen={showAlertEmailValidation}
           onDidDismiss={() => setShowAlertEmailValidation(false)}
-          cssClass='service-popup-alert'
+          cssClass='service-popup-alert no-image'
           header={'Could not read the Email'}
-          subHeader={'Please provide access to read Email'}
           message={'In order to proceed with Email validation, Please set the visibility of your email address to Public.'}
           buttons={[
             {
-              text: 'Resign In',
+              text: 'Re-sign In',
+              cssClass: 'btn-resignin btn-center',
               handler: () => {
                 // 'Sign him out and take him to sign in screen'
                 dispatch(logout(() => signIn({ name: false, email: false, telephone: false })))                
               }
             },
             {
-              text: 'Close',
+              text: 'OK',
               role: 'cancel',
-              cssClass: 'secondary',
+              cssClass: 'btn-center',
               handler: blah => {
-                console.log('Close');
+                console.log('OK');
               }
             }            
           ]}
@@ -248,25 +240,23 @@ const HomePage: React.FC = ({ history }: any) => {
         <IonAlert
           isOpen={showAlertPhoneValidation}
           onDidDismiss={() => setShowAlertPhoneValidation(false)}
-          cssClass='service-popup-alert'
+          cssClass='service-popup-alert custom-info'
           header={'Service Unavailable'}
-          subHeader={'No Phone Validator Found'}
           message={'There are currently no validators available to validate phone numbers.'}
-          buttons={['Close']}
+          buttons={['OK']}
         />
 
         <IonAlert
           isOpen={showAlertNameValidation}
           onDidDismiss={() => setShowAlertNameValidation(false)}
-          cssClass='service-popup-alert'
+          cssClass='service-popup-alert custom-info'
           header={'Service Unavailable'}
-          subHeader={'No Name Validator Found'}
           message={'There are currently no validators available to validate name.'}
-          buttons={['Close']}
+          buttons={['OK']}
         />        
 
       </IonPage>
     );
   }
 
-export default HomePage;
+export default React.memo(HomePage);

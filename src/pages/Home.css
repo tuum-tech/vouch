@@ -7,7 +7,100 @@
   overflow: hidden;
 }
 
-.service-popup-alert {
-  --background: #e5e5e5;
-  border-radius: 5px;
+.service-popup-alert .alert-wrapper {
+  background: var(--unnamed-color-ffffff) 0% 0% no-repeat padding-box;
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  border-radius: 13px;
+  opacity: 1;
 }
+
+.service-popup-alert .alert-title {
+  text-align: center;
+  font: Bold 15px Poppins;
+  letter-spacing: 0px;
+  color: #484848;
+  opacity: 1;  
+}
+
+.service-popup-alert .alert-title:before {
+  content: '';
+  display: block;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  height: 122px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.service-popup-alert.no-image .alert-title:before {
+  height: 0; 
+  margin-bottom: 0; 
+}
+
+.service-popup-alert.no-image .alert-title:before {
+  background-image: none;
+}
+
+.service-popup-alert.custom-info .alert-title:before {
+  background-image: url('/assets/images/components/g-alert-info.svg');
+}
+
+.service-popup-alert.custom-error .alert-title:before {
+  background-image: url('/assets/images/components/g-alert-error.svg');
+}
+
+.service-popup-alert.custom-success .alert-title:before {
+  background-image: url('/assets/images/components/g-alert-success.svg');
+}
+
+.service-popup-alert .alert-message {
+  text-align: center;
+  font: 12px Poppins;
+  font-weight: normal;
+  letter-spacing: 0px;
+  color: #484848;
+  opacity: 1;
+}
+
+.service-popup-alert .alert-button-group {
+  border-top: #f1f1f1 1px solid;
+  padding: 0;
+}
+
+.service-popup-alert .alert-button {
+  color: var(--unnamed-color-482cc8);
+  text-align: center !important;
+  font: Bold 12px Poppins;
+  letter-spacing: 0px;
+  color: #482CC8;
+  opacity: 1;
+  margin: 0 auto;
+}
+
+.service-popup-alert .alert-button.btn-resignin
+{
+  border-right: 1px solid #f1f1f1;
+  color: #484848;
+}
+
+.service-popup-alert .alert-button.btn-center
+{
+  width: 50%;
+  margin: 0;
+}
+
+.service-popup-alert .alert-button-inner {
+  text-align: center;
+  display: block;  
+  padding: 5px 0;
+}
+
+/* .secondary {
+  border-left: #f1f1f1 1px solid;
+} */
+
+/* .alert-image {
+  position: absolute;
+  top: 10px;
+  margin: 0 auto;
+} */

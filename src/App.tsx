@@ -62,9 +62,9 @@ const App: React.FC = () => {
           <Route path="/home" component={Home} exact={true} />
           <Route path="/home/service-invoke" component={ServiceInvoke} exact={true} />
           <Route path="/home/pleasewait" component={PleaseWait} exact={true} />
-          <Route path="/requests" component={Requests} exact={true} />
+          <Route path="/requests" render={() => <Requests />} exact={true} />
           <Route path="/requests/details/:id" component={Details} />
-          <Route path="/profile" component={Profile} />
+          <Route path="/profile" render={() => <Profile />} exact={true} />
         </IonRouterOutlet>
 
         <IonTabBar slot="bottom">

@@ -15,6 +15,7 @@ export const CRED_SAVED_SUCCESS = "CRED_SAVED_SUCCESS";
 export interface TxnState {
   txn: any;
   selected_tab_txn: any;
+  selected_tab_name: any;
   pending_txn: any;
   approved_txn: any;
   rejected_txn: any;

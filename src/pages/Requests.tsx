@@ -31,30 +31,30 @@ const RequestsPage: React.FC = () => {
     }
    })   
 
-  const handleClick = function(tab_event: any) {
-    let clicked_tab = tab_event;
-    if(clicked_tab === 'all'){
-      dispatch(setSelectedTabRequests(requests.txn))
+  const handleClick = function(e: any) {
+    let tab_event = e.detail.value;
+    if(tab_event === 'all'){
+      dispatch(setSelectedTabRequests({'name':'all','data':requests.txn}))
     }
-    if(clicked_tab === 'active'){
-      dispatch(setSelectedTabRequests(requests.pending_txn))      
+    if(tab_event === 'active'){
+      dispatch(setSelectedTabRequests({'name':'pending','data':requests.pending_txn}))      
     }
-    if(clicked_tab === 'approved'){
-      dispatch(setSelectedTabRequests(requests.approved_txn))            
+    if(tab_event === 'approved'){
+      dispatch(setSelectedTabRequests({'name':'approved','data':requests.approved_txn}))            
     }
-    if(clicked_tab === 'rejected'){
-      dispatch(setSelectedTabRequests(requests.rejected_txn))            
+    if(tab_event === 'rejected'){
+      dispatch(setSelectedTabRequests({'name':'rejected','data':requests.rejected_txn}))            
     }
-    if(clicked_tab === 'expired'){
-      dispatch(setSelectedTabRequests(requests.expired_txn))            
-    }            
+    if(tab_event === 'expired'){
+      dispatch(setSelectedTabRequests({'name':'expired','data':requests.expired_txn}))            
+    }
   }  
 
   return (
     <IonPage>
       <IonContent>
 
-        <IonRefresher className="refresher" slot="fixed" onIonRefresh={doRefresh} pullFactor={0.5} pullMin={100} pullMax={200}>
+        <IonRefresher className="refresher" slot="fixed" onIonRefresh={doRefresh} pullFactor={0.5} pullMin={80} pullMax={200}>
             <IonRefresherContent
             pullingText="Pull to refresh"
             refreshingSpinner="circles"
@@ -65,12 +65,11 @@ const RequestsPage: React.FC = () => {
       <IonToolbar className="sub-header">
           <IonTitle className="ion-text-start">Requests</IonTitle>
         </IonToolbar>
-      <IonGrid className="pad-me--top">
+      <IonGrid>
         <IonRow>
           <IonCol>
-          {/* <IonSegment scrollable onIonChange={e => console.log('Segment selected', e.detail.value)} value="all"> */}
-          <IonSegment scrollable onIonChange={(e:any) => handleClick(e.detail.value)}>
-          <IonSegmentButton value="all">
+            <IonSegment className="custom-segment" scrollable onIonChange={(e:any) => handleClick(e)}>
+          <IonSegmentButton value="all" className={requests.selected_tab_name === 'all' ? 'active-tab' : ''}>
             <IonLabel>All</IonLabel>
           </IonSegmentButton>
           <IonSegmentButton value="active" disabled={requests.pending_txn == null || requests.pending_txn.length === 0}>
@@ -86,7 +85,6 @@ const RequestsPage: React.FC = () => {
             <IonLabel>Expired</IonLabel>
           </IonSegmentButton>
         </IonSegment>
-
           </IonCol>
         </IonRow>
 
@@ -98,4 +96,4 @@ const RequestsPage: React.FC = () => {
   );
 };
 
-export default RequestsPage;
+export default React.memo(RequestsPage);
