@@ -38,3 +38,7 @@ margin:12px 5px 12px 0px;
 .custom-segment {
   margin-bottom: 10px;
 }
+
+ion-segment-button.active-tab2::part(indicator) { 
+  opacity: 1 !important;
+}

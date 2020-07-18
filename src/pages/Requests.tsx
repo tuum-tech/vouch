@@ -33,30 +33,30 @@ const RequestsPage: React.FC = () => {
     }
    })   
 
-  const handleClick = function(tab_event: any) {
+  const handleClick = function(e: any) {
+    let tab_event = e.detail.value;
     if(tab_event === 'all'){
-      dispatch(setSelectedTabRequests(requests.txn))
+      dispatch(setSelectedTabRequests({'name':'all','data':requests.txn}))
     }
     if(tab_event === 'active'){
-      dispatch(setSelectedTabRequests(requests.pending_txn))      
+      dispatch(setSelectedTabRequests({'name':'pending','data':requests.pending_txn}))      
     }
     if(tab_event === 'approved'){
-      dispatch(setSelectedTabRequests(requests.approved_txn))            
+      dispatch(setSelectedTabRequests({'name':'approved','data':requests.approved_txn}))            
     }
     if(tab_event === 'rejected'){
-      dispatch(setSelectedTabRequests(requests.rejected_txn))            
+      dispatch(setSelectedTabRequests({'name':'rejected','data':requests.rejected_txn}))            
     }
     if(tab_event === 'expired'){
-      dispatch(setSelectedTabRequests(requests.expired_txn))            
+      dispatch(setSelectedTabRequests({'name':'expired','data':requests.expired_txn}))            
     }
-    return tab_event;            
   }  
 
   return (
     <IonPage>
       <IonContent>
 
-        <IonRefresher className="refresher" slot="fixed" onIonRefresh={doRefresh} pullFactor={0.5} pullMin={100} pullMax={200}>
+        <IonRefresher className="refresher" slot="fixed" onIonRefresh={doRefresh} pullFactor={0.5} pullMin={80} pullMax={200}>
             <IonRefresherContent
             pullingText="Pull to refresh"
             refreshingSpinner="circles"
@@ -70,8 +70,8 @@ const RequestsPage: React.FC = () => {
       <IonGrid>
         <IonRow>
           <IonCol>
-          <IonSegment className="custom-segment" scrollable onIonChange={(e:any) => handleClick(e.detail.value)} value="all">
-          <IonSegmentButton value="all">
+            <IonSegment className="custom-segment" scrollable onIonChange={(e:any) => handleClick(e)}>
+          <IonSegmentButton value="all" className={requests.selected_tab_name === 'all' ? 'active-tab' : ''}>
             <IonLabel>All</IonLabel>
           </IonSegmentButton>
           <IonSegmentButton value="active" disabled={requests.pending_txn == null || requests.pending_txn.length === 0}>
@@ -87,7 +87,6 @@ const RequestsPage: React.FC = () => {
             <IonLabel>Expired</IonLabel>
           </IonSegmentButton>
         </IonSegment>
-
           </IonCol>
         </IonRow>
 

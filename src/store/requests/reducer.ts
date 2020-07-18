@@ -12,6 +12,7 @@ import {
 const initialState: TxnState = {
   txn: null,
   selected_tab_txn: null,
+  selected_tab_name: null,
   pending_txn: null,
   approved_txn: null,
   rejected_txn: null,
@@ -46,7 +47,8 @@ export const txnReducer = (
       case SET_SELECTED_TAB_REQUESTS:
         {
           return { ...state, 
-            selected_tab_txn: payload
+            selected_tab_txn: payload.data,
+            selected_tab_name: payload.name
           };
         }            
     case GET_ALL_REQUESTS_SUCCESS:
@@ -93,6 +95,7 @@ export const txnReducer = (
           ...state, 
           txn: all_txn,
           selected_tab_txn: all_txn, 
+          selected_tab_name: 'all',
           pending_txn: pending_txn, 
           approved_txn: approved_txn,
           rejected_txn: rejected_txn,

@@ -19,7 +19,7 @@ import {
   IonRefresher,
   IonRefresherContent
 } from '@ionic/react';
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment'
 
 import './Home.css';
@@ -63,7 +63,7 @@ const HomePage: React.FC = ({ history }: any) => {
 
     const [sendGetAllRequestsReq] = useRequests((txn:any) => { 
       if(txn) {
-        dispatch(getAllRequests(txn, () => goTo('/home')))
+        dispatch(getAllRequests(txn, () => '/home'))
       }  
      })   
 
@@ -87,19 +87,12 @@ const HomePage: React.FC = ({ history }: any) => {
       }  
     })   
   
-    const goTo = useCallback(
-      (path: string) => {
-        history.push(path, { direction: 'forward' });
-      },
-      [history],
-    );
-
     const [signIn] = useDID((credentials:any) => {
       console.log(credentials) 
       if(credentials.length) {
         const credSubjects = credentials.map((cred:any) => cred.credentialSubject)
         const user = Object.assign({}, ...credSubjects)
-        dispatch(login(user, () => goTo('/home')))
+        dispatch(login(user, () => '/home'))
       }
     })
 
