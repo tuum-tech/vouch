@@ -1,5 +1,3 @@
-import { Plugins } from '@capacitor/core';
-
 import {
     TxnActionTypes,
     EMAIL_VALIDATION_REQUEST_SUCCESS,
@@ -9,9 +7,7 @@ import {
 } from "./types";
   
 import { ThunkAction } from "redux-thunk";
-import { AppState } from "..";
-
-const { Storage } = Plugins;
+import { AppState } from "../";
 
  export const emailValidation = (txn: any, callback: any = noop): ThunkAction<
     void,
@@ -20,8 +16,6 @@ const { Storage } = Plugins;
     TxnActionTypes
 > => dispatch => {
     (async function(){
-        await Storage.set({ key: 'txn', value: JSON.stringify(txn)})
-
         dispatch(emailValidationSuccess(txn));
         callback();
     })()
@@ -53,8 +47,6 @@ export const getAllRequests = (txn: any, callback: any = noop): ThunkAction<
     TxnActionTypes
 > => dispatch => {
     (async function(){
-        await Storage.set({ key: 'txn', value: JSON.stringify(txn)})
-
         dispatch(getAllRequestsSuccess(txn));
         callback();
     })()
@@ -72,8 +64,6 @@ null,
 TxnActionTypes
 > => dispatch => {
 (async function(){
-    // await Storage.set({ key: 'txn', value: JSON.stringify(txn)})
-
     dispatch(credSavedSuccess(credentials));
     callback();
 })()
@@ -83,23 +73,5 @@ export const credSavedSuccess = (txn: any): TxnActionTypes => ({
     type: CRED_SAVED_SUCCESS,
     payload: txn
 });
-
-export const txnCheckStatus = (callback: any = noop): ThunkAction<
-    void,
-    AppState,
-    null,
-    TxnActionTypes
-  > => dispatch => {
-    (async function(){
-        const txn = await Storage.get({ key: 'txn' })
-
-        if (txn && txn.value) {
-            dispatch(emailValidationSuccess(JSON.parse(txn.value)));
-            callback()
-          }
-    })()
-  };
-  
-export type TxnCheckStatusType = typeof txnCheckStatus;
 
 function noop() {}

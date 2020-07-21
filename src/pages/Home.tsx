@@ -19,7 +19,7 @@ import {
   IonRefresher,
   IonRefresherContent
 } from '@ionic/react';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment'
 
 import './Home.css';
@@ -187,10 +187,10 @@ const HomePage: React.FC = ({ history }: any) => {
                 {/*-- List Header with Button --*/}<br></br>
                 <IonListHeader>
                   <IonLabel className="List-Header">Active Requests</IonLabel>
-                  <IonButton size="small" color="light" routerLink='/requests'>See All</IonButton>
+                  <IonButton size="small" color="dark" routerLink='/requests'>See All</IonButton>
                 </IonListHeader>
               </IonCol>
-              <IonCol>
+              <IonCol class="Providers-List">
                 {/* Items Active */}
                 {pending_requests && pending_requests.map((txn: any) => 
                   <IonItem className="request-Item" routerLink={`/requests/details/${txn.id}`} key={txn.id} >

@@ -39,6 +39,6 @@ margin:12px 5px 12px 0px;
   margin-bottom: 10px;
 }
 
-ion-segment-button.active-tab2::part(indicator) { 
+ion-segment-button.active-tab::part(indicator) { 
   opacity: 1 !important;
 }
