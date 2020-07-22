@@ -9,7 +9,7 @@
   "start_url": "index.html",
   "type": "app",
   "start_visible": "hide",
-  "category": "identity",
+  "category": "information",
   "icons": [
     {
       "src": "assets/images/app_logos/icon_36.png",
