@@ -53,7 +53,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
   const requestDetails = requests.txn.filter((txn: any) => txn.id === id)[0]
 
   let provider = {'name': '', 'logo': ''};  
-  if(requestDetails.validationType === 'email'){
+  if(requestDetails && requestDetails.validationType === 'email'){
      provider = validationProviders.emailValidationProviders.filter((provider:any) => provider.id === requestDetails.provider)[0]
   }
 
@@ -109,6 +109,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
 
   return (
     <>
+    {requestDetails &&
     <IonPage className="Details">
       <IonContent>
         <IonToolbar className="sub-header">
@@ -270,6 +271,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
         </IonGrid>
       </IonContent>
     </IonPage>
+    }
     </>
   );
 };
