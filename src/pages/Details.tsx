@@ -50,7 +50,12 @@ const DetailsPage: React.FC = ({ history }: any) => {
   const validationProviders = useSelector((state:AppState) => state.validationProviders)
   const { id } = useParams()
 
-  const requestDetails = requests.txn.filter((txn: any) => txn.id === id)[0]
+  let requestDetails = requests.txn.filter((txn: any) => txn.id === id)
+  if(requestDetails){
+    requestDetails = requestDetails[0]
+  }
+  
+
 
   let provider = {'name': '', 'logo': ''};  
   if(requestDetails && requestDetails.validationType === 'email'){
