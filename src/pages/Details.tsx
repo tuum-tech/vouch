@@ -82,7 +82,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
 
    const [sendCredSaved] = useCredSaved((response:any) => {
     dispatch(credSaved(response))
-    dispatch(showNotification({"message": response.message, "type": "success"}))
+    dispatch(showNotification({"message": response.message, "type": "success", "show": true}))
     setTimeout(() => {
       dispatch(hideNotification())
     }, 3000)           

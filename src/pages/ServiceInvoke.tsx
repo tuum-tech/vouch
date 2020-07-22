@@ -54,14 +54,14 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
   const [sendEmailValidationRequest] = useEmailValidation((txn:any) => { 
     if(txn.data) {
       dispatch(emailValidation(txn.data, () => goTo('/home')))
-      dispatch(showNotification({"message": txn.message, "type": "success"}))
+      dispatch(showNotification({"message": txn.message, "type": "success", "show": true}))
       setTimeout(() => {
         dispatch(hideNotification())
-      }, 3000)      
+      }, 5000)      
     } 
     else {
       history.push('/home');
-      dispatch(showNotification({"message": txn.message, "type": "warning"}))
+      dispatch(showNotification({"message": txn.message, "type": "warning", "show": true}))
       setTimeout(() => {
         dispatch(hideNotification())
       }, 3000) 

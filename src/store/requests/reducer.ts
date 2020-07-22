@@ -38,10 +38,7 @@ export const txnReducer = (
 
         return { ...state, 
           txn: [...state.txn, payload], 
-          pending_txn: [...state.pending_txn, payload],
-          notification: {
-            show: true
-          }
+          pending_txn: [...state.pending_txn, payload]
         };
       }
       case SET_SELECTED_TAB_REQUESTS:
