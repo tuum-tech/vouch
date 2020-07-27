@@ -1,0 +1,13 @@
+.RequestBlock .status {
+    font-size: 10px;
+    text-transform: capitalize;
+    letter-spacing: 0px;
+    color: #898784;
+    width: 66px;
+}
+
+.RequestBlock img{
+    width:44px;
+    height:44px;
+    margin:12px 5px 12px 0px;
+  }

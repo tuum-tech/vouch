@@ -118,8 +118,19 @@ const HomePage: React.FC = ({ history }: any) => {
             </IonRefresherContent>
         </IonRefresher>
 
-          <IonToolbar className="sub-header">
-    <IonTitle className="ion-text-start Iontitle-Big">Welcome, <br /> <strong> {user && user.name}</strong></IonTitle>
+        <IonToolbar className="sub-header">
+            <IonTitle className="ion-text-start Iontitle-Big">
+              <IonRow>
+                <IonCol size="2" style={{padding: '0'}}>
+                  <img className="avatar-home" alt=""
+                      src={`${user && user.avatar ? user.avatar : "../assets/images/components/default-avatar.png" }`
+                      } />
+                </IonCol>
+                <IonCol size="10" style={{padding: '0', paddingLeft: '5px'}}>
+                  Welcome, <br /> <strong> {user && user.name}</strong>
+                </IonCol>
+              </IonRow>
+            </IonTitle>
           </IonToolbar>
           <IonGrid className="pad-me--top ">
             <IonRow className="main-Services">
@@ -190,7 +201,7 @@ const HomePage: React.FC = ({ history }: any) => {
                   <IonButton size="small" color="dark" routerLink='/requests'>See All</IonButton>
                 </IonListHeader>
               </IonCol>
-              <IonCol class="Providers-List">
+              <IonCol class="RequestBlock">
                 {/* Items Active */}
                 {pending_requests && pending_requests.map((txn: any) => 
                   <IonItem className="request-Item" routerLink={`/requests/details/${txn.id}`} key={txn.id} >
@@ -201,7 +212,7 @@ const HomePage: React.FC = ({ history }: any) => {
                     <h2>Email Validation</h2>
                     <p>{relativeTime(txn.created)}</p>
                   </IonLabel>
-                  <IonButton shape="round" color={`${txn.status === "Approved" ? "success" : ""}${txn.status === "Pending" ? "light" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}`} 
+                  <IonButton shape="round" className="status" color={`${txn.status === "Approved" ? "success" : ""}${txn.status === "Pending" ? "light" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}`} 
                     slot="end">{txn.status}</IonButton>                  
                 </IonItem>
 
@@ -223,7 +234,7 @@ const HomePage: React.FC = ({ history }: any) => {
               cssClass: 'btn-resignin btn-center',
               handler: () => {
                 // 'Sign him out and take him to sign in screen'
-                dispatch(logout(() => signIn({ name: false, email: false, telephone: false })))                
+                dispatch(logout(() => signIn({ name: false, email: false, avatar: false })))                
               }
             },
             {

@@ -95,6 +95,20 @@
   padding: 5px 0;
 }
 
+.avatar-home {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin: auto;
+}
+
+.avatar-profile {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  margin: auto;
+}
+
 /* .secondary {
   border-left: #f1f1f1 1px solid;
 } */

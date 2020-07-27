@@ -94,7 +94,7 @@ http://ionicframework.com/docs/theming/ */
 }
 
 .main-header,.in-toolbar {
-  padding-top:15px;
+  /* padding-top:15px; */
   background: #4D2CC8;
   --background: #4D2CC8;
   padding-bottom:30px;
@@ -166,8 +166,8 @@ ion-tab-bar {
   Padding-top:15px;
 }
 .thick-padding{
-  padding-left:20px;
-  padding-right:20px;
+  padding-left:10px;
+  padding-right:10px;
 }
 
 .main-Services ion-card{
