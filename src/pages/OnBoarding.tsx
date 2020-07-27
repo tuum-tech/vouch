@@ -53,15 +53,10 @@ const OnBoardingPage: React.FC = ({ history }: any) => {
             </div>
           </IonCol>
         </IonRow>  
-        <IonRow>
-          <IonCol>
-            <div className="custom-margin-02"></div>
-          </IonCol>
-        </IonRow>      
         <IonRow className="ion-text-center">
           <IonCol className="ion-align-items-center">
             <div>
-              <h4>DID Validation Services</h4>
+              <h4 style={{marginTop: 0}}>DID Validation Services</h4>
               <h5>Email, Name, Phone</h5>
             </div>
           </IonCol>
@@ -74,7 +69,7 @@ const OnBoardingPage: React.FC = ({ history }: any) => {
         <IonRow className="ion-text-center">
           <IonCol className="ion-align-items-center">
             <div>
-              <IonButton className="button cta" onClick={() => { signIn({ name: false, email: false, telephone: false })}}>Take me to App</IonButton>            
+              <IonButton className="button cta" onClick={() => { signIn({ name: false, email: false, avatar: false })}}>Take me to App</IonButton>            
             </div>
           </IonCol>
         </IonRow>

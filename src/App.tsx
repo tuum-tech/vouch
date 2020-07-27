@@ -69,15 +69,15 @@ const App: React.FC = () => {
 
         <IonTabBar slot="bottom">
           <IonTabButton tab="home" href="/home">
-            <IonImg class="tab-icon icon-Home" src="../assets/images/components/empty.png"></IonImg>
+            <IonImg className="tab-icon icon-Home" src="../assets/images/components/empty.png"></IonImg>
             <IonLabel>Home</IonLabel>
           </IonTabButton>
           <IonTabButton tab="requests" href="/requests">
-          <IonImg img-src="" class="tab-icon icon-Requests" src="../assets/images/components/empty.png"></IonImg>
+          <IonImg img-src="" className="tab-icon icon-Requests" src="../assets/images/components/empty.png"></IonImg>
             <IonLabel>Requests</IonLabel>
           </IonTabButton>
           <IonTabButton tab="profile" href="/profile">
-          <IonImg class="tab-icon icon-Profile"  src="../assets/images/components/empty.png"></IonImg>
+          <IonImg className="tab-icon icon-Profile"  src="../assets/images/components/empty.png"></IonImg>
             <IonLabel>Profile</IonLabel>
           </IonTabButton>
         </IonTabBar>

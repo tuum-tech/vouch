@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonRow,IonCol,IonLabel, IonThumbnail,IonButton, IonItem } from '@ionic/react';
-import './Requests.css';
+import './RequestBlocks.css';
 import moment from 'moment'
 
 const RequestBlocks = (props: any) => {
@@ -17,7 +17,7 @@ const RequestBlocks = (props: any) => {
         {requests_txn && requests_txn.length > 0 ? 
         requests_txn.map((txn: any) =>
           <IonRow key={txn.id}>
-          <IonCol className="Providers-List">
+          <IonCol className="RequestBlock">
           <IonItem routerLink={`/requests/details/${txn.id}`}>
                     <IonThumbnail slot="start">
                       <img src="../assets/images/components/icon-email--request.svg" alt="" />
@@ -26,7 +26,7 @@ const RequestBlocks = (props: any) => {
                       <h2>Email Validation</h2>
                       <p>{relativeTime(txn.created)}</p>
                     </IonLabel>
-                    <IonButton shape="round" style={{margin: 0}} color={`${txn.status === "Approved" ? "success" : ""}${txn.status === "Pending" ? "light" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}`} 
+                    <IonButton shape="round" className="status" style={{margin: 0}} color={`${txn.status === "Approved" ? "success" : ""}${txn.status === "Pending" ? "light" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}`} 
                     slot="end">{txn.status}</IonButton>
                   </IonItem>
           </IonCol>
@@ -34,7 +34,7 @@ const RequestBlocks = (props: any) => {
         ) : 
         
         <IonRow>
-        <IonCol className="Providers-List">
+        <IonCol className="RequestBlock">
           <p>No request made so far.</p>
         </IonCol>
       </IonRow>

@@ -48,18 +48,24 @@ const ProfilePage: React.FC = () => {
         </IonToolbar>
         <IonGrid className="pad-me--top thick-padding">
           <IonRow>
-            <IonCol>
-              <h2>Your DID</h2>
-            </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol size="11" className="userdid">
-                <IonTextarea rows={2} cols={20} id="userDID" readonly value={user && user.id}>
-                </IonTextarea>
+            <IonCol size="12">
+                <h2 style={{margin: 0}}>Your DID</h2>
+                <IonRow style={{marginLeft: '-5px'}}>
+                  <IonCol size="9" className="userdid">
+                    <IonTextarea rows={2} cols={20} id="userDID" readonly value={user && user.id}>
+                    </IonTextarea>
+                  </IonCol>
+                    <IonCol size="1" style={{margin: 'auto'}}>
+                      <IonIcon name="copy-outline" src="/assets/images/icons/copy-outline.svg" onClick={(e:any) => copyText("userDID")} />
+                  </IonCol>
+                  <IonCol size="2" style={{margin: 'auto'}}>
+              <img className="avatar-profile" alt=""
+    src={`${user && user.avatar ? user.avatar : "../assets/images/components/default-avatar@2x.png" }`
+      } />                
+              </IonCol>                                
+                </IonRow>
               </IonCol>
-                <IonCol size="1" style={{margin: 'auto'}}>
-                  <IonIcon name="copy-outline" src="/assets/images/icons/copy-outline.svg" onClick={(e:any) => copyText("userDID")} />
-              </IonCol>              
+
             </IonRow>
 
 
@@ -89,7 +95,7 @@ const ProfilePage: React.FC = () => {
           </IonRow>
           <IonRow className="text-center">
             <IonCol>
-              <IonButton className="signOut text-center" color="light" onClick={() => signIn({ name: false, email: false, telephone: false })}>              
+              <IonButton className="signOut text-center" color="light" onClick={() => signIn({ name: false, email: false, avatar: false })}>              
                 <IonImg className="sign-out-button" src="../assets/images/components/icon-sign-out.svg" ></IonImg> Refresh Credentials
               </IonButton>
             </IonCol>
