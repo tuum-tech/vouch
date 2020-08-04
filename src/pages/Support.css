@@ -1,0 +1,12 @@
+.Support .alert-message ol {
+    margin-top: 0;
+}
+
+.Support ol {
+    padding-left: 15px;
+    text-align: left;
+}
+
+.Support ol li {
+    padding: 5px 0 5px 15px;
+}

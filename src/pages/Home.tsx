@@ -86,7 +86,6 @@ const HomePage: React.FC = ({ history }: any) => {
     })   
   
     const [signIn] = useDID((credentials:any) => {
-      console.log(credentials) 
       if(credentials.length) {
         const credSubjects = credentials.map((cred:any) => cred.credentialSubject)
         const user = Object.assign({}, ...credSubjects)
@@ -212,7 +211,7 @@ const HomePage: React.FC = ({ history }: any) => {
                     <h2>Email Validation</h2>
                     <p>{relativeTime(txn.created)}</p>
                   </IonLabel>
-                  <IonButton shape="round" className="status" color={`${txn.status === "Approved" ? "success" : ""}${txn.status === "Pending" ? "light" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}`} 
+                  <IonButton shape="round" className="status" color={`${txn.status === "Approved" ? "success" : ""}${txn.status === "New" ? "light" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}${txn.status === "Canceled" ? "warning" : ""}`} 
                     slot="end">{txn.status}</IonButton>                  
                 </IonItem>
 
@@ -234,7 +233,7 @@ const HomePage: React.FC = ({ history }: any) => {
               cssClass: 'btn-resignin btn-center',
               handler: () => {
                 // 'Sign him out and take him to sign in screen'
-                dispatch(logout(() => signIn({ name: false, email: false, avatar: false })))                
+                dispatch(logout(() => signIn({ name: false, email: true, avatar: false })))                
               }
             },
             {
@@ -242,7 +241,7 @@ const HomePage: React.FC = ({ history }: any) => {
               role: 'cancel',
               cssClass: 'btn-center',
               handler: blah => {
-                console.log('OK');
+                // console.log('OK');
               }
             }            
           ]}

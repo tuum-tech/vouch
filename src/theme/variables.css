@@ -36,7 +36,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-success-tint: #28e070;
 
   /** warning **/
-  --ion-color-warning: #ffce00;
+  --ion-color-warning: #f27a44;
   --ion-color-warning-rgb: 255, 206, 0;
   --ion-color-warning-contrast: #ffffff;
   --ion-color-warning-contrast-rgb: 255, 255, 255;
@@ -154,6 +154,17 @@ ion-tab-bar {
 
 .icon-Profile{
   background: url('/assets/images/components/ti-profile.svg') no-repeat;
+  background-size:cover;
+
+}
+
+.tab-selected .icon-Support{
+  background: url('/assets/images/components/ti-support--selected.svg') no-repeat;
+  background-size:cover;
+}
+
+.icon-Support{
+  background: url('/assets/images/components/ti-support.svg') no-repeat;
   background-size:cover;
 
 }

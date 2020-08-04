@@ -20,6 +20,7 @@ export interface TxnState {
   approved_txn: any;
   rejected_txn: any;
   expired_txn: any;
+  cancelled_txn: any;
   notification: any;
 }
 

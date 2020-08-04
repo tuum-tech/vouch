@@ -16,7 +16,7 @@
 }
 
 .OnBoarding .spacer{
-    height:20px;
+    height:10px;
 }
 
 .custom-margin-01{
@@ -26,9 +26,33 @@
     margin-top:20px;
 }
 .custom-margin-03{
-    margin-top:10px;
+    margin-top:0;
 }
 
 .custom-margin-04{
-    margin-top:15px;
+    margin-top:0;
+}
+
+.tutorial-link {
+    text-align: center;
+}
+
+.tutorial-link button {
+    background: none;
+    color: #482CC8;
+    font-size: 16px;
+}
+
+.service-popup-alert .Support .alert-title:before {
+    content: '';
+    display: block;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    height: 142px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.Support .alert-message.sc-ion-alert-md {
+    max-height: unset;
 }

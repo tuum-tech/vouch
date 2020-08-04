@@ -19,6 +19,7 @@ import Details from './pages/Details';
 import SplashScreen from './pages/SplashScreen';
 import OnBoarding from './pages/OnBoarding';
 import SignIn from './pages/SignIn';
+import Support from './pages/Support';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -65,6 +66,7 @@ const App: React.FC = () => {
           <Route path="/requests" render={() => <Requests />} exact={true} />
           <Route path="/requests/details/:id" component={Details} />
           <Route path="/profile" render={() => <Profile />} exact={true} />
+          <Route path="/support" render={() => <Support />} exact={true} />
         </IonRouterOutlet>
 
         <IonTabBar slot="bottom">
@@ -79,6 +81,10 @@ const App: React.FC = () => {
           <IonTabButton tab="profile" href="/profile">
           <IonImg className="tab-icon icon-Profile"  src="../assets/images/components/empty.png"></IonImg>
             <IonLabel>Profile</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="support" href="/support">
+          <IonImg className="tab-icon icon-Support"  src="../assets/images/components/empty.png"></IonImg>
+            <IonLabel>Support</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>

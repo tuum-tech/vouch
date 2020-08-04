@@ -9,6 +9,8 @@ import { emailValidation, showNotification, hideNotification } from '../store/re
 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../store'
+import { useDID } from '../hooks/useDID';
+import { login } from '../store/auth';
 
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
@@ -48,7 +50,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
 
   const dispatch = useDispatch()
 
-  const user = useSelector((state:AppState) => state.auth.user)
+  // const user = useSelector((state:AppState) => state.auth.user)
   const validationProviders = useSelector((state:AppState) => state.validationProviders)
 
   const [sendEmailValidationRequest] = useEmailValidation((txn:any) => { 
@@ -68,10 +70,20 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
     }
    })
 
+   let providerid = ""
+
   const handleValidationProviderClick = (e: any) => {
-    let providerid = e.currentTarget.getAttribute('data-providerid');
-    sendEmailValidationRequest({ user: user, providerId: providerid });
+    providerid = e.currentTarget.getAttribute('data-providerid');
+    signIn({ name: false, email: true, avatar: false })
   }
+
+  const [signIn] = useDID((credentials:any) => { 
+    if(credentials.length) {
+      const credSubjects = credentials.map((cred:any) => cred.credentialSubject)
+      const user = Object.assign({}, ...credSubjects)
+      dispatch(login(user, () => sendEmailValidationRequest({ user: user, providerId: providerid })))    
+    }
+   })
 
   return (
     <IonPage>
@@ -81,14 +93,14 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
         </IonToolbar>
       <IonGrid className="pad-me--top">
         <IonRow>
-        <IonCol className="Providers-List">
+        <IonCol className="Providers-List Profile">
         <IonListHeader>
                   <IonLabel className="List-Header">Choose a validation provider from the list</IonLabel>
                 </IonListHeader>
 <br/>
 
                 {validationProviders.emailValidationProviders && validationProviders.emailValidationProviders.map((emailValidationProvider: any) => 
-                <IonItem key={emailValidationProvider.id} data-providerid={emailValidationProvider.id} className="" onClick={(e) => handleValidationProviderClick(e)}>
+                <IonItem key={emailValidationProvider.id} data-providerid={emailValidationProvider.id} className="fieldContainer" onClick={(e) => handleValidationProviderClick(e)}>
                   <IonThumbnail slot="start">
                     <img src={emailValidationProvider.logo} alt="" />
                   </IonThumbnail>

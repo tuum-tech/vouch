@@ -17,6 +17,7 @@ const initialState: TxnState = {
   approved_txn: null,
   rejected_txn: null,
   expired_txn: null,
+  cancelled_txn: null,
   notification: {
     show: false,
     message: '',
@@ -50,10 +51,11 @@ export const txnReducer = (
         }            
     case GET_ALL_REQUESTS_SUCCESS:
       {
-        let pending_txn = payload.filter((txn:any) => txn.status === "Pending");
+        let pending_txn = payload.filter((txn:any) => txn.status === "New");
         let approved_txn = payload.filter((txn:any) => txn.status === "Approved");
         let rejected_txn = payload.filter((txn:any) => txn.status === "Rejected");
         let expired_txn = payload.filter((txn:any) => txn.status === "Expired");
+        let cancelled_txn = payload.filter((txn:any) => txn.status === "Canceled");
 
         let all_txn = payload.sort((a:any, b:any) => {
           let c:any = new Date(a.date).getTime();
@@ -88,6 +90,12 @@ export const txnReducer = (
           return c > d ? 1 : -1;
         });        
 
+        cancelled_txn = cancelled_txn.sort((a:any, b:any) => {
+          let c:any = new Date(a.date).getTime();
+          let d:any = new Date(b.date).getTime();
+          return c > d ? 1 : -1;
+        });        
+
         return { 
           ...state, 
           txn: all_txn,
@@ -96,7 +104,8 @@ export const txnReducer = (
           pending_txn: pending_txn, 
           approved_txn: approved_txn,
           rejected_txn: rejected_txn,
-          expired_txn: expired_txn
+          expired_txn: expired_txn,
+          cancelled_txn: cancelled_txn,
         };
       }
     case SHOW_NOTIFICATION:
