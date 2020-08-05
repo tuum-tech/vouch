@@ -48,6 +48,9 @@ const RequestsPage: React.FC = () => {
     if(tab_event === 'expired'){
       dispatch(setSelectedTabRequests({'name':'expired','data':requests.expired_txn}))            
     }
+    if(tab_event === 'canceled'){
+      dispatch(setSelectedTabRequests({'name':'cancelled','data':requests.cancelled_txn}))            
+    }    
   }  
 
   return (
@@ -83,6 +86,9 @@ const RequestsPage: React.FC = () => {
           </IonSegmentButton>
           <IonSegmentButton value="expired" disabled={requests.expired_txn == null || requests.expired_txn.length === 0}>
             <IonLabel>Expired</IonLabel>
+          </IonSegmentButton>
+          <IonSegmentButton value="cancelled" disabled={requests.cancelled_txn == null || requests.cancelled_txn.length === 0}>
+            <IonLabel>Cancelled</IonLabel>
           </IonSegmentButton>
         </IonSegment>
           </IonCol>

@@ -126,25 +126,28 @@ const DetailsPage: React.FC = ({ history }: any) => {
           <IonRow 
           className={`text-center 
           ${requestDetails.status === "Approved" ? "approved-tooltip" : ""} 
-          ${requestDetails.status === "Pending" ? "pending-tooltip" : ""}
+          ${requestDetails.status === "New" ? "pending-tooltip" : ""}
           ${requestDetails.status === "Rejected" ? "rejected-tooltip" : ""}
           ${requestDetails.status === "Expired" ? "expired-tooltip" : ""}
+          ${requestDetails.status === "Canceled" ? "cancelled-tooltip" : ""}
           `}>
             <IonCol>
               <IonIcon src=
               {`
                 ${requestDetails.status === "Approved" ? "/assets/images/icons/icon-check.svg" : ""} 
-                ${requestDetails.status === "Pending" ? "/assets/images/icons/icon-wait.svg" : ""}
+                ${requestDetails.status === "New" ? "/assets/images/icons/icon-wait.svg" : ""}
                 ${requestDetails.status === "Rejected" ? "/assets/images/icons/icon-rejected.svg" : ""}
                 ${requestDetails.status === "Expired" ? "/assets/images/icons/icon-expired.svg" : ""}
+                ${requestDetails.status === "Canceled" ? "/assets/images/icons/icon-rejected.svg" : ""}
               `}
               ></IonIcon>
               <IonLabel>
               {`
                 ${requestDetails.status === "Approved" ? "Approved" : ""} 
-                ${requestDetails.status === "Pending" ? "Waiting for Approval" : ""}
+                ${requestDetails.status === "New" ? "Waiting for Approval" : ""}
                 ${requestDetails.status === "Rejected" ? "Rejected" : ""}
                 ${requestDetails.status === "Expired" ? "Expired" : ""}
+                ${requestDetails.status === "Canceled" ? "Cancelled" : ""}
               `}
               </IonLabel>
             </IonCol>

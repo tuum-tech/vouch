@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { IonPage, IonImg, IonGrid, IonRow, IonCol, IonContent, IonButton } from '@ionic/react';
+import React, { useState, useCallback } from 'react';
+import { IonPage, IonImg, IonGrid, IonRow, IonCol, IonContent, IonButton, IonAlert } from '@ionic/react';
 import './OnBoarding.css';
 import { useDispatch } from 'react-redux';
 import { useDID } from '../hooks/useDID';
@@ -8,6 +8,7 @@ import { login } from '../store/auth';
 const OnBoardingPage: React.FC = ({ history }: any) => {
 
   const dispatch = useDispatch()
+  const [showTutorial, setShowTutorial] = useState(false);
 
   const [signIn] = useDID((credentials:any) => { 
     if(credentials.length) {
@@ -69,13 +70,32 @@ const OnBoardingPage: React.FC = ({ history }: any) => {
         <IonRow className="ion-text-center">
           <IonCol className="ion-align-items-center">
             <div>
-              <IonButton className="button cta" onClick={() => { signIn({ name: false, email: false, avatar: false })}}>Take me to App</IonButton>            
+              <IonButton className="button cta" onClick={() => { signIn({ name: false, email: false, avatar: false })}}>
+                <IonImg src="../assets/images/components/did-icon.svg" className="did-icon"></IonImg>
+                 Sign in with DID</IonButton>            
             </div>
           </IonCol>
         </IonRow>
+        <IonRow>
+          <IonCol>
+            <div className="tutorial-link">
+              <button onClick={() => setShowTutorial(true)}>How to use vouch?</button>
+            </div>
+          </IonCol>
+        </IonRow>        
       </IonGrid>
 
       </IonContent>
+
+      <IonAlert
+          isOpen={showTutorial}
+          onDidDismiss={() => setShowTutorial(false)}
+          cssClass='Support service-popup-alert no-image'
+          header={'Tutorial'}
+          message={'<ol><li>Select from the list of available services such as "Email Validation", "Phone Validation", etc</li><li>Choose your preferred validator</li><li>Wait to be verified</li><li>You can swipe down on the Home page to refresh data</li><li>Check out "Approved" tab from Requests page to see all your past requests</li></ol>'}
+          buttons={['OK']}
+        />
+
     </IonPage>
   );
 };

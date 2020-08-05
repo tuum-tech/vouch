@@ -25,9 +25,6 @@ export function useCredSaved(optionalCallback: any = noop) {
         return response.json();
       }
 
-      console.log("useCredSaved Hook")
-      console.log(confirmation_id)
-
       postData(`${process.env.REACT_APP_UPDATE_CRED_SAVED}` + confirmation_id.confirmation_id)
         .then(response => {
           if(response.meta.code === 200) {
