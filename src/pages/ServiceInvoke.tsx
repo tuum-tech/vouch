@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 
 
-import { IonContent ,IonListHeader, IonPage, IonTitle, IonGrid, IonRow, IonCol, IonLabel, IonThumbnail, IonItem, IonToolbar, useIonViewWillEnter, useIonViewWillLeave } from '@ionic/react';
+import { IonContent ,IonListHeader, IonPage, IonTitle, IonGrid, IonRow, IonCol, IonLabel, IonToolbar, useIonViewWillEnter, useIonViewWillLeave, IonRefresher, IonRefresherContent } from '@ionic/react';
 import './ServiceInvoke.css';
 
 import { useEmailValidation } from '../hooks/useEmailValidation'
@@ -11,6 +11,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../store'
 import { useDID } from '../hooks/useDID';
 import { login } from '../store/auth';
+import { getEmailValidationProviders } from '../store/providers';
+import { useProvider } from '../hooks/useProvider';
+
+import { RefresherEventDetail } from '@ionic/core';
 
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
@@ -36,6 +40,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
       });
 
       titleBarManager.addOnItemClickedListener(myIconListener);
+      sendGetEmailValidationProvidersReq('email')      
   });
 
   useIonViewWillLeave(() => {
@@ -46,12 +51,16 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
     });
   })
 
-
-
   const dispatch = useDispatch()
 
-  // const user = useSelector((state:AppState) => state.auth.user)
   const validationProviders = useSelector((state:AppState) => state.validationProviders)
+
+  //Get the list of email validation providers
+  const [sendGetEmailValidationProvidersReq] = useProvider((emailValidationProviders:any) => { 
+    if(emailValidationProviders) {
+      dispatch(getEmailValidationProviders(emailValidationProviders))
+    }  
+  })  
 
   const [sendEmailValidationRequest] = useEmailValidation((txn:any) => { 
     if(txn.data) {
@@ -85,13 +94,29 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
     }
    })
 
+   const doRefresh = (event: CustomEvent<RefresherEventDetail>) => {
+    sendGetEmailValidationProvidersReq('email')
+    setTimeout(() => {
+      event.detail.complete();
+    }, 2000);
+  }
+
   return (
     <IonPage>
       <IonContent>
+
+      <IonRefresher className="refresher" slot="fixed" onIonRefresh={doRefresh} pullFactor={0.5} pullMin={100} pullMax={200}>
+            <IonRefresherContent
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing Requests Status...">
+            </IonRefresherContent>
+        </IonRefresher>
+
       <IonToolbar className="sub-header">
           <IonTitle className="ion-text-start">Email Verification</IonTitle>
         </IonToolbar>
-      <IonGrid className="pad-me--top">
+      <IonGrid className="pad-me--top thick-padding">
         <IonRow>
         <IonCol className="Providers-List Profile">
         <IonListHeader>
@@ -100,14 +125,46 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
 <br/>
 
                 {validationProviders.emailValidationProviders && validationProviders.emailValidationProviders.map((emailValidationProvider: any) => 
-                <IonItem key={emailValidationProvider.id} data-providerid={emailValidationProvider.id} className="fieldContainer" onClick={(e) => handleValidationProviderClick(e)}>
-                  <IonThumbnail slot="start">
-                    <img src={emailValidationProvider.logo} alt="" />
-                  </IonThumbnail>
-                  <IonLabel>
-                    <h2>{emailValidationProvider.name}</h2>
-                  </IonLabel>
-                </IonItem>
+                <IonListHeader key={emailValidationProvider.id} data-providerid={emailValidationProvider.id} className="fieldContainer" style={{'padding': '0', 'maxHeight': '85px'}} onClick={(e) => handleValidationProviderClick(e)}>
+                  <IonGrid>
+                    <IonRow>
+                      <IonCol size="3">
+                        <img src={emailValidationProvider.logo} alt="" style={{'width': '64px', 'height': '64px'}}/>
+                      </IonCol>
+                      <IonCol size="9">
+
+                        <IonGrid style={{'marginTop': '5px'}}>
+                          <IonRow><IonCol style={{'padding': '0'}}>                  
+                            <h2 style={{'margin': '0', 'padding': '0', 'fontSize': '12px'}}>{emailValidationProvider.name}</h2>
+                          </IonCol></IonRow>
+                          <IonRow>
+                            <IonCol style={{'padding': '0', 'fontSize': '10px'}}>
+                              {Object.values(emailValidationProvider.stats).reduce((a:any, b:any) => a + b, 0)} total requests
+                            </IonCol>
+                          </IonRow>
+
+                          <IonRow>
+                            <IonCol style={{'paddingLeft': '0', 'fontSize': '10px'}}>
+                              <img style={{'height': '8px', 'width': '8px', 'margin': '0'}} alt="" src="/assets/images/components/icon-check.svg" />
+                              <span> {emailValidationProvider.stats.Approved ?? 0}</span> 
+                            </IonCol>
+
+                            <IonCol style={{'paddingLeft': '0', 'fontSize': '10px'}}>
+                              <img style={{'height': '8px', 'width': '8px', 'margin': '0'}} alt="" src="/assets/images/components/icon-rejected.svg" />
+                              <span> {emailValidationProvider.stats.Rejected ?? 0}</span> 
+                            </IonCol>
+
+                            <IonCol style={{'paddingLeft': '0', 'fontSize': '10px'}}>
+                              <img style={{'height': '8px', 'width': '8px', 'margin': '0'}} alt="" src="/assets/images/components/icon-wait.svg" />
+                              <span> {emailValidationProvider.stats.New ?? 0}</span>
+                            </IonCol>
+                          </IonRow>
+                        </IonGrid>
+                      </IonCol>
+                    </IonRow>
+                  </IonGrid>
+                  <img style={{'width': '9px', 'height': '16px'}} alt="" src="/assets/images/components/icon-arrow.svg" />
+                </IonListHeader>
                 )}               
         </IonCol>
         </IonRow>
