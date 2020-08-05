@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../store'
 import { useDID } from '../hooks/useDID';
 import { login } from '../store/auth';
+
 import { getEmailValidationProviders } from '../store/providers';
 import { useProvider } from '../hooks/useProvider';
 
@@ -100,6 +101,14 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
       event.detail.complete();
     }, 2000);
   }
+
+  const [signIn] = useDID((credentials:any) => { 
+    if(credentials.length) {
+      const credSubjects = credentials.map((cred:any) => cred.credentialSubject)
+      const user = Object.assign({}, ...credSubjects)
+      dispatch(login(user, () => sendEmailValidationRequest({ user: user, providerId: providerid })))    
+    }
+   })
 
   return (
     <IonPage>
