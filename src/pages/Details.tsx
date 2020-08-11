@@ -126,18 +126,19 @@ const DetailsPage: React.FC = ({ history }: any) => {
           <IonRow 
           className={`text-center 
           ${requestDetails.status === "Approved" ? "approved-tooltip" : ""} 
-          ${requestDetails.status === "New" ? "pending-tooltip" : ""}
-          ${requestDetails.status === "Rejected" ? "rejected-tooltip" : ""}
-          ${requestDetails.status === "Expired" ? "expired-tooltip" : ""}
-          ${requestDetails.status === "Canceled" ? "cancelled-tooltip" : ""}
+          ${(requestDetails.status === "New" || requestDetails.status === "Cancelation in progress") ? "pending-tooltip" : ""} 
+          ${requestDetails.status === "In progress" ? "inprogress-tooltip" : ""} 
+          ${requestDetails.status === "Rejected" ? "rejected-tooltip" : ""} 
+          ${requestDetails.status === "Expired" ? "expired-tooltip" : ""} 
+          ${requestDetails.status === "Canceled" ? "cancelled-tooltip" : ""} 
           `}>
             <IonCol>
               <IonIcon src=
               {`
                 ${requestDetails.status === "Approved" ? "/assets/images/icons/icon-check.svg" : ""} 
-                ${requestDetails.status === "New" ? "/assets/images/icons/icon-wait.svg" : ""}
+                ${(requestDetails.status === "New" || requestDetails.status === "In progress" || requestDetails.status === "Cancelation in progress") ? "/assets/images/icons/icon-wait.svg" : ""}
                 ${requestDetails.status === "Rejected" ? "/assets/images/icons/icon-rejected.svg" : ""}
-                ${requestDetails.status === "Expired" ? "/assets/images/icons/icon-expired.svg" : ""}
+                ${requestDetails.status === "Expired" ? "/assets/images/icons/icon-rejected.svg" : ""}
                 ${requestDetails.status === "Canceled" ? "/assets/images/icons/icon-rejected.svg" : ""}
               `}
               ></IonIcon>
@@ -145,9 +146,11 @@ const DetailsPage: React.FC = ({ history }: any) => {
               {`
                 ${requestDetails.status === "Approved" ? "Approved" : ""} 
                 ${requestDetails.status === "New" ? "Waiting for Approval" : ""}
+                ${requestDetails.status === "In progress" ? "In Progress" : ""}
                 ${requestDetails.status === "Rejected" ? "Rejected" : ""}
                 ${requestDetails.status === "Expired" ? "Expired" : ""}
                 ${requestDetails.status === "Canceled" ? "Cancelled" : ""}
+                ${requestDetails.status === "Cancelation in progress" ? "Cancellation In Progress" : ""}
               `}
               </IonLabel>
             </IonCol>

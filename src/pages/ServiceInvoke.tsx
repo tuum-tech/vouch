@@ -157,7 +157,14 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
 
                             <IonCol style={{'paddingLeft': '0', 'fontSize': '10px'}}>
                               <img style={{'height': '8px', 'width': '8px', 'margin': '0'}} alt="" src="/assets/images/components/icon-wait.svg" />
-                              <span> {emailValidationProvider.stats.New ?? 0}</span>
+                              <span> {Object.keys(emailValidationProvider.stats).reduce(function (previous, key) {
+if(key === 'New' || key === 'In progress'){
+    return previous + emailValidationProvider.stats[key];
+} else {
+  return previous
+}
+}, 0)
+}</span>
                             </IonCol>
                           </IonRow>
                         </IonGrid>

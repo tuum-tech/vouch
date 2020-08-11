@@ -26,8 +26,18 @@ const RequestBlocks = (props: any) => {
                       <h2>Email Validation</h2>
                       <p>{relativeTime(txn.created)}</p>
                     </IonLabel>
-                    <IonButton shape="round" className="status" style={{margin: 0}} color={`${txn.status === "Approved" ? "success" : ""}${txn.status === "New" ? "light" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}${txn.status === "Canceled" ? "warning" : ""}`} 
-                    slot="end">{txn.status}</IonButton>
+                    <IonButton shape="round" className="status" style={{margin: 0}} color={`${txn.status === "Approved" ? "success" : ""}${(txn.status === "New" || txn.status === 'Cancelation in progress') ? "light" : ""}${txn.status === "In progress" ? "primary" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}${txn.status === "Canceled" ? "warning" : ""}`} 
+                    slot="end">
+                      {`
+                        ${txn.status === "Approved" ? "Approved" : ""} 
+                        ${txn.status === "New" ? "New" : ""}
+                        ${txn.status === "In progress" ? "In Progress" : ""}
+                        ${txn.status === "Rejected" ? "Rejected" : ""}
+                        ${txn.status === "Expired" ? "Expired" : ""}
+                        ${txn.status === "Canceled" ? "Cancelled" : ""}
+                        ${txn.status === "Cancelation in progress" ? "Cancelling" : ""}
+                      `}                      
+                      </IonButton>
                   </IonItem>
           </IonCol>
           </IonRow>
