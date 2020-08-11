@@ -3,7 +3,8 @@ import {
     EMAIL_VALIDATION_REQUEST_SUCCESS,
     GET_ALL_REQUESTS_SUCCESS,
     SET_SELECTED_TAB_REQUESTS,
-    CRED_SAVED_SUCCESS
+    CRED_SAVED_SUCCESS,
+    REQUEST_CANCELLED_SUCCESS
 } from "./types";
   
 import { ThunkAction } from "redux-thunk";
@@ -71,6 +72,23 @@ TxnActionTypes
 
 export const credSavedSuccess = (txn: any): TxnActionTypes => ({
     type: CRED_SAVED_SUCCESS,
+    payload: txn
+});
+
+export const requestCancelled = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(requestCancelledSuccess(txn));
+    callback();
+})()
+};
+
+export const requestCancelledSuccess = (txn: any): TxnActionTypes => ({
+    type: REQUEST_CANCELLED_SUCCESS,
     payload: txn
 });
 

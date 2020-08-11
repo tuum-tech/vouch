@@ -1,5 +1,5 @@
-import React from 'react';
-import { IonContent, IonPage, IonSegment, IonSegmentButton, IonTitle,IonGrid,IonRow,IonCol,IonLabel, IonToolbar, IonRefresher, IonRefresherContent } from '@ionic/react';
+import React, { useEffect } from 'react';
+import { IonContent, IonPage, IonSegment, IonSegmentButton, IonTitle,IonGrid,IonRow,IonCol,IonLabel, IonToolbar, IonRefresher, IonRefresherContent, useIonViewWillEnter } from '@ionic/react';
 import './Requests.css';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -30,6 +30,10 @@ const RequestsPage: React.FC = () => {
       dispatch(getAllRequests(txn))
     }
    })   
+
+   useIonViewWillEnter(() => {
+    sendGetAllRequestsReq(user)
+   });
 
   const handleClick = function(e: any) {
     let tab_event = e.detail.value;
