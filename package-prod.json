@@ -1,6 +1,6 @@
 {
   "name": "vouch",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@capacitor/android": "^2.0.2",
