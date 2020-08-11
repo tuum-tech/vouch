@@ -211,8 +211,14 @@ const HomePage: React.FC = ({ history }: any) => {
                     <h2>Email Validation</h2>
                     <p>{relativeTime(txn.created)}</p>
                   </IonLabel>
-                  <IonButton shape="round" className="status" color={`${txn.status === "Approved" ? "success" : ""}${txn.status === "New" ? "light" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}${txn.status === "Canceled" ? "warning" : ""}`} 
-                    slot="end">{txn.status}</IonButton>                  
+                  <IonButton shape="round" className="status" color={`${(txn.status === "New" || txn.status === 'Cancelation in progress') ? "light" : ""}${txn.status === "In progress" ? "primary" : ""}`} 
+                    slot="end">
+                      {`
+                        ${txn.status === "New" ? "New" : ""}
+                        ${txn.status === "In progress" ? "In Progress" : ""}
+                        ${txn.status === "Cancelation in progress" ? "Cancelling" : ""}
+                      `}                      
+                      </IonButton>                  
                 </IonItem>
 
                 )}

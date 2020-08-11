@@ -64,6 +64,17 @@
   border-radius: 5px;     
 }
 
+.Details .inprogress-tooltip {
+  background: #5432D3 0% 0% no-repeat padding-box;
+  font: SemiBold 10px/16px Poppins;
+  letter-spacing: 0px;
+  color: #FFFFFF;
+  opacity: 1;
+  margin-bottom: 10px;
+  padding: 5px 5px; 
+  border-radius: 5px;     
+}
+
 .Details .userdid {
   margin-top: -5px;
   padding-top: 0;

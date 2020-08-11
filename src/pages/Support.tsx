@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonButton, IonGrid, IonRow, IonCol, IonListHeader, IonLabel, IonToolbar, IonImg, IonPage, IonTitle, IonContent, IonTextarea, IonIcon } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonToolbar, IonPage, IonTitle, IonContent } from '@ionic/react';
 import './Profile.css';
 import './Support.css';
 
