@@ -2,8 +2,6 @@
 **/.DS_Store
 node_modules/
 dist/
-www/
-build/
 
 # Environments
 .env
