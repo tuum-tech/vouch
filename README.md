@@ -25,3 +25,9 @@ cp .env.example .env
 ```
 trinity-cli run -p android
 ```
+
+# Deploying to production
+- If you're using jscrambler and would like to only protect certain files,
+```
+grep -nr tQOCdf08LkM8DVnpQHwrdzwxtzlHrkNP629jzLuFKFfpUHXtdORCMJdxX8HhiOW7 build/static | sed 's/ *:.*//'
+```
