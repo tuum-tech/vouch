@@ -7,8 +7,9 @@ import { AppState } from '../store';
 import { useParams } from 'react-router-dom';
 import { useCredSaver } from '../hooks/useCredSaver';
 import { useCredSaved } from '../hooks/useCredSaved';
-import { showNotification, hideNotification, credSaved } from '../store/requests';
+import { showNotification, hideNotification, credSaved, requestCancelled } from '../store/requests';
 import moment from 'moment'
+import { useCancelRequest } from '../hooks/useCancelRequest';
 
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
@@ -93,6 +94,19 @@ const DetailsPage: React.FC = ({ history }: any) => {
     }, 3000)           
    })
 
+   const handleCancelRequestClick = (e:any) => {
+    const confirmation_id = requestDetails.id
+    sendCancelRequest({ confirmation_id });
+   }
+
+   const [sendCancelRequest] = useCancelRequest((response:any) => {
+    dispatch(requestCancelled(response))
+    dispatch(showNotification({"message": response.message, "type": "success", "show": true}))
+    setTimeout(() => {
+      dispatch(hideNotification())
+    }, 3000)           
+   })
+
   const handleSaveCredClick = (e: any) => {
 
     let verifiedCredential = requestDetails.verifiedCredential
@@ -136,7 +150,8 @@ const DetailsPage: React.FC = ({ history }: any) => {
               <IonIcon src=
               {`
                 ${requestDetails.status === "Approved" ? "/assets/images/icons/icon-check.svg" : ""} 
-                ${(requestDetails.status === "New" || requestDetails.status === "In progress" || requestDetails.status === "Cancelation in progress") ? "/assets/images/icons/icon-wait.svg" : ""}
+                ${(requestDetails.status === "New" || requestDetails.status === "Cancelation in progress") ? "/assets/images/icons/icon-wait.svg" : ""}
+                ${requestDetails.status === "In progress" ? "/assets/images/icons/icon-in-progress.svg" : ""}
                 ${requestDetails.status === "Rejected" ? "/assets/images/icons/icon-rejected.svg" : ""}
                 ${requestDetails.status === "Expired" ? "/assets/images/icons/icon-rejected.svg" : ""}
                 ${requestDetails.status === "Canceled" ? "/assets/images/icons/icon-rejected.svg" : ""}
@@ -146,7 +161,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
               {`
                 ${requestDetails.status === "Approved" ? "Approved" : ""} 
                 ${requestDetails.status === "New" ? "Waiting for Approval" : ""}
-                ${requestDetails.status === "In progress" ? "In Progress" : ""}
+                ${requestDetails.status === "In progress" ? "Validation In Progress" : ""}
                 ${requestDetails.status === "Rejected" ? "Rejected" : ""}
                 ${requestDetails.status === "Expired" ? "Expired" : ""}
                 ${requestDetails.status === "Canceled" ? "Cancelled" : ""}
@@ -270,6 +285,16 @@ const DetailsPage: React.FC = ({ history }: any) => {
             </IonListHeader>
             }                        
           </IonRow>
+          { requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') &&          
+          <IonRow className="text-center">
+            <IonCol>
+              <IonButton className="btnCancelRequest text-center" fill="outline"
+              onClick={(e) => handleCancelRequestClick(e)}
+              color="danger"
+          >Cancel Request</IonButton>
+            </IonCol>
+          </IonRow>
+          }
           <IonRow className="text-center">
             <IonCol>
               <IonButton className="btnCredentials text-center" 

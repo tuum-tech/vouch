@@ -6,7 +6,8 @@ import {
   SHOW_NOTIFICATION,
   HIDE_NOTIFICATION,
   SET_SELECTED_TAB_REQUESTS,
-  CRED_SAVED_SUCCESS
+  CRED_SAVED_SUCCESS,
+  REQUEST_CANCELLED_SUCCESS
 } from "./types";
 
 const initialState: TxnState = {
@@ -140,7 +141,25 @@ export const txnReducer = (
               type: 'success'
             }
           };
-        }              
+        }
+      case REQUEST_CANCELLED_SUCCESS:
+        {  
+          return { ...state, 
+            txn: state.txn.map(
+              (t:any) => t.id === payload.data.id ? payload.data : t
+            ),
+            pending_txn: state.pending_txn.filter(
+              (t:any) => t.id !== payload.data.id
+            ),
+            notification: {
+              show: true,
+              message: payload.message,
+              type: 'success'
+            }
+          };
+        }        
+        
+
     default:
       return state;
   }

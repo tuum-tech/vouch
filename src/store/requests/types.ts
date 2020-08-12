@@ -12,6 +12,11 @@ export const SET_SELECTED_TAB_REQUESTS = "SET_SELECTED_TAB_REQUESTS";
 export const CRED_SAVED = "CRED_SAVED";
 export const CRED_SAVED_SUCCESS = "CRED_SAVED_SUCCESS";
 
+export const REQUEST_CANCELLED = "REQUEST_CANCELLED";
+export const REQUEST_CANCELLED_SUCCESS = "REQUEST_CANCELLED_SUCCESS";
+
+
+
 export interface TxnState {
   txn: any;
   selected_tab_txn: any;
@@ -69,6 +74,16 @@ interface CredSavedSuccessAction {
     payload?: any
 }  
 
+interface RequestCancelledAction {
+    type: typeof REQUEST_CANCELLED;
+    payload?: any
+}
+
+interface RequestCancelledSuccessAction {
+    type: typeof REQUEST_CANCELLED_SUCCESS;
+    payload?: any
+}  
+
 export type TxnActionTypes =
     | EmailValidationRequestAction
     | EmailValidationRequestSuccessAction
@@ -79,3 +94,5 @@ export type TxnActionTypes =
     | HideNotificationAction
     | CredSavedAction
     | CredSavedSuccessAction
+    | RequestCancelledAction
+    | RequestCancelledSuccessAction
