@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -20,6 +20,7 @@ import SplashScreen from './pages/SplashScreen';
 import OnBoarding from './pages/OnBoarding';
 import SignIn from './pages/SignIn';
 import Support from './pages/Support';
+import { getEmailValidationProviders } from './store/providers'
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -46,6 +47,9 @@ import './theme/variables.css';
 import './theme/fonts.css';
 import { Storage } from '@capacitor/core';
 import { useRequest } from './hooks/useRequest';
+import { useSelector, useDispatch } from 'react-redux';
+import { useProvider } from './hooks/useProvider';
+import { AppState } from './store';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
@@ -57,6 +61,25 @@ type RPCMessage = {
 }
 
 const App: React.FC = () => {
+
+  const dispatch = useDispatch()  
+  const validationProviders = useSelector((state:AppState) => state.validationProviders)
+
+  useEffect(() => {
+    if(!validationProviders.emailValidationProviders){
+      sendGetEmailValidationProvidersReq('email')
+    }
+   },
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   []
+ );
+
+  //Get the list of email validation providers
+  const [sendGetEmailValidationProvidersReq] = useProvider((emailValidationProviders:any) => { 
+    if(emailValidationProviders) {
+      dispatch(getEmailValidationProviders(emailValidationProviders))
+    }  
+  })
 
   return (
   <IonApp>
@@ -152,6 +175,7 @@ const checkPendingRequests = () => {
 
   setInterval(async () => {
     const requestIds = await Storage.get({ key: 'pendingRequests' });
+    const emailValidationProviders = await Storage.get({ key: 'emailValidationProviders'});
 
     if(requestIds && requestIds.value){
       let parsedPendingRequests = JSON.parse(requestIds.value);
@@ -161,9 +185,15 @@ const checkPendingRequests = () => {
         if (response != null && response.data != null){
           if(response.data.status === "Approved" || response.data.status === "Rejected"){
 
+            let provider = {'id': response.data.provider, 'name': ''};
+
+            if(response.data.validationType === 'email'){
+              provider = JSON.parse(emailValidationProviders.value).filter((provider:any) => provider.id === response.data.provider)[0]
+            }
+
             notificationManager.sendNotification({
               key: response.data.id,
-              title: `Your ${response.data.validationType} validation request from ${response.data.provider} has been ${response.data.status}.`,
+              title: `Your ${response.data.validationType} validation request from ${provider.name ?? provider.id} has been ${response.data.status}.`,
               message : `${response.data.validationType}:  ${response.data.requestParams.email} `
             })
           }
