@@ -38,7 +38,10 @@
   "urls": [
     "http://*",
     "https://*"
-  ],
+  ],  
+  "startup_service": [
+    "backgroundservice"
+  ],  
   "background_color": "#5432D3",
   "theme_display": "show",
   "theme_color": "#FFFFFF"
