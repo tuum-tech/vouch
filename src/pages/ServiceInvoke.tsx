@@ -67,7 +67,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
   const [sendEmailValidationRequest] = useEmailValidation((txn:any) => { 
     if(txn.data) {
 
-      let validationProvider:any = validationProviders.emailValidationProviders.filter((provider:any) => provider.id === txn.data.provider);
+      // let validationProvider:any = validationProviders.emailValidationProviders.filter((provider:any) => provider.id === txn.data.provider);
 
       let payload = {
           method: "new",
@@ -75,9 +75,9 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
             id: txn.data.id,
             type: 'email',
             value: txn.data.requestParams.email,
-            validator: validationProvider.length > 0 ? validationProvider[0].name : txn.data.provider
+            validator: txn.data.provider //validationProvider.length > 0 ? validationProvider[0].name : txn.data.provider
           }
-      } 
+      }
 
       // AppManagerPlugin.MessageType.INTERNAL = 1
       // Cannot access ambient const enums when the '--isolatedModules' flag is provided.ts(2748)

@@ -143,11 +143,11 @@ const initServiceListener = () => {
     let rpcMessage = JSON.parse(message.message) as RPCMessage;
     switch (rpcMessage.method) {
         case "new":
-            notificationManager.sendNotification({
-                key: rpcMessage.param.id,
-                title: `Your ${rpcMessage.param.type} validation request from ${rpcMessage.param.validator} has been generated.`,
-                message : `${rpcMessage.param.type}:  ${rpcMessage.param.value} `
-            })
+            // notificationManager.sendNotification({
+            //     key: rpcMessage.param.id,
+            //     title: `Your ${rpcMessage.param.type} validation request from ${rpcMessage.param.validator} has been generated.`,
+            //     message : `${rpcMessage.param.type}:  ${rpcMessage.param.value} `
+            // })
 
             const requestIds = await Storage.get({ key: 'pendingRequests' });
 
@@ -183,7 +183,7 @@ const checkPendingRequests = () => {
 
       const [sendGetRequest] = useRequest(async (response:any) => {  
         if (response != null && response.data != null){
-          if(response.data.status === "Approved" || response.data.status === "Rejected"){
+          if(response.data.status === "Approved" || response.data.status === "Rejected" || response.data.status === "Canceled"){
 
             let provider = {'id': response.data.provider, 'name': ''};
 
@@ -191,14 +191,28 @@ const checkPendingRequests = () => {
               provider = JSON.parse(emailValidationProviders.value).filter((provider:any) => provider.id === response.data.provider)[0]
             }
 
+            let title = `${response.data.validationType.charAt(0).toUpperCase()}${response.data.validationType.slice(1)} Validation Request ${response.data.status}`
+            let message = "";
+            switch(response.data.status){
+              case 'Approved': 
+                message = `Your email validation from ${provider.name ?? provider.id} has been approved.`
+                break;              
+              case 'Rejected': 
+                message = `Your email validation from ${provider.name ?? provider.id} has been rejected. Please try sending another request or choose another validator.`
+                break;
+              case 'Canceled':
+                message = `Your email validation from ${provider.name ?? provider.id} has been cancelled because the validator did not respond to your request in time. Please try sending another request or choose another validator.`
+                break;
+              default:
+                message = `Your ${response.data.validationType} validation request from ${provider.name ?? provider.id} has been ${response.data.status}.`                              
+            }
+
             notificationManager.sendNotification({
               key: response.data.id,
-              title: `Your ${response.data.validationType} validation request from ${provider.name ?? provider.id} has been ${response.data.status}.`,
-              message : `${response.data.validationType}:  ${response.data.requestParams.email} `
+              title: title,
+              message: message
             })
-          }
 
-          if(response.data.status === "Approved" || response.data.status === "Rejected" || response.data.status === "Canceled") {
             remainingPendingRequests = remainingPendingRequests.filter((value:any) => value !== response.data.id)  
             await Storage.set({ key: 'pendingRequests', value: JSON.stringify(remainingPendingRequests) });                
           }
