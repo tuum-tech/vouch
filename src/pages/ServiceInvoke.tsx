@@ -17,6 +17,7 @@ import { useProvider } from '../hooks/useProvider';
 
 import { RefresherEventDetail } from '@ionic/core';
 
+declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
 const ServiceInvokePage: React.FC = ({ history }: any) => {
@@ -65,6 +66,31 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
 
   const [sendEmailValidationRequest] = useEmailValidation((txn:any) => { 
     if(txn.data) {
+
+      // let validationProvider:any = validationProviders.emailValidationProviders.filter((provider:any) => provider.id === txn.data.provider);
+
+      let payload = {
+          method: "new",
+          param: {
+            id: txn.data.id,
+            type: 'email',
+            value: txn.data.requestParams.email,
+            validator: txn.data.provider //validationProvider.length > 0 ? validationProvider[0].name : txn.data.provider
+          }
+      }
+
+      // AppManagerPlugin.MessageType.INTERNAL = 1
+      // Cannot access ambient const enums when the '--isolatedModules' flag is provided.ts(2748)
+      // Using the real value of the constant due to above limitation
+
+      appManager.sendMessage("#service:backgroundservice", 1, JSON.stringify(payload), ()=>{
+          // Nothing to do
+          console.log("stored a request to be checked by background service")
+      }, (err:any)=>{
+          console.log("Failed to send RPC message to the background service", err);
+      });
+
+
       dispatch(emailValidation(txn.data, () => goTo('/home')))
       dispatch(showNotification({"message": txn.message, "type": "success", "show": true}))
       setTimeout(() => {
@@ -76,7 +102,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
       dispatch(showNotification({"message": txn.message, "type": "warning", "show": true}))
       setTimeout(() => {
         dispatch(hideNotification())
-      }, 3000) 
+      }, 5000) 
     }
    })
 

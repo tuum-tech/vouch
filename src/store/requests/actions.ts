@@ -9,6 +9,7 @@ import {
   
 import { ThunkAction } from "redux-thunk";
 import { AppState } from "../";
+import { Storage } from "@capacitor/core";
 
  export const emailValidation = (txn: any, callback: any = noop): ThunkAction<
     void,
@@ -83,6 +84,15 @@ TxnActionTypes
 > => dispatch => {
 (async function(){
     dispatch(requestCancelledSuccess(txn));
+
+    const requestIds = await Storage.get({ key: 'pendingRequests' });
+    if(requestIds && requestIds.value){
+      let remainingPendingRequests = JSON.parse(requestIds.value);
+
+      remainingPendingRequests = remainingPendingRequests.filter((value:any) => value !== txn.data.id)
+      await Storage.set({ key: 'pendingRequests', value: JSON.stringify(remainingPendingRequests) });                      
+    } 
+
     callback();
 })()
 };
