@@ -1,9 +1,9 @@
 {
-  "id": "tech.tuum.test.vouch",
+  "id": "tech.tuum.vouch",
   "version": "1.1.0",
   "version_code": 3,
-  "name": "Vouch Test",
-  "short_name": "Vouch Test",
+  "name": "Vouch",
+  "short_name": "Vouch",
   "short_description": "Get your DID verified",
   "description": "Get your DID verified",
   "start_url": "index.html",
@@ -15,7 +15,7 @@
       "src": "assets/images/app_logos/logo.png",
       "sizes": "128x128",
       "type": "image/png"
-    },
+    },  
     {
       "src": "assets/images/app_logos/logo.png",
       "sizes": "512x512",
@@ -36,12 +36,11 @@
     "NetworkStatus"
   ],
   "urls": [
-    "http://*",
-    "https://*"
-  ],  
+    "https://vouch-app-restapi.tuum.tech/*"
+  ],
   "startup_service": [
     "backgroundservice"
-  ],  
+  ],    
   "background_color": "#5432D3",
   "theme_display": "show",
   "theme_color": "#FFFFFF"
