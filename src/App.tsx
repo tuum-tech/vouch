@@ -60,7 +60,7 @@ type RPCMessage = {
   param: any;
 }
 
-const App: React.FC = () => {
+const App: React.FC = ({ history }: any) => {
 
   const dispatch = useDispatch()  
   const validationProviders = useSelector((state:AppState) => state.validationProviders)
@@ -124,10 +124,10 @@ const App: React.FC = () => {
   </IonApp>
   )};
 
-document.addEventListener("deviceready", () => {
+document.addEventListener("deviceready", (history: any) => {
   appManager.getStartupMode((startupInfo: AppManagerPlugin.StartupInfo) => {
       if (startupInfo.startupMode === 'service'){
-        initServiceListener();
+        initServiceListener(history);
       } else {
           appManager.setVisible("show");
 
@@ -138,7 +138,12 @@ document.addEventListener("deviceready", () => {
   });
 }, false);
 
-const initServiceListener = () => {
+const initServiceListener = (history: any) => {
+
+  appManager.setIntentListener((intent: AppManagerPlugin.ReceivedIntent) => {
+    onReceiveIntent(intent, history);
+  });
+
   appManager.setListener(async (message: AppManagerPlugin.ReceivedMessage) => {
     let rpcMessage = JSON.parse(message.message) as RPCMessage;
     switch (rpcMessage.method) {
@@ -167,6 +172,12 @@ const initServiceListener = () => {
   });
 
   checkPendingRequests();
+}
+
+const onReceiveIntent = (intent: AppManagerPlugin.ReceivedIntent, history: any) => {
+  console.log("Intent received message:", intent.action, ". params: ", intent.params, ". from: ", intent.from);
+  // console.log("Trying to navigate to service invoke page from intent")
+  // history.push('/home/service-invoke');
 }
 
 const checkPendingRequests = () => {
