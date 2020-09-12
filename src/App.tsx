@@ -177,6 +177,7 @@ const initServiceListener = (history: any) => {
 const onReceiveIntent = (intent: AppManagerPlugin.ReceivedIntent, history: any) => {
   console.log("Intent received message:", intent.action, ". params: ", intent.params, ". from: ", intent.from);
   // console.log("Trying to navigate to service invoke page from intent")
+  // appManager.setVisible("show");
   // history.push('/home/service-invoke');
 }
 
