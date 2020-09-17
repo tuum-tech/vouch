@@ -22,8 +22,9 @@ const SplashScreenPage: React.FC = ({ history }: any) => {
   const onDeviceReady = useCallback(     
     async () => {
       const hasOnboarded = await Storage.get({ key: 'onboarded' })
+      const hasUserdata = await Storage.get({key: 'user' })
         setTimeout(async () => {
-          if(!hasOnboarded.value){
+          if(!hasOnboarded.value || !hasUserdata.value){
             await Storage.set({ key: 'onboarded', value: 'true'})        
             goTo('/onboarding')  
           } else {
