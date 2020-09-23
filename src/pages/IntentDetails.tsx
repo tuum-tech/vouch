@@ -170,7 +170,7 @@ const IntentDetailsPage: React.FC = () => {
           </IonRow>
 
 
-          <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '5px'}}>
+          <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px'}}>
           <h2>Request</h2>
           { requestDetails && requestDetails.validationType &&           
             <IonListHeader className="fieldContainer2">

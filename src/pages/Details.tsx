@@ -58,7 +58,16 @@ const DetailsPage: React.FC = ({ history }: any) => {
   
 
 
-  let provider = {'did': '', 'name': '', 'logo': ''};  
+  let provider = {
+    'did': '',
+    'name': '', 
+    'logo': '', 
+    'validation': {
+      'email': {
+        'next_steps': []
+      }
+    }
+  }; 
   if(requestDetails && requestDetails.validationType === 'email'){
      provider = validationProviders.emailValidationProviders.filter((provider:any) => provider.id === requestDetails.provider)[0]
   }
@@ -132,7 +141,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
     <IonPage className="Details">
       <IonContent>
         <IonToolbar className="sub-header">
-          <IonTitle className="ion-text-start">Request Details</IonTitle>
+          <IonTitle className="ion-text-start">Your Request</IonTitle>
         </IonToolbar>
         <IonGrid className="pad-me--top thick-padding">
 
@@ -172,10 +181,10 @@ const DetailsPage: React.FC = ({ history }: any) => {
           </IonRow>
 
 
-          <IonRow>
+          <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px'}}>
           <h2>Request</h2>
           { requestDetails && requestDetails.validationType &&           
-            <IonListHeader className="fieldContainer fieldContainer2">
+            <IonListHeader className="fieldContainer2">
               <IonCol size="4">
                 <IonLabel className="label">Validation Type</IonLabel>
               </IonCol>
@@ -189,8 +198,8 @@ const DetailsPage: React.FC = ({ history }: any) => {
               </IonCol>
             </IonListHeader>
             }
-            { requestDetails && requestDetails.verifiedCredential.issuanceDate &&           
-            <IonListHeader className="fieldContainer fieldContainer2">
+            { requestDetails && requestDetails.verifiedCredential && requestDetails.verifiedCredential.issuanceDate &&           
+            <IonListHeader className="fieldContainer2">
               <IonCol size="4">
                 <IonLabel className="label">Issuance Date</IonLabel>
               </IonCol>  
@@ -199,8 +208,8 @@ const DetailsPage: React.FC = ({ history }: any) => {
               </IonCol>
             </IonListHeader>
             }
-            { requestDetails && requestDetails.verifiedCredential.expirationDate &&           
-            <IonListHeader className="fieldContainer">
+            { requestDetails && requestDetails.verifiedCredential && requestDetails.verifiedCredential.expirationDate &&           
+            <IonListHeader>
               <IonCol size="4">
                 <IonLabel className="label">Expiration Date</IonLabel>
               </IonCol>  
@@ -209,12 +218,55 @@ const DetailsPage: React.FC = ({ history }: any) => {
               </IonCol>
             </IonListHeader>
             }
+            <IonListHeader className="fieldContainer2">
+            <IonCol size="3">
+              <IonLabel className="label">DID</IonLabel>
+            </IonCol>            
+            <IonCol size="8" className="userdid ion-text-right">
+              <IonTextarea rows={2} cols={12} id="userDID" readonly value={requestDetails && requestDetails.did}>
+              </IonTextarea>
+            </IonCol>
+            <IonCol size="1" style={{margin: 'auto'}}>
+              <IonIcon name="copy-outline" src="/assets/images/icons/copy-outline.svg" onClick={(e:any) => copyText("userDID")} />
+            </IonCol>           
+            </IonListHeader> 
+            { requestDetails && requestDetails.requestParams && requestDetails.requestParams.name &&          
+            <IonListHeader>
+              <IonCol size="3">
+                <IonLabel className="label">Name</IonLabel>
+              </IonCol>
+              <IonCol size="9" className="ion-text-right">
+                <IonLabel className="value">{requestDetails.requestParams.name}</IonLabel>
+              </IonCol>
+            </IonListHeader>
+            }
+            { requestDetails && requestDetails.requestParams && requestDetails.requestParams.email &&          
+            <IonListHeader>
+              <IonCol size="3">
+                <IonLabel className="label">Email</IonLabel>
+              </IonCol>
+              <IonCol size="9" className="ion-text-right">
+                <IonLabel className="value">{requestDetails.requestParams.email}</IonLabel>
+              </IonCol>
+            </IonListHeader>
+            }
+            { requestDetails && requestDetails.requestParams && requestDetails.requestParams.telephone &&          
+            <IonListHeader>
+              <IonCol size="3">
+                <IonLabel className="label">Mobile Phone</IonLabel>
+              </IonCol>
+              <IonCol size="9" className="ion-text-right">
+                <IonLabel className="value">{requestDetails.requestParams.telephone}</IonLabel>
+              </IonCol>
+            </IonListHeader>
+            }                        
           </IonRow>
 
-          <IonRow>
+          <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px',
+    marginTop: '10px'}}>
           <h2>Validator</h2>
           { requestDetails && requestDetails.provider &&           
-            <IonListHeader className="fieldContainer fieldContainer2">
+            <IonListHeader className="fieldContainer2">
               <IonCol size="4">
                 <IonLabel className="label">Name</IonLabel>
               </IonCol>                
@@ -224,8 +276,8 @@ const DetailsPage: React.FC = ({ history }: any) => {
               </IonCol>
             </IonListHeader>
             }
-            { requestDetails && requestDetails.provider &&           
-            <IonListHeader className="fieldContainer">
+            { requestDetails && requestDetails.provider &&            
+            <IonListHeader>
             <IonCol size="3">
               <IonLabel className="label">DID</IonLabel>
             </IonCol>            
@@ -240,50 +292,18 @@ const DetailsPage: React.FC = ({ history }: any) => {
             }           
             </IonRow>
 
-            <IonRow>
-            <h2>Your Credentials</h2>
-            <IonListHeader className="fieldContainer fieldContainer2">
-            <IonCol size="3">
-              <IonLabel className="label">DID</IonLabel>
-            </IonCol>            
-            <IonCol size="8" className="userdid ion-text-right">
-              <IonTextarea rows={2} cols={12} id="userDID" readonly value={requestDetails && requestDetails.did}>
-              </IonTextarea>
-            </IonCol>
-            <IonCol size="1" style={{margin: 'auto'}}>
-              <IonIcon name="copy-outline" src="/assets/images/icons/copy-outline.svg" onClick={(e:any) => copyText("userDID")} />
-            </IonCol>           
-            </IonListHeader> 
-            { requestDetails && requestDetails.requestParams.name &&          
-            <IonListHeader className="fieldContainer">
-              <IonCol size="3">
-                <IonLabel className="label">Name</IonLabel>
-              </IonCol>
-              <IonCol size="9" className="ion-text-right">
-                <IonLabel className="value">{requestDetails.requestParams.name}</IonLabel>
-              </IonCol>
-            </IonListHeader>
-            }
-            { requestDetails && requestDetails.requestParams.email &&          
-            <IonListHeader className="fieldContainer">
-              <IonCol size="3">
-                <IonLabel className="label">Email</IonLabel>
-              </IonCol>
-              <IonCol size="9" className="ion-text-right">
-                <IonLabel className="value">{requestDetails.requestParams.email}</IonLabel>
-              </IonCol>
-            </IonListHeader>
-            }
-            { requestDetails && requestDetails.requestParams.telephone &&          
-            <IonListHeader className="fieldContainer">
-              <IonCol size="3">
-                <IonLabel className="label">Mobile Phone</IonLabel>
-              </IonCol>
-              <IonCol size="9" className="ion-text-right">
-                <IonLabel className="value">{requestDetails.requestParams.telephone}</IonLabel>
-              </IonCol>
-            </IonListHeader>
-            }                        
+            <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px',
+    marginTop: '10px'}}>
+            <h2>Next Steps</h2>
+            {provider.validation.email.next_steps.map((step: any, index: number) => 
+              <IonListHeader className="fieldContainer">
+                  <IonLabel>
+                    <span className="label">Step {index + 1}:</span><br/>
+                    <span className="value">{step}</span>
+                  </IonLabel>
+              </IonListHeader>
+            )}
+
           </IonRow>
           { requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') &&          
           <IonRow className="text-center">
