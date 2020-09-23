@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Redirect, Route } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import {
   IonApp,
   IonLabel,
@@ -20,7 +21,9 @@ import SplashScreen from './pages/SplashScreen';
 import OnBoarding from './pages/OnBoarding';
 import SignIn from './pages/SignIn';
 import Support from './pages/Support';
-import { getEmailValidationProviders } from './store/providers'
+import IntentServiceInvoke from './pages/IntentServiceInvoke';
+import IntentDetails from './pages/IntentDetails';
+import { getEmailValidationProviders } from './store/providers';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -60,10 +63,52 @@ type RPCMessage = {
   param: any;
 }
 
-const App: React.FC = ({ history }: any) => {
+
+
+const App: React.FC = () => {
+
+  const history = createBrowserHistory();  
 
   const dispatch = useDispatch()  
   const validationProviders = useSelector((state:AppState) => state.validationProviders)
+
+  const goTo = useCallback(
+    (path: string) => {
+      history.push(path, { direction: 'forward' });
+      history.go(0);
+    },
+    [history],
+  );
+
+  const onDeviceReady = useCallback(
+    () => {
+
+      appManager.getStartupMode((startupInfo: AppManagerPlugin.StartupInfo) => {
+        if (startupInfo.startupMode === 'service'){
+          initServiceListener();
+        } else {
+              appManager.setIntentListener((intent: AppManagerPlugin.ReceivedIntent) => {
+                onReceiveIntent(intent, goTo, dispatch);
+              });
+
+              titleBarManager.setTitle("Vouch dApp");
+              titleBarManager.setBackgroundColor("#4D2CC8");
+              titleBarManager.setForegroundMode(0);
+
+              appManager.setVisible("show");
+        }
+      });
+    },
+    [goTo, dispatch],
+  );
+
+  useEffect(() => {
+    document.addEventListener('deviceready', onDeviceReady, false);
+
+    return () => {
+      document.removeEventListener('deviceready', onDeviceReady);
+    };
+  }, [onDeviceReady]);
 
   useEffect(() => {
     if(!validationProviders.emailValidationProviders){
@@ -89,13 +134,16 @@ const App: React.FC = ({ history }: any) => {
       <Route path="/onboarding" component={OnBoarding} exact={true} />                
       <Route path="/signin" component={SignIn} exact={true} />                      
       <Route exact path="/" render={() => <Redirect to="/splashscreen" />} />
+      <Route path="/home/intent-service-invoke" component={IntentServiceInvoke} exact={true} />
+      <Route path="/requests/intent-details/:id" component={IntentDetails} />
+
       <IonTabs>
         <IonRouterOutlet>
           <Route path="/home" component={Home} exact={true} />
           <Route path="/home/service-invoke" component={ServiceInvoke} exact={true} />
           <Route path="/home/pleasewait" component={PleaseWait} exact={true} />
           <Route path="/requests" render={() => <Requests />} exact={true} />
-          <Route path="/requests/details/:id" component={Details} />
+          <Route path="/requests/details/:id" component={Details} />          
           <Route path="/profile" render={() => <Profile />} exact={true} />
           <Route path="/support" render={() => <Support />} exact={true} />
         </IonRouterOutlet>
@@ -120,29 +168,12 @@ const App: React.FC = ({ history }: any) => {
         </IonTabBar>
       </IonTabs>
       </IonRouterOutlet>
+
     </IonReactRouter>
   </IonApp>
   )};
 
-document.addEventListener("deviceready", (history: any) => {
-  appManager.getStartupMode((startupInfo: AppManagerPlugin.StartupInfo) => {
-      if (startupInfo.startupMode === 'service'){
-        initServiceListener(history);
-      } else {
-          appManager.setVisible("show");
-
-          titleBarManager.setTitle("Vouch dApp");
-          titleBarManager.setBackgroundColor("#4D2CC8");
-          titleBarManager.setForegroundMode(0);
-      }
-  });
-}, false);
-
-const initServiceListener = (history: any) => {
-
-  appManager.setIntentListener((intent: AppManagerPlugin.ReceivedIntent) => {
-    onReceiveIntent(intent, history);
-  });
+const initServiceListener = () => {
 
   appManager.setListener(async (message: AppManagerPlugin.ReceivedMessage) => {
     let rpcMessage = JSON.parse(message.message) as RPCMessage;
@@ -174,11 +205,27 @@ const initServiceListener = (history: any) => {
   checkPendingRequests();
 }
 
-const onReceiveIntent = (intent: AppManagerPlugin.ReceivedIntent, history: any) => {
+const onReceiveIntent = async (intent: AppManagerPlugin.ReceivedIntent, goTo: any, dispatch: any) => {
   console.log("Intent received message:", intent.action, ". params: ", intent.params, ". from: ", intent.from);
-  // console.log("Trying to navigate to service invoke page from intent")
-  // appManager.setVisible("show");
-  // history.push('/home/service-invoke');
+  console.log("Trying to navigate to service invoke page from intent")
+
+  titleBarManager.setTitle("Vouch dApp");
+  titleBarManager.setBackgroundColor("#4D2CC8");
+  titleBarManager.setForegroundMode(0);
+  appManager.setVisible("show");
+
+  await Storage.set({ 
+    key: 'intentData', 
+    value: JSON.stringify({
+      "action": intent.action,
+      "params": intent.params,
+      "from": intent.from,
+      "intentId": intent.intentId
+    }) 
+  });                        
+
+  goTo('/splashscreen');
+
 }
 
 const checkPendingRequests = () => {
