@@ -284,7 +284,7 @@ const IntentDetailsPage: React.FC = () => {
             <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px',
     marginTop: '10px'}}>
             <h2>Next Steps</h2>
-            {provider.validation.email.next_steps.map((step: any, index: number) => 
+            {requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') && provider.validation.email.next_steps.map((step: any, index: number) => 
               <IonListHeader className="fieldContainer">
                   <IonLabel>
                     <span className="label">Step {index + 1}:</span><br/>
