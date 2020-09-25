@@ -23,7 +23,6 @@ const SplashScreenPage: React.FC = ({ history }: any) => {
     async () => {
       const hasOnboarded = await Storage.get({ key: 'onboarded' })
       const hasUserdata = await Storage.get({key: 'user' })
-
       const intentData = await Storage.get({ key: 'intentData' })
 
       setTimeout(async () => {
