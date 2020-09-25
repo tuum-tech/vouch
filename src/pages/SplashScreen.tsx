@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react';
 import { IonPage, IonGrid, IonRow, IonCol, IonContent, IonImg } from '@ionic/react';
 import './SplashScreen.css';
 import { useDispatch } from 'react-redux';
-import { authCheckStatus } from '../store/auth'
+import { authCheckStatus, login } from '../store/auth'
 import { Plugins } from '@capacitor/core';
 
 const SplashScreenPage: React.FC = ({ history }: any) => {
@@ -23,8 +23,16 @@ const SplashScreenPage: React.FC = ({ history }: any) => {
     async () => {
       const hasOnboarded = await Storage.get({ key: 'onboarded' })
       const hasUserdata = await Storage.get({key: 'user' })
-        setTimeout(async () => {
-          if(!hasOnboarded.value || !hasUserdata.value){
+      const intentData = await Storage.get({ key: 'intentData' })
+
+      setTimeout(async () => {
+          if(intentData.value){
+            // const user = Object.assign({}, ...credSubjects)
+            const parsedIntentData = JSON.parse(intentData.value)
+            const user = parsedIntentData.params.claims
+            dispatch(login(user, () => goTo('/home/intent-service-invoke')))
+            // goTo('/home/intent-service-invoke')
+          } else if(!hasOnboarded.value || !hasUserdata.value){
             await Storage.set({ key: 'onboarded', value: 'true'})        
             goTo('/onboarding')  
           } else {
