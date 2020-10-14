@@ -4,6 +4,9 @@ export const EMAIL_VALIDATION_REQUEST_SUCCESS = "EMAIL_VALIDATION_REQUEST_SUCCES
 export const GET_ALL_REQUESTS = "GET_ALL_REQUESTS";
 export const GET_ALL_REQUESTS_SUCCESS = "GET_ALL_REQUESTS_SUCCESS";
 
+export const GET_INCOMING_REQUESTS = "GET_INCOMING_REQUESTS";
+export const GET_INCOMING_REQUESTS_SUCCESS = "GET_INCOMING_REQUESTS_SUCCESS";
+
 export const SHOW_NOTIFICATION = "SHOW_NOTIFICATION";
 export const HIDE_NOTIFICATION = "HIDE_NOTIFICATION";
 
@@ -15,12 +18,11 @@ export const CRED_SAVED_SUCCESS = "CRED_SAVED_SUCCESS";
 export const REQUEST_CANCELLED = "REQUEST_CANCELLED";
 export const REQUEST_CANCELLED_SUCCESS = "REQUEST_CANCELLED_SUCCESS";
 
-
-
 export interface TxnState {
   txn: any;
   selected_tab_txn: any;
   selected_tab_name: any;
+  incoming_txn: any;
   pending_txn: any;
   approved_txn: any;
   rejected_txn: any;
@@ -48,6 +50,16 @@ interface GetAllRequestsSuccessAction {
     type: typeof GET_ALL_REQUESTS_SUCCESS;
     payload?: any
 }  
+
+interface GetIncomingRequestsAction {
+    type: typeof GET_INCOMING_REQUESTS;
+    payload?: any
+}  
+
+interface GetIncomingRequestsSuccessAction {
+    type: typeof GET_INCOMING_REQUESTS_SUCCESS;
+    payload?: any
+} 
 
 interface SetSelectedTabRequestsAction {
     type: typeof SET_SELECTED_TAB_REQUESTS;
@@ -89,6 +101,8 @@ export type TxnActionTypes =
     | EmailValidationRequestSuccessAction
     | GetAllRequestsAction
     | GetAllRequestsSuccessAction
+    | GetIncomingRequestsAction
+    | GetIncomingRequestsSuccessAction
     | SetSelectedTabRequestsAction
     | ShowNotificationAction
     | HideNotificationAction

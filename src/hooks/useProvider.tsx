@@ -24,7 +24,7 @@ export function useProvider(optionalCallback: any = noop) {
         return response.json();
       }
 
-      if(validationType === 'email' || validationType === 'phone' || validationType === 'name'){
+      // if(validationType === 'email' || validationType === 'phone' || validationType === 'name'){
         getData(`${process.env.REACT_APP_GET_PROVIDERS_BY_VALIDATION_TYPE}`)
         .then(response => {
           if(response.meta.code === 200) {
@@ -32,7 +32,7 @@ export function useProvider(optionalCallback: any = noop) {
           }
 
         });
-      }
+      // }
 
   }
   return [providers] as [(obj:any) => void]

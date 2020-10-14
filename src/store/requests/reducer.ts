@@ -3,6 +3,7 @@ import {
   TxnActionTypes,
   EMAIL_VALIDATION_REQUEST_SUCCESS,
   GET_ALL_REQUESTS_SUCCESS,
+  GET_INCOMING_REQUESTS_SUCCESS,
   SHOW_NOTIFICATION,
   HIDE_NOTIFICATION,
   SET_SELECTED_TAB_REQUESTS,
@@ -14,6 +15,7 @@ const initialState: TxnState = {
   txn: null,
   selected_tab_txn: null,
   selected_tab_name: null,
+  incoming_txn: null,
   pending_txn: null,
   approved_txn: null,
   rejected_txn: null,
@@ -64,7 +66,6 @@ export const txnReducer = (
           return c > d ? 1 : -1;
         });
 
-
         pending_txn = pending_txn.sort((a:any, b:any) => {
           let c:any = new Date(a.date).getTime();
           let d:any = new Date(b.date).getTime();
@@ -102,6 +103,7 @@ export const txnReducer = (
           txn: all_txn,
           selected_tab_txn: all_txn, 
           selected_tab_name: 'all',
+          incoming_txn: null, 
           pending_txn: pending_txn, 
           approved_txn: approved_txn,
           rejected_txn: rejected_txn,
@@ -109,6 +111,22 @@ export const txnReducer = (
           // cancelled_txn: cancelled_txn,
         };
       }
+      case GET_INCOMING_REQUESTS_SUCCESS:
+        {
+          let incoming_txn = payload.filter((txn:any) => (txn.status === "New" || txn.status === "In progress" || txn.status === "Cancelation in progress"));
+  
+          incoming_txn = incoming_txn.sort((a:any, b:any) => {
+            let c:any = new Date(a.date).getTime();
+            let d:any = new Date(b.date).getTime();
+            return c > d ? 1 : -1;
+          });
+    
+  
+          return { 
+            ...state, 
+            incoming_txn: incoming_txn, 
+          };
+        }
     case SHOW_NOTIFICATION:
       {
         return {...state,           

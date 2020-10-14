@@ -17,7 +17,8 @@ import {
   IonToast,
   IonAlert,
   IonRefresher,
-  IonRefresherContent
+  IonRefresherContent,
+  useIonViewWillEnter
 } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 import moment from 'moment'
@@ -30,12 +31,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../store'
 
 import { useRequests } from '../hooks/useRequests'
-import { getAllRequests } from '../store/requests'
+import { getAllRequests, getIncomingRequests } from '../store/requests'
 import { useProvider } from '../hooks/useProvider'
-import { getEmailValidationProviders } from '../store/providers'
+import { getEmailValidationProviders, getProviderServices } from '../store/providers'
 
 import { useDID } from '../hooks/useDID';
 import { login, logout } from '../store/auth';
+import { useIncomingRequests } from '../hooks/useIncomingRequests';
+import { useProviderServices } from '../hooks/useProviderServices';
 
 const HomePage: React.FC = ({ history }: any) => {
 
@@ -47,12 +50,33 @@ const HomePage: React.FC = ({ history }: any) => {
   
     const user = useSelector((state:AppState) => state.auth.user)  
     const all_requests = useSelector((state:AppState) => state.requests.txn)
+    const incoming_requests = useSelector((state:AppState) => state.requests.incoming_txn)    
     const pending_requests = useSelector((state:AppState) => state.requests.pending_txn)
     const notification = useSelector((state:AppState) => state.requests.notification)
     const validationProviders = useSelector((state:AppState) => state.validationProviders)
+    const providerServices = useSelector((state:AppState) => state.validationProviders.providerServices)
+
+    const [sendGetProviderServices] = useProviderServices((services:any) => { 
+      if(services) {
+        console.log(services)
+        dispatch(getProviderServices(services))
+
+        console.log("Yeah.. Nailed it2")
+        sendGetIncomingRequests(services.id)         
+      }
+    }) 
+
+    useIonViewWillEnter(() => {    
+      if(!providerServices){
+        console.log(providerServices)
+        console.log("useIonViewWillEnter Calling the API to get provider services")    
+        sendGetProviderServices(user.id)
+      }   
+    });
 
     const doRefresh = (event: CustomEvent<RefresherEventDetail>) => {
       sendGetAllRequestsReq(user)
+      sendGetIncomingRequests(providerServices.id)
 
       setTimeout(() => {
         event.detail.complete();
@@ -65,10 +89,28 @@ const HomePage: React.FC = ({ history }: any) => {
       }  
      })   
 
+     const [sendGetIncomingRequests] = useIncomingRequests((txn:any) => { 
+      if(txn) {
+        console.log("found incoming txns")
+        console.log(txn)
+        dispatch(getIncomingRequests(txn))
+      }  
+     })   
+
      useEffect(() => {
       if(!all_requests){
         sendGetAllRequestsReq(user)
-      } 
+      }
+
+      console.log("Incoming Requests")
+      console.log(incoming_requests)
+      console.log("Provider Services")
+      console.log(providerServices)
+      if(!incoming_requests && providerServices && providerServices.validationTypes){
+        // sendGetIncomingRequests("5f7df136a8252d5778d583d8")        
+        console.log("Yeah.. Nailed it")
+        sendGetIncomingRequests(providerServices.id)        
+      }
 
       if(!validationProviders.emailValidationProviders){
         sendGetEmailValidationProvidersReq('email')
@@ -132,10 +174,18 @@ const HomePage: React.FC = ({ history }: any) => {
             </IonTitle>
           </IonToolbar>
           <IonGrid className="pad-me--top ">
+          <IonRow>
+              <IonCol size="12">
+                <IonListHeader>
+                  <IonButton fill="solid" color="secondary" className="text-center" routerLink='/register-validator' style={{'textTransform':'none', fontWeight: 'bold'}}>Register as a Validator</IonButton>
+                </IonListHeader>
+              </IonCol>
+          </IonRow>
+
             <IonRow className="main-Services">
               <IonCol size="12">
                 <IonListHeader>
-                  <IonLabel className="List-Header">Available Services</IonLabel>
+                  <IonLabel className="List-Header">Validation Services</IonLabel>
                 </IonListHeader>
               </IonCol>
               <IonCol size="6">
@@ -196,7 +246,39 @@ const HomePage: React.FC = ({ history }: any) => {
               <IonCol size="12">
                 {/*-- List Header with Button --*/}<br></br>
                 <IonListHeader>
-                  <IonLabel className="List-Header">Active Requests</IonLabel>
+                  <IonLabel className="List-Header">Incoming Requests</IonLabel>
+                  <IonButton size="small" color="dark" routerLink='/requests'>See All</IonButton>
+                </IonListHeader>
+              </IonCol>
+              <IonCol class="RequestBlock">
+                {/* Items Active */}
+                {incoming_requests && incoming_requests.map((txn: any) => 
+                  <IonItem className="request-Item" routerLink={`/requests/details/${txn.id}`} key={txn.id} >
+                  <IonThumbnail slot="start">
+                    <img src="../assets/images/components/icon-email--request.svg" alt="" />
+                  </IonThumbnail>
+                  <IonLabel>
+                    <h2>Email Validation</h2>
+                    <p>{relativeTime(txn.created)}</p>
+                  </IonLabel>
+                  <IonButton shape="round" className="status" color={`${(txn.status === "New" || txn.status === 'Cancelation in progress') ? "light" : ""}${txn.status === "In progress" ? "primary" : ""}`} 
+                    slot="end">
+                      {`
+                        ${txn.status === "New" ? "New" : ""}
+                        ${txn.status === "In progress" ? "In Progress" : ""}
+                        ${txn.status === "Cancelation in progress" ? "Cancelling" : ""}
+                      `}                      
+                      </IonButton>                  
+                </IonItem>
+
+                )}
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol size="12">
+                {/*-- List Header with Button --*/}<br></br>
+                <IonListHeader>
+                  <IonLabel className="List-Header">My Requests</IonLabel>
                   <IonButton size="small" color="dark" routerLink='/requests'>See All</IonButton>
                 </IonListHeader>
               </IonCol>
