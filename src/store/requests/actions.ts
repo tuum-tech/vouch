@@ -5,7 +5,9 @@ import {
     GET_INCOMING_REQUESTS_SUCCESS,
     SET_SELECTED_TAB_REQUESTS,
     CRED_SAVED_SUCCESS,
-    REQUEST_CANCELLED_SUCCESS
+    REQUEST_CANCELLED_SUCCESS,
+    REQUEST_APPROVED_SUCCESS,
+    REQUEST_REJECTED_SUCCESS
 } from "./types";
   
 import { ThunkAction } from "redux-thunk";
@@ -117,6 +119,40 @@ TxnActionTypes
 
 export const requestCancelledSuccess = (txn: any): TxnActionTypes => ({
     type: REQUEST_CANCELLED_SUCCESS,
+    payload: txn
+});
+
+export const requestApproved = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(requestApprovedSuccess(txn));
+    callback();
+})()
+};
+
+export const requestApprovedSuccess = (txn: any): TxnActionTypes => ({
+    type: REQUEST_APPROVED_SUCCESS,
+    payload: txn
+});
+
+export const requestRejected = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(requestRejectedSuccess(txn));
+    callback();
+})()
+};
+
+export const requestRejectedSuccess = (txn: any): TxnActionTypes => ({
+    type: REQUEST_REJECTED_SUCCESS,
     payload: txn
 });
 

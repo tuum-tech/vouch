@@ -21,7 +21,6 @@ const RegisterValidatorPage: React.FC = ({ history }: any) => {
     { val: 'phone', isChecked: false },
     { val: 'gender', isChecked: false },
     { val: 'location', isChecked: false },
-/*
     { val: 'birthdate', isChecked: false },
     { val: 'birthplace', isChecked: false },
     { val: 'education', isChecked: false },
@@ -34,7 +33,6 @@ const RegisterValidatorPage: React.FC = ({ history }: any) => {
     { val: 'telegram', isChecked: false },
     { val: 'paypal', isChecked: false },
     { val: 'ela', isChecked: false }  
-*/
 ])
 
 const updateItem = (val: string, newIsChecked: boolean) => {

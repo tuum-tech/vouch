@@ -7,9 +7,11 @@ import { AppState } from '../store';
 import { useParams } from 'react-router-dom';
 import { useCredSaver } from '../hooks/useCredSaver';
 import { useCredSaved } from '../hooks/useCredSaved';
-import { showNotification, hideNotification, credSaved, requestCancelled } from '../store/requests';
+import { showNotification, hideNotification, credSaved, requestCancelled, requestApproved, requestRejected } from '../store/requests';
 import moment from 'moment'
 import { useCancelRequest } from '../hooks/useCancelRequest';
+import { useApproveRequest } from '../hooks/useApproveRequest';
+import { useRejectRequest } from '../hooks/useRejectRequest';
 
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
@@ -50,6 +52,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
   const requests = useSelector((state:AppState) => state.requests)
   const validationProviders = useSelector((state:AppState) => state.validationProviders)
   const { id } = useParams()
+  let requestType:string = 'outgoing'
 
   //Check in all outgoing transactions
   let requestDetails = requests.txn.filter((txn: any) => txn.id === id)
@@ -59,6 +62,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
   //Check in incoming transactions  
   if(!requestDetails.length){
       requestDetails = requests.incoming_txn.filter((txn: any) => txn.id === id)
+      requestType = "incoming"
   }
 
   if(requestDetails){
@@ -117,6 +121,16 @@ const DetailsPage: React.FC = ({ history }: any) => {
     sendCancelRequest({ confirmation_id });
    }
 
+   const handleApproveRequestClick = (e:any) => {
+    const confirmation_id = requestDetails.id
+    sendApproveRequest({ confirmation_id });
+   }
+
+   const handleRejectRequestClick = (e:any) => {
+    const confirmation_id = requestDetails.id
+    sendRejectRequest({ confirmation_id });
+   }   
+
    const [sendCancelRequest] = useCancelRequest((response:any) => {
     dispatch(requestCancelled(response))
     dispatch(showNotification({"message": response.message, "type": "success", "show": true}))
@@ -124,6 +138,22 @@ const DetailsPage: React.FC = ({ history }: any) => {
       dispatch(hideNotification())
     }, 3000)           
    })
+
+   const [sendApproveRequest] = useApproveRequest((response:any) => {
+    dispatch(requestApproved(response, () => '/home'))
+    dispatch(showNotification({"message": response.message, "type": "success", "show": true}))
+    setTimeout(() => {
+      dispatch(hideNotification())
+    }, 3000)           
+   })
+
+   const [sendRejectRequest] = useRejectRequest((response:any) => {
+    dispatch(requestRejected(response, () => '/home'))
+    dispatch(showNotification({"message": response.message, "type": "success", "show": true}))
+    setTimeout(() => {
+      dispatch(hideNotification())
+    }, 3000)           
+   })   
 
   const handleSaveCredClick = (e: any) => {
 
@@ -150,11 +180,11 @@ const DetailsPage: React.FC = ({ history }: any) => {
     <IonPage className="Details">
       <IonContent>
         <IonToolbar className="sub-header">
-          <IonTitle className="ion-text-start">Your Request</IonTitle>
+          <IonTitle className="ion-text-start">{requestType === 'outgoing' ? 'Your Request' : 'Incoming Request'}</IonTitle>
         </IonToolbar>
         <IonGrid className="pad-me--top thick-padding">
 
-
+          {requestType === 'outgoing' &&
           <IonRow 
           className={`text-center 
           ${requestDetails.status === "Approved" ? "approved-tooltip" : ""} 
@@ -188,6 +218,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
               </IonLabel>
             </IonCol>
           </IonRow>
+          }
 
 
           <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px'}}>
@@ -226,6 +257,9 @@ const DetailsPage: React.FC = ({ history }: any) => {
                 <IonLabel className="value">{formatTime(requestDetails.verifiedCredential.expirationDate)}</IonLabel>
               </IonCol>
             </IonListHeader>
+            }
+            {requestType === 'incoming' && 
+            <h2 style={{marginTop: '20px'}}>User Credentials</h2>
             }
             <IonListHeader className="fieldContainer2">
             <IonCol size="3">
@@ -272,7 +306,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
           </IonRow>
 
           <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px',
-    marginTop: '10px'}}>
+    marginTop: '10px', display: (requestType === 'outgoing' ? 'inline-block' : 'none')}}>
           <h2>Validator</h2>
           { requestDetails && requestDetails.provider &&           
             <IonListHeader className="fieldContainer2">
@@ -302,7 +336,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
             </IonRow>
 
             <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px',
-    marginTop: '10px'}}>
+    marginTop: '10px', display: (requestType === 'outgoing' ? 'inline-block' : 'none')}}>
             <h2>Next Steps</h2>
             { requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') && provider.validation.email.next_steps.map((step: any, index: number) => 
               <IonListHeader className="fieldContainer">
@@ -312,9 +346,9 @@ const DetailsPage: React.FC = ({ history }: any) => {
                   </IonLabel>
               </IonListHeader>
             )}
-
           </IonRow>
-          { requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') &&          
+
+          { requestType === 'outgoing' && requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') &&          
           <IonRow className="text-center">
             <IonCol>
               <IonButton className="btnCancelRequest text-center" fill="outline"
@@ -324,6 +358,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
             </IonCol>
           </IonRow>
           }
+          { requestType === 'outgoing' && 
           <IonRow className="text-center">
             <IonCol>
               <IonButton className="btnCredentials text-center" 
@@ -333,6 +368,25 @@ const DetailsPage: React.FC = ({ history }: any) => {
           >{requestDetails.isSavedOnProfile === true ? 'Saved' : 'Save Credentials'}</IonButton>
             </IonCol>
           </IonRow>
+          }
+
+          { requestType === 'incoming' && requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') &&          
+          <IonRow className="text-center" style={{marginTop: '20px'}}>
+            <IonCol>
+              <IonButton className="btnRejectRequest text-center" fill="outline"
+              onClick={(e) => handleRejectRequestClick(e)}
+              color="danger"
+          >Reject</IonButton>
+            </IonCol>
+            <IonCol>
+              <IonButton className="btnApproveRequest text-center" fill="solid"
+              onClick={(e) => handleApproveRequestClick(e)}
+              color="success"
+          >Approve</IonButton>
+            </IonCol>
+          </IonRow>
+          }
+
         </IonGrid>
       </IonContent>
     </IonPage>

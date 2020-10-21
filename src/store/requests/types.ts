@@ -18,6 +18,12 @@ export const CRED_SAVED_SUCCESS = "CRED_SAVED_SUCCESS";
 export const REQUEST_CANCELLED = "REQUEST_CANCELLED";
 export const REQUEST_CANCELLED_SUCCESS = "REQUEST_CANCELLED_SUCCESS";
 
+export const REQUEST_APPROVED = "REQUEST_APPROVED";
+export const REQUEST_APPROVED_SUCCESS = "REQUEST_APPROVED_SUCCESS";
+
+export const REQUEST_REJECTED = "REQUEST_REJECTED";
+export const REQUEST_REJECTED_SUCCESS = "REQUEST_REJECTED_SUCCESS";
+
 export interface TxnState {
   txn: any;
   selected_tab_txn: any;
@@ -96,6 +102,26 @@ interface RequestCancelledSuccessAction {
     payload?: any
 }  
 
+interface RequestApprovedAction {
+    type: typeof REQUEST_APPROVED;
+    payload?: any
+}
+
+interface RequestApprovedSuccessAction {
+    type: typeof REQUEST_APPROVED_SUCCESS;
+    payload?: any
+}  
+
+interface RequestRejectedAction {
+    type: typeof REQUEST_REJECTED;
+    payload?: any
+}
+
+interface RequestRejectedSuccessAction {
+    type: typeof REQUEST_REJECTED_SUCCESS;
+    payload?: any
+}  
+
 export type TxnActionTypes =
     | EmailValidationRequestAction
     | EmailValidationRequestSuccessAction
@@ -110,3 +136,7 @@ export type TxnActionTypes =
     | CredSavedSuccessAction
     | RequestCancelledAction
     | RequestCancelledSuccessAction
+    | RequestApprovedAction
+    | RequestApprovedSuccessAction
+    | RequestRejectedAction
+    | RequestRejectedSuccessAction        

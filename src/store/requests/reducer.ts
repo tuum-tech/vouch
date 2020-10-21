@@ -8,7 +8,9 @@ import {
   HIDE_NOTIFICATION,
   SET_SELECTED_TAB_REQUESTS,
   CRED_SAVED_SUCCESS,
-  REQUEST_CANCELLED_SUCCESS
+  REQUEST_CANCELLED_SUCCESS,
+  REQUEST_APPROVED_SUCCESS,
+  REQUEST_REJECTED_SUCCESS
 } from "./types";
 
 const initialState: TxnState = {
@@ -178,8 +180,38 @@ export const txnReducer = (
             }
           };
         }        
-        
-
+        case REQUEST_APPROVED_SUCCESS:        
+        {  
+            return { ...state, 
+              txn: state.txn.map(
+                (t:any) => t.id === payload.data.id ? payload.data : t
+              ),
+              incoming_txn: state.incoming_txn.filter(
+                (t:any) => t.id !== payload.data.id
+              ),
+              notification: {
+                show: true,
+                message: payload.message,
+                type: 'success'
+              }
+            };
+          }         
+          case REQUEST_REJECTED_SUCCESS:        
+          {  
+              return { ...state, 
+                txn: state.txn.map(
+                  (t:any) => t.id === payload.data.id ? payload.data : t
+                ),
+                incoming_txn: state.incoming_txn.filter(
+                  (t:any) => t.id !== payload.data.id
+                ),
+                notification: {
+                  show: true,
+                  message: payload.message,
+                  type: 'success'
+                }
+              };
+          }
     default:
       return state;
   }

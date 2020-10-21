@@ -107,7 +107,6 @@ const HomePage: React.FC = ({ history }: any) => {
       console.log("Provider Services")
       console.log(providerServices)
       if(!incoming_requests && providerServices && providerServices.validationTypes){
-        // sendGetIncomingRequests("5f7df136a8252d5778d583d8")        
         console.log("Yeah.. Nailed it")
         sendGetIncomingRequests(providerServices.id)        
       }
@@ -258,7 +257,8 @@ const HomePage: React.FC = ({ history }: any) => {
                     <img src="../assets/images/components/icon-email--request.svg" alt="" />
                   </IonThumbnail>
                   <IonLabel>
-                    <h2>Email Validation</h2>
+                    <h5>{txn.did}</h5>
+                    <h4>{txn.validationType.charAt(0).toUpperCase()}{txn.validationType.slice(1)}: {txn.requestParams[txn.validationType]}</h4>
                     <p>{relativeTime(txn.created)}</p>
                   </IonLabel>
                   <IonButton shape="round" className="status" color={`${(txn.status === "New" || txn.status === 'Cancelation in progress') ? "light" : ""}${txn.status === "In progress" ? "primary" : ""}`} 
