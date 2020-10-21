@@ -103,7 +103,7 @@ export const txnReducer = (
           txn: all_txn,
           selected_tab_txn: all_txn, 
           selected_tab_name: 'all',
-          incoming_txn: null, 
+          // incoming_txn: null, 
           pending_txn: pending_txn, 
           approved_txn: approved_txn,
           rejected_txn: rejected_txn,
@@ -121,6 +121,8 @@ export const txnReducer = (
             return c > d ? 1 : -1;
           });
     
+          console.log("Incoming txn computed in reducer")
+          console.log(incoming_txn)
   
           return { 
             ...state, 

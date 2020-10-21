@@ -21,7 +21,16 @@ const IntentDetailsPage: React.FC = () => {
   const [counter, setCounter] = useState(20);
   const [showCounter, setShowCounter] = useState('');
 
+  //Check in all outgoing transactions
   let requestDetails = requests.txn.filter((txn: any) => txn.id === id)
+
+  console.log("requestDetails")
+  console.log(requestDetails)
+  //Check in incoming transactions  
+  if(!requestDetails.length){
+      requestDetails = requests.incoming_txn.filter((txn: any) => txn.id === id)
+  }  
+
   if(requestDetails){
     requestDetails = requestDetails[0]
   }

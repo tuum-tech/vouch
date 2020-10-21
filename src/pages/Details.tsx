@@ -51,7 +51,16 @@ const DetailsPage: React.FC = ({ history }: any) => {
   const validationProviders = useSelector((state:AppState) => state.validationProviders)
   const { id } = useParams()
 
+  //Check in all outgoing transactions
   let requestDetails = requests.txn.filter((txn: any) => txn.id === id)
+
+  console.log("requestDetails")
+  console.log(requestDetails)
+  //Check in incoming transactions  
+  if(!requestDetails.length){
+      requestDetails = requests.incoming_txn.filter((txn: any) => txn.id === id)
+  }
+
   if(requestDetails){
     requestDetails = requestDetails[0]
   }
