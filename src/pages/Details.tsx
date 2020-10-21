@@ -140,7 +140,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
    })
 
    const [sendApproveRequest] = useApproveRequest((response:any) => {
-    dispatch(requestApproved(response, () => '/home'))
+    dispatch(requestApproved(response, () => goTo('/home')))
     dispatch(showNotification({"message": response.message, "type": "success", "show": true}))
     setTimeout(() => {
       dispatch(hideNotification())
@@ -148,7 +148,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
    })
 
    const [sendRejectRequest] = useRejectRequest((response:any) => {
-    dispatch(requestRejected(response, () => '/home'))
+    dispatch(requestRejected(response, () => goTo('/home')))
     dispatch(showNotification({"message": response.message, "type": "success", "show": true}))
     setTimeout(() => {
       dispatch(hideNotification())
