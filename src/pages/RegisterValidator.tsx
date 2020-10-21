@@ -53,28 +53,6 @@ const updateItem = (val: string, newIsChecked: boolean) => {
   }
 }
 
-/*
-  const allServices = [
-    { val: 'email', isChecked: false },
-    { val: 'name', isChecked: false },
-    { val: 'phone', isChecked: false },
-    { val: 'gender', isChecked: false },
-    { val: 'location', isChecked: false },
-    { val: 'birthdate', isChecked: false },
-    { val: 'birthplace', isChecked: false },
-    { val: 'education', isChecked: false },
-    { val: 'occupation', isChecked: false },
-    { val: 'wechat', isChecked: false },
-    { val: 'instagram', isChecked: false },
-    { val: 'facebook', isChecked: false },
-    { val: 'snapshot', isChecked: false },
-    { val: 'twitter', isChecked: false },
-    { val: 'telegram', isChecked: false },
-    { val: 'paypal', isChecked: false },
-    { val: 'ela', isChecked: false }            
-  ];
-*/
-
   const dispatch = useDispatch()  
   const providerServices = useSelector((state:AppState) => state.validationProviders.providerServices)
   const user = useSelector((state:AppState) => state.auth.user)  
@@ -99,6 +77,8 @@ const updateItem = (val: string, newIsChecked: boolean) => {
         console.log(providerServices)
         console.log("Calling the API to get provider services")    
         sendGetProviderServices(user.id)
+      } else {
+        populateRegisteredServices(providerServices)
       }
    },
    // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -119,30 +99,26 @@ const updateItem = (val: string, newIsChecked: boolean) => {
       console.log(services)
       dispatch(getProviderServices(services))
 
-      if(services && services.validationTypes){
-        // TODO:
-        console.log("found provider services to filter")
-        console.log(services)
-        services.validationTypes.forEach(function(service:any) {
-          console.log(service)
-    
-         updateItem(service, true);
-          /*
-          const objIndex = allServices.findIndex((obj => obj.val === service));
-    
-          if(objIndex > -1){
-            allServices[objIndex].isChecked = true;
-          }*/
-        })
-    
-        console.log("after transformation")
-        console.log(checkedItems)
-      }
-
-
-
+      populateRegisteredServices(services)
     }
   })   
+
+  const populateRegisteredServices = (services:any) => {
+    if(services && services.validationTypes){
+      // TODO:
+      console.log("found provider services to filter")
+      console.log(services)
+      services.validationTypes.forEach(function(service:any) {
+        console.log(service)
+        updateItem(service, true);
+      })
+  
+      console.log("after transformation")
+      console.log(checkedItems)
+    }    
+  }
+
+
 
   let services:object = {}
 
@@ -228,12 +204,18 @@ const updateItem = (val: string, newIsChecked: boolean) => {
               {/*-- Checkboxes in a List --*/}
               <IonList>
                 { checkedItems.map(({val, isChecked}) => (
-                  <IonItem key={val} disabled={(providerServices && providerServices.validationTypes.includes(val)) ?? isChecked}>
+                  <IonItem key={val} 
+                  // disabled={(providerServices && providerServices.validationTypes.includes(val)) ?? isChecked}
+                  >
                     <IonCheckbox slot="end" value={val} checked={isChecked} onIonChange={e => updateItem(val, e.detail.checked)} />
                     <IonLabel>{val}</IonLabel>
                   </IonItem>
                 )) }
               </IonList>
+              </IonCol>
+          </IonRow>
+          <IonRow className="text-center">
+            <IonCol>
               <IonButton color="success" fill="solid" className="text-center" onClick={(e) => handleSubmitRequestClick(e)}>Submit Request</IonButton>
             </IonCol>
           </IonRow>

@@ -241,7 +241,7 @@ const HomePage: React.FC = ({ history }: any) => {
                   </IonCardContent>
                 </IonCard></IonCol>
             </IonRow>
-            <IonRow>
+            <IonRow style={{display: (providerServices && providerServices.validationTypes.length ? 'inline-block' : 'none')}}>
               <IonCol size="12">
                 {/*-- List Header with Button --*/}<br></br>
                 <IonListHeader>
