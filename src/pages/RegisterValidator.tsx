@@ -16,23 +16,23 @@ declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 const RegisterValidatorPage: React.FC = ({ history }: any) => {
 
   const[checkedItems,setCheckedItems]= useState([
-    { val: 'email', isChecked: false },
-    { val: 'name', isChecked: false },
-    { val: 'phone', isChecked: false },
-    { val: 'gender', isChecked: false },
-    { val: 'location', isChecked: false },
-    { val: 'birthdate', isChecked: false },
-    { val: 'birthplace', isChecked: false },
-    { val: 'education', isChecked: false },
-    { val: 'occupation', isChecked: false },
-    { val: 'wechat', isChecked: false },
-    { val: 'instagram', isChecked: false },
-    { val: 'facebook', isChecked: false },
-    { val: 'snapshot', isChecked: false },
-    { val: 'twitter', isChecked: false },
-    { val: 'telegram', isChecked: false },
-    { val: 'paypal', isChecked: false },
-    { val: 'ela', isChecked: false }  
+    { val: 'email', type: 'BasicProfileCredential', isChecked: false },
+    { val: 'name', type: 'BasicProfileCredential', isChecked: false },
+    { val: 'phone', type: 'BasicProfileCredential', isChecked: false },
+    { val: 'gender', type: 'BasicProfileCredential', isChecked: false },
+    { val: 'location', type: 'BasicProfileCredential', isChecked: false },
+    { val: 'birthdate', type: 'BasicProfileCredential', isChecked: false },
+    { val: 'birthplace', type: 'BasicProfileCredential', isChecked: false },
+    { val: 'education', type: 'BasicProfileCredential', isChecked: false },
+    { val: 'occupation', type: 'BasicProfileCredential', isChecked: false },
+    { val: 'wechat', type: 'InternetAccountCredential', isChecked: false },
+    { val: 'instagram', type: 'InternetAccountCredential', isChecked: false },
+    { val: 'facebook', type: 'InternetAccountCredential', isChecked: false },
+    { val: 'snapshot', type: 'InternetAccountCredential', isChecked: false },
+    { val: 'twitter', type: 'InternetAccountCredential', isChecked: false },
+    { val: 'telegram', type: 'InternetAccountCredential', isChecked: false },
+    { val: 'paypal', type: 'InternetAccountCredential', isChecked: false },
+    { val: 'ela', type: 'InternetAccountCredential', isChecked: false }  
 ])
 
 const updateItem = (val: string, newIsChecked: boolean) => {

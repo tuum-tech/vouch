@@ -1,6 +1,6 @@
 export function useApproveRequest(optionalCallback: any = noop) {
 
-  const requestApproved = (confirmation_id: any) => {
+  const requestApproved = (data: any) => {
     /**
      * Approve the New/In progress manual validation request via backend API.
      */
@@ -25,7 +25,7 @@ export function useApproveRequest(optionalCallback: any = noop) {
         return response.json();
       }
 
-      postData(`${process.env.REACT_APP_APPROVE_REQUEST}` + confirmation_id.confirmation_id)
+      postData(`${process.env.REACT_APP_APPROVE_REQUEST}` + data.confirmationId, data.verifiedCredential)
         .then(response => {
           if(response.meta.code === 200) {
             optionalCallback({"data": response.data, "message": "Approval initiated successfully."});                      

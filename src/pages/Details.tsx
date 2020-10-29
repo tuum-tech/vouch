@@ -12,6 +12,7 @@ import moment from 'moment'
 import { useCancelRequest } from '../hooks/useCancelRequest';
 import { useApproveRequest } from '../hooks/useApproveRequest';
 import { useRejectRequest } from '../hooks/useRejectRequest';
+import { useCredIssue } from '../hooks/useCredIssue';
 
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
@@ -121,9 +122,30 @@ const DetailsPage: React.FC = ({ history }: any) => {
     sendCancelRequest({ confirmation_id });
    }
 
+   const [sendCredIssueIntent] = useCredIssue((credentials:any) => { 
+     console.log("Time to approve the request")
+     console.log(credentials)
+
+    //  const confirmation_id = requestDetails.id
+     sendApproveRequest({ 
+       confirmationId: requestDetails.id,
+       verifiedCredential: credentials
+     });
+   })
+
    const handleApproveRequestClick = (e:any) => {
-    const confirmation_id = requestDetails.id
-    sendApproveRequest({ confirmation_id });
+
+    //Sign the credential with validators DID using credissue intent
+
+    let credIssueRequestData:any = {}
+    credIssueRequestData.identifier = "email"
+    credIssueRequestData.types = ["EmailCredential", "VerifiableCredential", "BasicProfileCredential"]
+    credIssueRequestData.subjectdid = "did:elastos:" + requestDetails.did.replace("did:elastos:", "")
+    credIssueRequestData.properties = {}
+    credIssueRequestData.properties.email = requestDetails.requestParams.email
+    // credIssueRequestData.expirationdate = new Date(2025, 10, 10).toISOString() // Credential will expire on 2025-10-10 - Note the month's 0-index...
+
+    sendCredIssueIntent(credIssueRequestData)
    }
 
    const handleRejectRequestClick = (e:any) => {
