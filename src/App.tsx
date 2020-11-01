@@ -53,6 +53,7 @@ import { useRequest } from './hooks/useRequest';
 import { useSelector, useDispatch } from 'react-redux';
 import { useProvider } from './hooks/useProvider';
 import { AppState } from './store';
+import RegisterValidator from './pages/RegisterValidator';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
@@ -134,6 +135,7 @@ const App: React.FC = () => {
       <Route path="/onboarding" component={OnBoarding} exact={true} />                
       <Route path="/signin" component={SignIn} exact={true} />                      
       <Route exact path="/" render={() => <Redirect to="/splashscreen" />} />
+      <Route path="/register-validator" component={RegisterValidator} exact={true} />
       <Route path="/home/intent-service-invoke" component={IntentServiceInvoke} exact={true} />
       <Route path="/requests/intent-details/:id" component={IntentDetails} />
 
@@ -144,7 +146,7 @@ const App: React.FC = () => {
           <Route path="/home/pleasewait" component={PleaseWait} exact={true} />
           <Route path="/requests" render={() => <Requests />} exact={true} />
           <Route path="/requests/details/:id" component={Details} />          
-          <Route path="/profile" render={() => <Profile />} exact={true} />
+          <Route path="/profile" render={() => <Profile />} exact={true} /> 
           <Route path="/support" render={() => <Support />} exact={true} />
         </IonRouterOutlet>
 

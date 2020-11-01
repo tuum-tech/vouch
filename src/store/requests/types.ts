@@ -4,6 +4,9 @@ export const EMAIL_VALIDATION_REQUEST_SUCCESS = "EMAIL_VALIDATION_REQUEST_SUCCES
 export const GET_ALL_REQUESTS = "GET_ALL_REQUESTS";
 export const GET_ALL_REQUESTS_SUCCESS = "GET_ALL_REQUESTS_SUCCESS";
 
+export const GET_INCOMING_REQUESTS = "GET_INCOMING_REQUESTS";
+export const GET_INCOMING_REQUESTS_SUCCESS = "GET_INCOMING_REQUESTS_SUCCESS";
+
 export const SHOW_NOTIFICATION = "SHOW_NOTIFICATION";
 export const HIDE_NOTIFICATION = "HIDE_NOTIFICATION";
 
@@ -15,12 +18,17 @@ export const CRED_SAVED_SUCCESS = "CRED_SAVED_SUCCESS";
 export const REQUEST_CANCELLED = "REQUEST_CANCELLED";
 export const REQUEST_CANCELLED_SUCCESS = "REQUEST_CANCELLED_SUCCESS";
 
+export const REQUEST_APPROVED = "REQUEST_APPROVED";
+export const REQUEST_APPROVED_SUCCESS = "REQUEST_APPROVED_SUCCESS";
 
+export const REQUEST_REJECTED = "REQUEST_REJECTED";
+export const REQUEST_REJECTED_SUCCESS = "REQUEST_REJECTED_SUCCESS";
 
 export interface TxnState {
   txn: any;
   selected_tab_txn: any;
   selected_tab_name: any;
+  incoming_txn: any;
   pending_txn: any;
   approved_txn: any;
   rejected_txn: any;
@@ -48,6 +56,16 @@ interface GetAllRequestsSuccessAction {
     type: typeof GET_ALL_REQUESTS_SUCCESS;
     payload?: any
 }  
+
+interface GetIncomingRequestsAction {
+    type: typeof GET_INCOMING_REQUESTS;
+    payload?: any
+}  
+
+interface GetIncomingRequestsSuccessAction {
+    type: typeof GET_INCOMING_REQUESTS_SUCCESS;
+    payload?: any
+} 
 
 interface SetSelectedTabRequestsAction {
     type: typeof SET_SELECTED_TAB_REQUESTS;
@@ -84,11 +102,33 @@ interface RequestCancelledSuccessAction {
     payload?: any
 }  
 
+interface RequestApprovedAction {
+    type: typeof REQUEST_APPROVED;
+    payload?: any
+}
+
+interface RequestApprovedSuccessAction {
+    type: typeof REQUEST_APPROVED_SUCCESS;
+    payload?: any
+}  
+
+interface RequestRejectedAction {
+    type: typeof REQUEST_REJECTED;
+    payload?: any
+}
+
+interface RequestRejectedSuccessAction {
+    type: typeof REQUEST_REJECTED_SUCCESS;
+    payload?: any
+}  
+
 export type TxnActionTypes =
     | EmailValidationRequestAction
     | EmailValidationRequestSuccessAction
     | GetAllRequestsAction
     | GetAllRequestsSuccessAction
+    | GetIncomingRequestsAction
+    | GetIncomingRequestsSuccessAction
     | SetSelectedTabRequestsAction
     | ShowNotificationAction
     | HideNotificationAction
@@ -96,3 +136,7 @@ export type TxnActionTypes =
     | CredSavedSuccessAction
     | RequestCancelledAction
     | RequestCancelledSuccessAction
+    | RequestApprovedAction
+    | RequestApprovedSuccessAction
+    | RequestRejectedAction
+    | RequestRejectedSuccessAction        

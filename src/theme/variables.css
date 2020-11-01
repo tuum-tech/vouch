@@ -12,12 +12,12 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-primary-tint: rgb(58, 32, 153);
 
   /** secondary **/
-  --ion-color-secondary: #0cd1e8;
-  --ion-color-secondary-rgb: 12, 209, 232;
-  --ion-color-secondary-contrast: #ffffff;
-  --ion-color-secondary-contrast-rgb: 255, 255, 255;
-  --ion-color-secondary-shade: #0bb8cc;
-  --ion-color-secondary-tint: #24d6ea;
+  --ion-color-secondary: #F1EFFD;
+  --ion-color-secondary-rgb: rgb(241, 239, 253);
+  --ion-color-secondary-contrast: #482CC8;
+  --ion-color-secondary-contrast-rgb: 72, 44, 200;
+  --ion-color-secondary-shade: #F1EFFD;
+  --ion-color-secondary-tint: #F1EFFD;
 
   /** tertiary **/
   --ion-color-tertiary: #7044ff;

@@ -2,9 +2,12 @@ import {
     TxnActionTypes,
     EMAIL_VALIDATION_REQUEST_SUCCESS,
     GET_ALL_REQUESTS_SUCCESS,
+    GET_INCOMING_REQUESTS_SUCCESS,
     SET_SELECTED_TAB_REQUESTS,
     CRED_SAVED_SUCCESS,
-    REQUEST_CANCELLED_SUCCESS
+    REQUEST_CANCELLED_SUCCESS,
+    REQUEST_APPROVED_SUCCESS,
+    REQUEST_REJECTED_SUCCESS
 } from "./types";
   
 import { ThunkAction } from "redux-thunk";
@@ -59,6 +62,23 @@ export const getAllRequestsSuccess = (txn: any): TxnActionTypes => ({
     payload: txn
 });
 
+export const getIncomingRequests = (txn: any, callback: any = noop): ThunkAction<
+    void,
+    AppState,
+    null,
+    TxnActionTypes
+> => dispatch => {
+    (async function(){
+        dispatch(getIncomingRequestsSuccess(txn));
+        callback();
+    })()
+};
+
+export const getIncomingRequestsSuccess = (txn: any): TxnActionTypes => ({
+    type: GET_INCOMING_REQUESTS_SUCCESS,
+    payload: txn
+});
+
 export const credSaved = (credentials: any, callback: any = noop): ThunkAction<
 void,
 AppState,
@@ -99,6 +119,40 @@ TxnActionTypes
 
 export const requestCancelledSuccess = (txn: any): TxnActionTypes => ({
     type: REQUEST_CANCELLED_SUCCESS,
+    payload: txn
+});
+
+export const requestApproved = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(requestApprovedSuccess(txn));
+    callback();
+})()
+};
+
+export const requestApprovedSuccess = (txn: any): TxnActionTypes => ({
+    type: REQUEST_APPROVED_SUCCESS,
+    payload: txn
+});
+
+export const requestRejected = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(requestRejectedSuccess(txn));
+    callback();
+})()
+};
+
+export const requestRejectedSuccess = (txn: any): TxnActionTypes => ({
+    type: REQUEST_REJECTED_SUCCESS,
     payload: txn
 });
 

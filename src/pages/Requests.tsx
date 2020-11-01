@@ -1,24 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IonContent, IonPage, IonSegment, IonSegmentButton, IonTitle,IonGrid,IonRow,IonCol,IonLabel, IonToolbar, IonRefresher, IonRefresherContent, useIonViewWillEnter } from '@ionic/react';
 import './Requests.css';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../store'
 import RequestBlocks from './RequestBlocks';
-import { setSelectedTabRequests } from '../store/requests';
+import { setSelectedTabRequests, getIncomingRequests } from '../store/requests';
 import { RefresherEventDetail } from '@ionic/core';
 
 import { useRequests } from '../hooks/useRequests'
 import { getAllRequests } from '../store/requests'
+import { useIncomingRequests } from '../hooks/useIncomingRequests';
+import { useProviderServices } from '../hooks/useProviderServices';
+import { getProviderServices } from '../store/providers';
 
 const RequestsPage: React.FC = () => {
 
   const dispatch = useDispatch()  
   const requests = useSelector((state:AppState) => state.requests)
   const user = useSelector((state:AppState) => state.auth.user)  
+  const providerServices = useSelector((state:AppState) => state.validationProviders.providerServices)
+
+  const [sendGetProviderServices] = useProviderServices((services:any) => { 
+    if(services) {
+      console.log(services)
+      dispatch(getProviderServices(services))
+
+      console.log("Yeah.. Nailed it2 from Requests Page")
+      sendGetIncomingRequests(services.id)         
+    }
+  }) 
 
   const doRefresh = (event: CustomEvent<RefresherEventDetail>) => {
     sendGetAllRequestsReq(user)
+    sendGetIncomingRequests(providerServices.id)
 
     setTimeout(() => {
       event.detail.complete();
@@ -31,15 +46,50 @@ const RequestsPage: React.FC = () => {
     }
    })   
 
+   const [sendGetIncomingRequests] = useIncomingRequests((txn:any) => { 
+    if(txn) {
+      console.log("found incoming txns on requests page")
+      console.log(txn)
+      dispatch(getIncomingRequests(txn))
+    }  
+   })
+
    useIonViewWillEnter(() => {
-    sendGetAllRequestsReq(user)
+    sendGetAllRequestsReq(user)    
+    // sendGetIncomingRequests("5f7df136a8252d5778d583d8")
+
+    if(!providerServices){
+      console.log(providerServices)
+      console.log("useIonViewWillEnter Calling the API to get provider services")    
+      sendGetProviderServices(user.id)
+    }   
    });
+
+   useEffect(() => {
+    console.log("Incoming Requests")
+    console.log(requests.incoming_txn)
+    console.log("Provider Services")
+    console.log(providerServices)
+    if(!requests.incoming_txn && providerServices && providerServices.validationTypes){
+      //sendGetIncomingRequests("5f7df136a8252d5778d583d8")        
+      console.log("Yeah.. Nailed it from request page")
+      sendGetIncomingRequests(providerServices.id)        
+    }
+   },
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   []
+ );
 
   const handleClick = function(e: any) {
     let tab_event = e.detail.value;
     if(tab_event === 'all'){
       dispatch(setSelectedTabRequests({'name':'all','data':requests.txn}))
     }
+    if(tab_event === 'incoming'){
+      console.log("Checking incoming requests data while switching the tab")
+      console.log(requests)
+      dispatch(setSelectedTabRequests({'name':'incoming','data':requests.incoming_txn}))      
+    }    
     if(tab_event === 'active'){
       dispatch(setSelectedTabRequests({'name':'pending','data':requests.pending_txn}))      
     }
@@ -78,6 +128,9 @@ const RequestsPage: React.FC = () => {
             <IonSegment className="custom-segment" scrollable onIonChange={(e:any) => handleClick(e)}>
           <IonSegmentButton value="all" className={requests.selected_tab_name === 'all' ? 'active-tab' : ''}>
             <IonLabel>All</IonLabel>
+          </IonSegmentButton>
+          <IonSegmentButton value="incoming" disabled={requests.incoming_txn == null || requests.incoming_txn.length === 0}>
+            <IonLabel>Incoming</IonLabel>
           </IonSegmentButton>
           <IonSegmentButton value="active" disabled={requests.pending_txn == null || requests.pending_txn.length === 0}>
             <IonLabel>Active</IonLabel>

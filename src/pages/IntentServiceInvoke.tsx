@@ -254,7 +254,7 @@ const IntentServiceInvokePage: React.FC = ({ history }: any) => {
                 }
 
                 {credentialType === 'email' && validationProviders.emailValidationProviders && validationProviders.emailValidationProviders.map((emailValidationProvider: any) => 
-                <IonListHeader key={emailValidationProvider.id} data-providerid={emailValidationProvider.id} className="fieldContainer" style={{'padding': '0', 'maxHeight': '85px'}} onClick={(e) => handleValidationProviderClick(e)}>
+                <IonListHeader key={emailValidationProvider.id} data-providerid={emailValidationProvider.id} className="fieldContainer" style={{'padding': '0', 'maxHeight': '85px', 'display': emailValidationProvider.did !== user.id.split(':').pop() ? 'inline-block' : 'none'}} onClick={(e) => handleValidationProviderClick(e)}>
                   <IonGrid>
                     <IonRow>
                       <IonCol size="3">
