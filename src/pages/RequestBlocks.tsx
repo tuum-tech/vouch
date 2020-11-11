@@ -12,6 +12,7 @@ const RequestBlocks = (props: any) => {
   }    
 
   const requests_txn = props.requests
+  const tabName = props.tabName
   return (
         <>
         {requests_txn && requests_txn.length > 0 ? 
@@ -24,6 +25,9 @@ const RequestBlocks = (props: any) => {
                     </IonThumbnail>
                     <IonLabel>
                       <h2>Email Validation</h2>
+                      { tabName === "incoming" &&
+                        <p>{txn.requestParams[txn.validationType]}</p>
+                      }
                       <p>{relativeTime(txn.created)}</p>
                     </IonLabel>
                     <IonButton shape="round" className="status" style={{margin: 0}} color={`${txn.status === "Approved" ? "success" : ""}${(txn.status === "New" || txn.status === 'Cancelation in progress') ? "light" : ""}${txn.status === "In progress" ? "primary" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}${txn.status === "Canceled" ? "warning" : ""}`} 

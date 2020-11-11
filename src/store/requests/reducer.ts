@@ -115,20 +115,33 @@ export const txnReducer = (
       }
       case GET_INCOMING_REQUESTS_SUCCESS:
         {
-          let incoming_txn = payload.filter((txn:any) => (txn.status === "New" || txn.status === "In progress" || txn.status === "Cancelation in progress"));
-  
-          incoming_txn = incoming_txn.sort((a:any, b:any) => {
+          let incoming_txn_new = payload.filter((txn:any) => (txn.status === "New" || txn.status === "In progress" || txn.status === "Cancelation in progress"));
+          let incoming_txn_history = payload.filter((txn:any) => (txn.status === "Approved" || txn.status === "Rejected"));
+
+          incoming_txn_new = incoming_txn_new.sort((a:any, b:any) => {
+            let c:any = new Date(a.date).getTime();
+            let d:any = new Date(b.date).getTime();
+            return c > d ? 1 : -1;
+          });          
+
+          incoming_txn_history = incoming_txn_history.sort((a:any, b:any) => {
             let c:any = new Date(a.date).getTime();
             let d:any = new Date(b.date).getTime();
             return c > d ? 1 : -1;
           });
-    
-          console.log("Incoming txn computed in reducer")
-          console.log(incoming_txn)
+
+          // console.log("Incoming new txn computed in reducer")
+          // console.log(incoming_txn_new)
+
+          // console.log("Incoming history txn computed in reducer")
+          // console.log(incoming_txn_history)          
   
+          console.log("Combined and sorted")
+          // console.log(incoming_txn_new.concat(incoming_txn_history))
+
           return { 
             ...state, 
-            incoming_txn: incoming_txn, 
+            incoming_txn: incoming_txn_new.concat(incoming_txn_history), 
           };
         }
     case SHOW_NOTIFICATION:
@@ -182,13 +195,24 @@ export const txnReducer = (
         }        
         case REQUEST_APPROVED_SUCCESS:        
         {  
-            return { ...state, 
-              txn: state.txn.map(
+            let filtered_txn = null
+            let filtered_incoming_txn = null
+
+            if(state.txn) {
+              filtered_txn = state.txn.map(
                 (t:any) => t.id === payload.data.id ? payload.data : t
-              ),
-              incoming_txn: state.incoming_txn.filter(
-                (t:any) => t.id !== payload.data.id
-              ),
+              )
+            }
+
+            if(state.incoming_txn) {
+              filtered_incoming_txn = state.incoming_txn.map(
+                (t:any) => t.id === payload.data.id ? payload.data : t
+              )              
+            }
+
+            return { ...state, 
+              txn: filtered_txn || state.txn,
+              incoming_txn: filtered_incoming_txn || state.incoming_txn,              
               notification: {
                 show: true,
                 message: payload.message,
@@ -197,14 +221,31 @@ export const txnReducer = (
             };
           }         
           case REQUEST_REJECTED_SUCCESS:        
-          {  
+          {
+            let filtered_txn = null
+            let filtered_incoming_txn = null
+
+            if(state.txn) {
+              filtered_txn = state.txn.map(
+                (t:any) => t.id === payload.data.id ? payload.data : t
+              )
+            }
+
+            if(state.incoming_txn) {
+              filtered_incoming_txn = state.incoming_txn.map(
+                (t:any) => t.id === payload.data.id ? payload.data : t
+              )              
+            }            
+            
               return { ...state, 
-                txn: state.txn.map(
-                  (t:any) => t.id === payload.data.id ? payload.data : t
-                ),
-                incoming_txn: state.incoming_txn.filter(
-                  (t:any) => t.id !== payload.data.id
-                ),
+                txn: filtered_txn || state.txn,
+                incoming_txn: filtered_incoming_txn || state.incoming_txn,                              
+                // txn: state.txn && state.txn.map(
+                //   (t:any) => t.id === payload.data.id ? payload.data : t
+                // ),
+                // incoming_txn: state.incoming_txn && state.incoming_txn.map(
+                //   (t:any) => t.id === payload.data.id ? payload.data : t
+                // ),                              
                 notification: {
                   show: true,
                   message: payload.message,

@@ -45,6 +45,15 @@ const HomePage: React.FC = ({ history }: any) => {
     const [showAlertNameValidation, setShowAlertNameValidation] = useState(false);
     const [showAlertEmailValidation, setShowAlertEmailValidation] = useState(false);
     const [showAlertPhoneValidation, setShowAlertPhoneValidation] = useState(false);
+    const [filteredIncomingTxn, setFilteredIncomingTxn] = useState([
+      {
+        id: "",
+        did: "",
+        validationType: "",
+        requestParams: {},
+        created: "",
+        status: ""
+      }])
 
     const dispatch = useDispatch()
   
@@ -94,6 +103,7 @@ const HomePage: React.FC = ({ history }: any) => {
         console.log("found incoming txns")
         console.log(txn)
         dispatch(getIncomingRequests(txn))
+        filterIncomingTxn(txn)
       }  
      })   
 
@@ -106,6 +116,11 @@ const HomePage: React.FC = ({ history }: any) => {
       console.log(incoming_requests)
       console.log("Provider Services")
       console.log(providerServices)
+
+      if(incoming_requests){
+        filterIncomingTxn(incoming_requests)
+      }
+
       if(!incoming_requests && providerServices && providerServices.validationTypes){
         console.log("Yeah.. Nailed it")
         sendGetIncomingRequests(providerServices.id)        
@@ -138,6 +153,18 @@ const HomePage: React.FC = ({ history }: any) => {
       if (!datetime) return "";
   
       return moment.utc(datetime).fromNow()
+    }
+
+    const filterIncomingTxn = function(incoming_requests: any) {
+
+      console.log("filterIncomingTxn: All incoming requests")
+      console.log(incoming_requests)
+
+      let pendingIncomingRequests = incoming_requests.filter((txn: any) => (txn.status === "New" || txn.status === "In progress"))
+      setFilteredIncomingTxn(pendingIncomingRequests)
+
+      console.log("filterIncomingTxn: Filtered incoming requests")
+      console.log(pendingIncomingRequests)      
     }
 
     return (
@@ -241,7 +268,7 @@ const HomePage: React.FC = ({ history }: any) => {
                   </IonCardContent>
                 </IonCard></IonCol>
             </IonRow>
-            <IonRow style={{display: (providerServices && providerServices.validationTypes.length ? 'inline-block' : 'none')}}>
+            <IonRow style={{display: (providerServices && providerServices.validationTypes.length ? 'block' : 'none')}}>
               <IonCol size="12">
                 {/*-- List Header with Button --*/}<br></br>
                 <IonListHeader>
@@ -250,8 +277,8 @@ const HomePage: React.FC = ({ history }: any) => {
                 </IonListHeader>
               </IonCol>
               <IonCol class="RequestBlock">
-                {/* Items Active */}
-                {incoming_requests && incoming_requests.map((txn: any) => 
+                {/* Items Incoming Active */}
+                {filteredIncomingTxn && filteredIncomingTxn.map((txn: any) => 
                   <IonItem className="request-Item" routerLink={`/requests/details/${txn.id}`} key={txn.id} >
                   <IonThumbnail slot="start">
                     <img src="../assets/images/components/icon-email--request.svg" alt="" />
@@ -261,16 +288,14 @@ const HomePage: React.FC = ({ history }: any) => {
                     <h4>{txn.validationType.charAt(0).toUpperCase()}{txn.validationType.slice(1)}: {txn.requestParams[txn.validationType]}</h4>
                     <p>{relativeTime(txn.created)}</p>
                   </IonLabel>
-                  <IonButton shape="round" className="status" color={`${(txn.status === "New" || txn.status === 'Cancelation in progress') ? "light" : ""}${txn.status === "In progress" ? "primary" : ""}`} 
+                  <IonButton shape="round" className="status" color={`${txn.status === "New" ? "light" : ""}${txn.status === "In progress" ? "primary" : ""}`} 
                     slot="end">
                       {`
                         ${txn.status === "New" ? "New" : ""}
                         ${txn.status === "In progress" ? "In Progress" : ""}
-                        ${txn.status === "Cancelation in progress" ? "Cancelling" : ""}
                       `}                      
                       </IonButton>                  
                 </IonItem>
-
                 )}
               </IonCol>
             </IonRow>

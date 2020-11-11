@@ -56,10 +56,14 @@ const DetailsPage: React.FC = ({ history }: any) => {
   let requestType:string = 'outgoing'
 
   //Check in all outgoing transactions
-  let requestDetails = requests.txn.filter((txn: any) => txn.id === id)
+  let requestDetails:any = []
 
-  console.log("requestDetails")
-  console.log(requestDetails)
+  if(requests && requests.txn)
+    requestDetails = requests.txn.filter((txn: any) => txn.id === id)
+
+  // console.log("requestDetails")
+  // console.log(requestDetails)
+
   //Check in incoming transactions  
   if(!requestDetails.length){
       requestDetails = requests.incoming_txn.filter((txn: any) => txn.id === id)
@@ -69,8 +73,6 @@ const DetailsPage: React.FC = ({ history }: any) => {
   if(requestDetails){
     requestDetails = requestDetails[0]
   }
-  
-
 
   let provider = {
     'did': '',
@@ -143,7 +145,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
     credIssueRequestData.subjectdid = "did:elastos:" + requestDetails.did.replace("did:elastos:", "")
     credIssueRequestData.properties = {}
     credIssueRequestData.properties.email = requestDetails.requestParams.email
-    // credIssueRequestData.expirationdate = new Date(2025, 10, 10).toISOString() // Credential will expire on 2025-10-10 - Note the month's 0-index...
+    credIssueRequestData.expirationdate = new Date(2025, 10, 10).toISOString() // Credential will expire on 2025-10-10 - Note the month's 0-index...
 
     sendCredIssueIntent(credIssueRequestData)
    }
@@ -181,17 +183,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
 
     let verifiedCredential = requestDetails.verifiedCredential
 
-    //Build request for credimport intent
-    // as found at https://developer.elastos.org/build/elastos_scheme/#request-parameters-2        
     verifiedCredential.credentialSubject.email = requestDetails.requestParams.email
-    // verifiedCredential.proof.jws = verifiedCredential.proof.signature
-    // delete verifiedCredential.proof.signature
-    // verifiedCredential.proof.proofPurpose = "assertionMethod"
-
-    // verifiedCredential["@context"] = [
-    //   "https://www.w3.org/2018/credentials/v1",
-    //   "https://www.w3.org/2018/credentials/examples/v1"
-    // ]
 
     sendCredSaveIntent({ verifiedCredential });
   }  
@@ -206,7 +198,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
         </IonToolbar>
         <IonGrid className="pad-me--top thick-padding">
 
-          {requestType === 'outgoing' &&
+          {/* {requestType === 'outgoing' && */}
           <IonRow 
           className={`text-center 
           ${requestDetails.status === "Approved" ? "approved-tooltip" : ""} 
@@ -240,7 +232,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
               </IonLabel>
             </IonCol>
           </IonRow>
-          }
+          {/* } */}
 
 
           <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px'}}>
@@ -328,7 +320,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
           </IonRow>
 
           <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px',
-    marginTop: '10px', display: (requestType === 'outgoing' ? 'inline-block' : 'none')}}>
+    marginTop: '10px', display: (requestType === 'outgoing' ? 'block' : 'none')}}>
           <h2>Validator</h2>
           { requestDetails && requestDetails.provider &&           
             <IonListHeader className="fieldContainer2">
@@ -358,8 +350,9 @@ const DetailsPage: React.FC = ({ history }: any) => {
             </IonRow>
 
             <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px',
-    marginTop: '10px', display: (requestType === 'outgoing' ? 'inline-block' : 'none')}}>
+    marginTop: '10px', display: (requestType === 'outgoing' && requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') ? 'block' : 'none')}}>
             <h2>Next Steps</h2>
+
             { requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') && provider.validation.email.next_steps.map((step: any, index: number) => 
               <IonListHeader className="fieldContainer">
                   <IonLabel>
