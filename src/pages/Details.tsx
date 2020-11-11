@@ -145,7 +145,9 @@ const DetailsPage: React.FC = ({ history }: any) => {
     credIssueRequestData.subjectdid = "did:elastos:" + requestDetails.did.replace("did:elastos:", "")
     credIssueRequestData.properties = {}
     credIssueRequestData.properties.email = requestDetails.requestParams.email
-    credIssueRequestData.expirationdate = new Date(2025, 10, 10).toISOString() // Credential will expire on 2025-10-10 - Note the month's 0-index...
+
+    let d = new Date();
+    credIssueRequestData.expirationdate = new Date(d.getFullYear() + 5, d.getMonth(), d.getDate()).toISOString() // Credential will expire on 2025-10-10 - Note the month's 0-index...
 
     sendCredIssueIntent(credIssueRequestData)
    }
