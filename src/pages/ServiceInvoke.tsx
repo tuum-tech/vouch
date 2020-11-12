@@ -224,7 +224,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
     providerid = e.currentTarget.getAttribute('data-providerid');
     validationtype = e.currentTarget.getAttribute('data-validationtype');
 
-    let claim:any = {}
+    let claim:any = {name: false, email: false, telephone: false, avatar: false}
     claim[validationtype] = true
 
     signIn(claim)
