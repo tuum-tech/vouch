@@ -219,7 +219,10 @@ const HomePage: React.FC = ({ history }: any) => {
                 <IonCard onClick={e => {
                           e.preventDefault();
                           if(user && user.email){
-                            history.push('/home/service-invoke');
+                            history.push({
+                              pathname: '/home/service-invoke',
+                              state: { credentialType: 'email' }                              
+                            });
                           } else { 
                             //show alert
                             setShowAlertEmailValidation(true);
@@ -240,7 +243,18 @@ const HomePage: React.FC = ({ history }: any) => {
               </IonCol>
                 <IonCol size="6">
                 {/* <IonCard routerLink={user && user.telephone ? '/home/service-invoke' : ''}>                 */}
-                <IonCard onClick={() => setShowAlertPhoneValidation(true)}>
+                <IonCard onClick={e => {
+                          e.preventDefault();
+                          if(user && user.telephone){
+                            history.push({
+                              pathname: '/home/service-invoke',
+                              state: { credentialType: 'telephone' }                              
+                            });
+                          } else { 
+                            //show alert
+                            setShowAlertPhoneValidation(true);
+                          }
+                        }}>
                   <IonCardContent>
                     <IonRow>
                       <IonCol>
@@ -254,7 +268,18 @@ const HomePage: React.FC = ({ history }: any) => {
                   </IonCardContent>
                 </IonCard></IonCol><IonCol size="6">
                 {/* <IonCard routerLink={user && user.telephone ? '/home/service-invoke' : ''}>                 */}
-                <IonCard onClick={() => setShowAlertNameValidation(true)}>
+                <IonCard onClick={e => {
+                          e.preventDefault();
+                          if(user && user.name){
+                            history.push({
+                              pathname: '/home/service-invoke',
+                              state: { credentialType: 'name' }                              
+                            });
+                          } else { 
+                            //show alert
+                            setShowAlertNameValidation(true);
+                          }
+                        }}>
                   <IonCardContent>
                     <IonRow>
                       <IonCol>
@@ -315,7 +340,7 @@ const HomePage: React.FC = ({ history }: any) => {
                     <img src="../assets/images/components/icon-email--request.svg" alt="" />
                   </IonThumbnail>
                   <IonLabel>
-                    <h2>Email Validation</h2>
+                    <h2>{txn.validationType.charAt(0).toUpperCase()}{txn.validationType.slice(1)} Validation</h2>
                     <p>{relativeTime(txn.created)}</p>
                   </IonLabel>
                   <IonButton shape="round" className="status" color={`${(txn.status === "New" || txn.status === 'Cancelation in progress') ? "light" : ""}${txn.status === "In progress" ? "primary" : ""}`} 

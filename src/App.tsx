@@ -23,7 +23,7 @@ import SignIn from './pages/SignIn';
 import Support from './pages/Support';
 import IntentServiceInvoke from './pages/IntentServiceInvoke';
 import IntentDetails from './pages/IntentDetails';
-import { getEmailValidationProviders } from './store/providers';
+import { getEmailValidationProviders, getNameValidationProviders, getPhoneValidationProviders } from './store/providers';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -113,14 +113,15 @@ const App: React.FC = () => {
     };
   }, [onDeviceReady]);
 
+  //Get the list of email validation providers  
   useEffect(() => {
-    if(!validationProviders.emailValidationProviders){
-      sendGetEmailValidationProvidersReq('email')
-    }
-   },
-   // eslint-disable-next-line react-hooks/exhaustive-deps
-   []
- );
+      if(!validationProviders.emailValidationProviders){
+        sendGetEmailValidationProvidersReq('email')
+      }
+     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+   );
 
   //Get the list of email validation providers
   const [sendGetEmailValidationProvidersReq] = useProvider((emailValidationProviders:any) => { 
@@ -128,6 +129,40 @@ const App: React.FC = () => {
       dispatch(getEmailValidationProviders(emailValidationProviders))
     }  
   })
+
+//Get the list of name validation providers  
+  useEffect(() => {
+    if(!validationProviders.nameValidationProviders){
+      sendGetNameValidationProvidersReq('name')
+    }
+   },
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  []
+ );
+
+//Get the list of name validation providers
+const [sendGetNameValidationProvidersReq] = useProvider((nameValidationProviders:any) => { 
+  if(nameValidationProviders) {
+    dispatch(getNameValidationProviders(nameValidationProviders))
+  }  
+})
+
+//Get the list of phone validation providers
+useEffect(() => {
+  if(!validationProviders.phoneValidationProviders){
+    sendGetPhoneValidationProvidersReq('telephone')
+  }
+ },
+// eslint-disable-next-line react-hooks/exhaustive-deps
+[]
+);
+
+//Get the list of phone validation providers
+const [sendGetPhoneValidationProvidersReq] = useProvider((phoneValidationProviders:any) => { 
+if(phoneValidationProviders) {
+  dispatch(getPhoneValidationProviders(phoneValidationProviders))
+}  
+})
 
   return (
   <IonApp>
@@ -238,7 +273,6 @@ const storeIncomingRequests = async (user: any) => {
   console.log("user")
   console.log(user)
   sendGetIncomingRequests( user )
-  //  sendGetIncomingRequests(userDID)
 }
 
 const [sendGetIncomingRequests] = useIncomingRequestsByDid(async (incomingRequests:any) => { 
@@ -348,6 +382,8 @@ const checkPendingRequests = () => {
   setInterval(async () => {
     const requestIds = await Storage.get({ key: 'pendingRequests' });
     const emailValidationProviders = await Storage.get({ key: 'emailValidationProviders'});
+    const nameValidationProviders = await Storage.get({ key: 'nameValidationProviders'});
+    const phoneValidationProviders = await Storage.get({ key: 'phoneValidationProviders'});
 
     if(requestIds && requestIds.value){
       let parsedPendingRequests = JSON.parse(requestIds.value);
@@ -363,17 +399,25 @@ const checkPendingRequests = () => {
               provider = JSON.parse(emailValidationProviders.value).filter((provider:any) => provider.id === response.data.provider)[0]
             }
 
+            if(response.data.validationType === 'name'){
+              provider = JSON.parse(nameValidationProviders.value).filter((provider:any) => provider.id === response.data.provider)[0]
+            }
+
+            if(response.data.validationType === 'telephone'){
+              provider = JSON.parse(phoneValidationProviders.value).filter((provider:any) => provider.id === response.data.provider)[0]
+            }
+
             let title = `${response.data.validationType.charAt(0).toUpperCase()}${response.data.validationType.slice(1)} Validation Request ${response.data.status}`
             let message = "";
             switch(response.data.status){
               case 'Approved': 
-                message = `Your email validation from ${provider.name ?? provider.id} has been approved.`
+                message = `Your ${response.data.validationType} validation from ${provider.name ?? provider.id} has been approved.`
                 break;              
               case 'Rejected': 
-                message = `Your email validation from ${provider.name ?? provider.id} has been rejected. Please try sending another request or choose another validator.`
+                message = `Your ${response.data.validationType} validation from ${provider.name ?? provider.id} has been rejected. Please try sending another request or choose another validator.`
                 break;
               case 'Canceled':
-                message = `Your email validation from ${provider.name ?? provider.id} has been cancelled because the validator did not respond to your request in time. Please try sending another request or choose another validator.`
+                message = `Your ${response.data.validationType} validation from ${provider.name ?? provider.id} has been cancelled because the validator did not respond to your request in time. Please try sending another request or choose another validator.`
                 break;
               default:
                 message = `Your ${response.data.validationType} validation request from ${provider.name ?? provider.id} has been ${response.data.status}.`                              

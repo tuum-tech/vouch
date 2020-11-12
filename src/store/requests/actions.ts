@@ -7,7 +7,9 @@ import {
     CRED_SAVED_SUCCESS,
     REQUEST_CANCELLED_SUCCESS,
     REQUEST_APPROVED_SUCCESS,
-    REQUEST_REJECTED_SUCCESS
+    REQUEST_REJECTED_SUCCESS,
+    NAME_VALIDATION_REQUEST_SUCCESS,
+    PHONE_VALIDATION_REQUEST_SUCCESS
 } from "./types";
   
 import { ThunkAction } from "redux-thunk";
@@ -29,6 +31,40 @@ import { Storage } from "@capacitor/core";
 export const emailValidationSuccess = (txn: any): TxnActionTypes => ({
     type: EMAIL_VALIDATION_REQUEST_SUCCESS,
     payload: txn
+});
+
+export const nameValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(nameValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const nameValidationSuccess = (txn: any): TxnActionTypes => ({
+type: NAME_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
+export const phoneValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(phoneValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const phoneValidationSuccess = (txn: any): TxnActionTypes => ({
+type: PHONE_VALIDATION_REQUEST_SUCCESS,
+payload: txn
 });
 
 export const setSelectedTabRequests = (txn: any): TxnActionTypes => ({

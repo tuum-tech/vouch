@@ -74,19 +74,28 @@ const DetailsPage: React.FC = ({ history }: any) => {
     requestDetails = requestDetails[0]
   }
 
-  let provider = {
+  let provider:any = {
     'did': '',
     'name': '', 
     'logo': '', 
-    'validation': {
-      'email': {
-        'next_steps': []
-      }
-    }
+    'validation': {}
   }; 
+  provider.validation[requestDetails.validationType] = {
+    'next_steps': []
+  }
+
+
   if(requestDetails && requestDetails.validationType === 'email'){
      provider = validationProviders.emailValidationProviders.filter((provider:any) => provider.id === requestDetails.provider)[0]
   }
+
+  if(requestDetails && requestDetails.validationType === 'name'){
+    provider = validationProviders.nameValidationProviders.filter((provider:any) => provider.id === requestDetails.provider)[0]
+ }  
+
+ if(requestDetails && requestDetails.validationType === 'telephone'){
+  provider = validationProviders.phoneValidationProviders.filter((provider:any) => provider.id === requestDetails.provider)[0]
+}  
 
   const copyText = function (elementId: any){
     let copyText:any = document.querySelector("#" + elementId);
@@ -137,14 +146,44 @@ const DetailsPage: React.FC = ({ history }: any) => {
 
    const handleApproveRequestClick = (e:any) => {
 
+    const validationtype = e.currentTarget.getAttribute('data-validationtype')
+
     //Sign the credential with validators DID using credissue intent
 
     let credIssueRequestData:any = {}
-    credIssueRequestData.identifier = "email"
-    credIssueRequestData.types = ["EmailCredential", "VerifiableCredential", "BasicProfileCredential"]
+    credIssueRequestData.identifier = validationtype    
+    credIssueRequestData.types = ["VerifiableCredential"]
     credIssueRequestData.subjectdid = "did:elastos:" + requestDetails.did.replace("did:elastos:", "")
     credIssueRequestData.properties = {}
-    credIssueRequestData.properties.email = requestDetails.requestParams.email
+
+
+    switch(validationtype) {
+      case 'email': {
+        credIssueRequestData.types.push("EmailCredential")
+        credIssueRequestData.types.push("BasicProfileCredential")
+        credIssueRequestData.properties.email = requestDetails.requestParams.email
+        break
+      }
+      case 'name': {
+        credIssueRequestData.types.push("NameCredential")
+        credIssueRequestData.types.push("BasicProfileCredential")
+        credIssueRequestData.properties.name = requestDetails.requestParams.name
+        break
+      }
+      case 'telephone': {
+        credIssueRequestData.types.push("PhoneCredential")
+        credIssueRequestData.types.push("BasicProfileCredential")
+        credIssueRequestData.properties.phone = requestDetails.requestParams.phone
+        break
+      }
+      default: {
+        let type = validationtype.charAt(0).toUpperCase() + validationtype.slice(1)
+        credIssueRequestData.types.push(type + "Credential")
+        credIssueRequestData.types.push("BasicProfileCredential")
+
+        credIssueRequestData.properties[validationtype] = requestDetails.requestParams[validationtype]        
+      }
+    }
 
     let d = new Date();
     credIssueRequestData.expirationdate = new Date(d.getFullYear() + 5, d.getMonth(), d.getDate()).toISOString() // Credential will expire on 2025-10-10 - Note the month's 0-index...
@@ -247,7 +286,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
               <IonCol size="8" className='ion-text-right'>
                   <IonImg src={`
                     ${requestDetails.validationType === "email" ? "../assets/images/components/icon-email.svg" : ""}
-                    ${requestDetails.validationType === "phone" ? "../assets/images/components/icon-phone.svg" : ""}
+                    ${requestDetails.validationType === "telephone" ? "../assets/images/components/icon-phone.svg" : ""}
                     ${requestDetails.validationType === "name" ? "../assets/images/components/icon-name.svg" : ""}
                   `} style={{height: '32px', width: '32px', display: 'inline-block', verticalAlign: 'bottom'}}  /> 
                   <IonLabel className="value" style={{verticalAlign: 'super'}}>{requestDetails.validationType.charAt(0).toUpperCase()}{requestDetails.validationType.slice(1)}</IonLabel>
@@ -355,7 +394,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
     marginTop: '10px', display: (requestType === 'outgoing' && requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') ? 'block' : 'none')}}>
             <h2>Next Steps</h2>
 
-            { requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') && provider.validation.email.next_steps.map((step: any, index: number) => 
+            { requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') && provider.validation[requestDetails.validationType].next_steps.map((step: any, index: number) => 
               <IonListHeader className="fieldContainer">
                   <IonLabel>
                     <span className="label">Step {index + 1}:</span><br/>
@@ -398,6 +437,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
             <IonCol>
               <IonButton className="btnApproveRequest text-center" fill="solid"
               onClick={(e) => handleApproveRequestClick(e)}
+              data-validationtype={requestDetails.validationType}
               color="success"
           >Approve</IonButton>
             </IonCol>

@@ -18,7 +18,7 @@ const RegisterValidatorPage: React.FC = ({ history }: any) => {
   const[checkedItems,setCheckedItems]= useState([
     { val: 'email', type: 'BasicProfileCredential', isChecked: false },
     { val: 'name', type: 'BasicProfileCredential', isChecked: false },
-    { val: 'phone', type: 'BasicProfileCredential', isChecked: false },
+    { val: 'telephone', type: 'BasicProfileCredential', isChecked: false },
     { val: 'gender', type: 'BasicProfileCredential', isChecked: false },
     { val: 'location', type: 'BasicProfileCredential', isChecked: false },
     { val: 'birthdate', type: 'BasicProfileCredential', isChecked: false },
@@ -156,7 +156,7 @@ const updateItem = (val: string, newIsChecked: boolean) => {
       }
     }*/
 
-    signIn({ name: true, email: true, avatar: true })
+    signIn({ name: true, avatar: true })
   }
 
   const [signIn] = useDID((credentials:any) => { 

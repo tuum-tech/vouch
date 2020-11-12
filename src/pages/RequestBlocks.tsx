@@ -24,7 +24,7 @@ const RequestBlocks = (props: any) => {
                       <img src="../assets/images/components/icon-email--request.svg" alt="" />
                     </IonThumbnail>
                     <IonLabel>
-                      <h2>Email Validation</h2>
+                      <h2>{txn.validationType.charAt(0).toUpperCase()}{txn.validationType.slice(1)} Validation</h2>
                       { tabName === "incoming" &&
                         <p>{txn.requestParams[txn.validationType]}</p>
                       }

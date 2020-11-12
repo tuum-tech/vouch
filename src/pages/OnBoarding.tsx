@@ -70,7 +70,7 @@ const OnBoardingPage: React.FC = ({ history }: any) => {
         <IonRow className="ion-text-center">
           <IonCol className="ion-align-items-center">
             <div>
-              <IonButton className="button cta" onClick={() => { signIn({ name: false, email: false, avatar: false })}}>
+              <IonButton className="button cta" onClick={() => { signIn({ name: false, email: false, telephone: false, avatar: false })}}>
                 <IonImg src="../assets/images/components/did-icon.svg" className="did-icon"></IonImg>
                  Sign in with DID</IonButton>            
             </div>
