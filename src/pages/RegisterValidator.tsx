@@ -15,27 +15,58 @@ declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
 const RegisterValidatorPage: React.FC = ({ history }: any) => {
 
-  const[checkedItems,setCheckedItems]= useState([
-    { val: 'email', type: 'BasicProfileCredential', isChecked: false },
-    { val: 'name', type: 'BasicProfileCredential', isChecked: false },
-    { val: 'telephone', type: 'BasicProfileCredential', isChecked: false },
-    { val: 'gender', type: 'BasicProfileCredential', isChecked: false },
-    { val: 'location', type: 'BasicProfileCredential', isChecked: false },
-    { val: 'birthdate', type: 'BasicProfileCredential', isChecked: false },
-    { val: 'birthplace', type: 'BasicProfileCredential', isChecked: false },
-    { val: 'education', type: 'BasicProfileCredential', isChecked: false },
-    { val: 'occupation', type: 'BasicProfileCredential', isChecked: false },
-    { val: 'wechat', type: 'InternetAccountCredential', isChecked: false },
-    { val: 'instagram', type: 'InternetAccountCredential', isChecked: false },
-    { val: 'facebook', type: 'InternetAccountCredential', isChecked: false },
-    { val: 'snapshot', type: 'InternetAccountCredential', isChecked: false },
-    { val: 'twitter', type: 'InternetAccountCredential', isChecked: false },
-    { val: 'telegram', type: 'InternetAccountCredential', isChecked: false },
-    { val: 'paypal', type: 'InternetAccountCredential', isChecked: false },
-    { val: 'ela', type: 'InternetAccountCredential', isChecked: false }  
-])
+  interface Credentials {
+    val: CredentialCode;
+    type: CredentialType;
+    isChecked: boolean
+  }
 
-const updateItem = (val: string, newIsChecked: boolean) => {
+  enum CredentialCode {
+      EMAIL = "email",
+      NAME = "name",
+      TELEPHONE = "telephone",
+      GENDER = "gender",
+      LOCATION = "location",
+      BIRTHDATE = "birthdate",
+      BIRTHPLACE = "birthplace",
+      EDUCATION = "education",
+      OCCUPATION = "occupation",
+      WECHAT = "wechat",
+      INSTAGRAM = "instagram",
+      FACEBOOK = "facebook",
+      SNAPCHAT = "snapchat",
+      TWITTER = "twitter",
+      TELEGRAM = "telegram",
+      PAYPAL = "paypal",
+      ELA = "ela"
+  }
+
+  enum CredentialType {
+      BASIC_PROFILE_CREDENTIAL = "BasicProfileCredential",
+      INTERNET_ACCOUNT_CREDENTIAL = "InternetAccountCredential"
+  }
+
+  const[checkedItems,setCheckedItems]= useState([
+    { val: CredentialCode.EMAIL, type: CredentialType.BASIC_PROFILE_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.NAME, type: CredentialType.BASIC_PROFILE_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.TELEPHONE, type: CredentialType.BASIC_PROFILE_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.GENDER, type: CredentialType.BASIC_PROFILE_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.LOCATION, type: CredentialType.BASIC_PROFILE_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.BIRTHDATE, type: CredentialType.BASIC_PROFILE_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.BIRTHPLACE, type: CredentialType.BASIC_PROFILE_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.EDUCATION, type: CredentialType.BASIC_PROFILE_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.OCCUPATION, type: CredentialType.BASIC_PROFILE_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.WECHAT, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.INSTAGRAM, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.FACEBOOK, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.SNAPCHAT, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.TWITTER, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.TELEGRAM, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.PAYPAL, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.ELA, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false }     
+  ])
+
+const updateItem = (val: CredentialCode, newIsChecked: boolean) => {
   var index = checkedItems.findIndex(x => x.val === val);
 
   let g:any = checkedItems[index]

@@ -233,15 +233,42 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
       const credSubjects = credentials.map((cred:any) => cred.credentialSubject)
       const user = Object.assign({}, ...credSubjects)
       if(validationtype === 'email'){
-        dispatch(login(user, () => sendEmailValidationRequest({ user: user, providerId: providerid })))    
+        if(user.email) {
+          dispatch(login(user, () => sendEmailValidationRequest({ user: user, providerId: providerid })))
+        }
+        else {
+          history.push('/home');
+          dispatch(showNotification({"message": "Your request could not be submitted. Please try again", "type": "warning", "show": true}))
+          setTimeout(() => {
+            dispatch(hideNotification())
+          }, 5000) 
+        }
       }
 
       if(validationtype === 'name'){
-        dispatch(login(user, () => sendNameValidationRequest({ user: user, providerId: providerid })))    
+        if(user.name){
+          dispatch(login(user, () => sendNameValidationRequest({ user: user, providerId: providerid })))  
+        }
+        else {
+          history.push('/home');
+          dispatch(showNotification({"message": "Your request could not be submitted. Please try again", "type": "warning", "show": true}))
+          setTimeout(() => {
+            dispatch(hideNotification())
+          }, 5000) 
+        }
       }
 
       if(validationtype === 'telephone'){
-        dispatch(login(user, () => sendPhoneValidationRequest({ user: user, providerId: providerid })))    
+        if(user.telephone){
+          dispatch(login(user, () => sendPhoneValidationRequest({ user: user, providerId: providerid })))
+        }
+        else {
+          history.push('/home');
+          dispatch(showNotification({"message": "Your request could not be submitted. Please try again", "type": "warning", "show": true}))
+          setTimeout(() => {
+            dispatch(hideNotification())
+          }, 5000) 
+        }
       }
     }
    })
