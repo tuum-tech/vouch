@@ -345,14 +345,15 @@ const HomePage: React.FC = ({ history }: any) => {
           onDidDismiss={() => setShowAlertEmailValidation(false)}
           cssClass='service-popup-alert no-image'
           header={'Could not read the Email'}
-          message={'In order to proceed with Email validation, Please set the visibility of your email address to Public.'}
+          message={'In order to proceed with Email validation, Please set the email address in Identity app and allow access while signing in to Vouch dApp.'}
           buttons={[
             {
               text: 'Re-sign In',
               cssClass: 'btn-resignin btn-center',
               handler: () => {
                 // 'Sign him out and take him to sign in screen'
-                dispatch(logout(() => signIn({ name: false, email: true, avatar: false })))                
+                // dispatch(logout(() => signIn({ name: false, email: true, phone: false, avatar: false }))) 
+                signIn({ name: false, email: true, phone: false, avatar: false })                                
               }
             },
             {
@@ -366,7 +367,61 @@ const HomePage: React.FC = ({ history }: any) => {
           ]}
         />        
 
-        <IonAlert
+<IonAlert
+          isOpen={showAlertPhoneValidation}
+          onDidDismiss={() => setShowAlertPhoneValidation(false)}
+          cssClass='service-popup-alert no-image'
+          header={'Could not read the Phone'}
+          message={'In order to proceed with Phone validation, Please set the phone number in Identity app and allow access while signing in to Vouch dApp.'}
+          buttons={[
+            {
+              text: 'Re-sign In',
+              cssClass: 'btn-resignin btn-center',
+              handler: () => {
+                // 'Sign him out and take him to sign in screen'
+                // dispatch(logout(() => signIn({ name: false, email: false, phone: true, avatar: false })))                
+                signIn({ name: false, email: false, phone: true, avatar: false })                        
+              }
+            },
+            {
+              text: 'OK',
+              role: 'cancel',
+              cssClass: 'btn-center',
+              handler: blah => {
+                // console.log('OK');
+              }
+            }            
+          ]}
+        /> 
+
+<IonAlert
+          isOpen={showAlertNameValidation}
+          onDidDismiss={() => setShowAlertNameValidation(false)}
+          cssClass='service-popup-alert no-image'
+          header={'Could not read the Name'}
+          message={'In order to proceed with Name validation, Please set the name in Identity app and allow access while signing in to Vouch dApp.'}
+          buttons={[
+            {
+              text: 'Re-sign In',
+              cssClass: 'btn-resignin btn-center',
+              handler: () => {
+                // 'Sign him out and take him to sign in screen'
+                // dispatch(logout(() => signIn({ name: true, email: false, phone: false, avatar: false })))                
+                signIn({ name: true, email: false, phone: false, avatar: false })                        
+              }
+            },
+            {
+              text: 'OK',
+              role: 'cancel',
+              cssClass: 'btn-center',
+              handler: blah => {
+                // console.log('OK');
+              }
+            }            
+          ]}
+        />
+
+        {/* <IonAlert
           isOpen={showAlertPhoneValidation}
           onDidDismiss={() => setShowAlertPhoneValidation(false)}
           cssClass='service-popup-alert custom-info'
@@ -382,7 +437,7 @@ const HomePage: React.FC = ({ history }: any) => {
           header={'Service Unavailable'}
           message={'There are currently no validators available to validate name.'}
           buttons={['OK']}
-        />        
+        />         */}
 
       </IonPage>
     );
