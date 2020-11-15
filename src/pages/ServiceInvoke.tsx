@@ -275,9 +275,9 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
         {
                 (
                   !['email', 'name', 'telephone'].includes(credentialType) ||  
-                  (credentialType === 'email' && !validationProviders.emailValidationProviders) ||
-                  (credentialType === 'name' && !validationProviders.nameValidationProviders) ||
-                  (credentialType === 'telephone' && !validationProviders.phoneValidationProviders)
+                  (credentialType === 'email' && !validationProviders.emailValidationProviders.length) ||
+                  (credentialType === 'name' && !validationProviders.nameValidationProviders.length) ||
+                  (credentialType === 'telephone' && !validationProviders.phoneValidationProviders.length)
                 )          
                 ? 
                 (           
