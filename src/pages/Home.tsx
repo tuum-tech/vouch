@@ -199,15 +199,15 @@ const HomePage: React.FC = ({ history }: any) => {
                 {/* <IonCard routerLink={user && user.email ? '/home/service-invoke' : ''}> */}
                 <IonCard onClick={e => {
                           e.preventDefault();
-                          if(user && user.email){
+                          // if(user && user.email){
                             history.push({
                               pathname: '/home/service-invoke',
                               state: { credentialType: 'email' }                              
                             });
-                          } else { 
-                            //show alert
-                            setShowAlertEmailValidation(true);
-                          }
+                          // } else { 
+                          //   //show alert
+                          //   setShowAlertEmailValidation(true);
+                          // }
                         }}>
                   <IonCardContent>
                     <IonRow>
@@ -226,15 +226,15 @@ const HomePage: React.FC = ({ history }: any) => {
                 {/* <IonCard routerLink={user && user.telephone ? '/home/service-invoke' : ''}>                 */}
                 <IonCard onClick={e => {
                           e.preventDefault();
-                          if(user && user.telephone){
+                          // if(user && user.telephone){
                             history.push({
                               pathname: '/home/service-invoke',
                               state: { credentialType: 'telephone' }                              
                             });
-                          } else { 
-                            //show alert
-                            setShowAlertPhoneValidation(true);
-                          }
+                          // } else { 
+                          //   //show alert
+                          //   setShowAlertPhoneValidation(true);
+                          // }
                         }}>
                   <IonCardContent>
                     <IonRow>
@@ -251,15 +251,15 @@ const HomePage: React.FC = ({ history }: any) => {
                 {/* <IonCard routerLink={user && user.telephone ? '/home/service-invoke' : ''}>                 */}
                 <IonCard onClick={e => {
                           e.preventDefault();
-                          if(user && user.name){
+                          // if(user && user.name){
                             history.push({
                               pathname: '/home/service-invoke',
                               state: { credentialType: 'name' }                              
                             });
-                          } else { 
-                            //show alert
-                            setShowAlertNameValidation(true);
-                          }
+                          // } else { 
+                          //   //show alert
+                          //   setShowAlertNameValidation(true);
+                          // }
                         }}>
                   <IonCardContent>
                     <IonRow>
