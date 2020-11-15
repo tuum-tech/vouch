@@ -284,7 +284,7 @@ const HomePage: React.FC = ({ history }: any) => {
               </IonCol>
               <IonCol class="RequestBlock">
                 {/* Items Incoming Active */}
-                {filteredIncomingTxn[0].id && filteredIncomingTxn.map((txn: any) => 
+                {filteredIncomingTxn && filteredIncomingTxn[0] && filteredIncomingTxn[0].id && filteredIncomingTxn.map((txn: any) => 
                   <IonItem className="request-Item" routerLink={`/requests/details/${txn.id}`} key={txn.id} >
                   <IonThumbnail slot="start">
                     <img src="../assets/images/components/icon-email--request.svg" alt="" />
