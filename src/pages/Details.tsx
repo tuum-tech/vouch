@@ -19,15 +19,15 @@ declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 const DetailsPage: React.FC = ({ history }: any) => {
 
   const goTo = useCallback(
-    (path: string) => {
-      history.push(path, { direction: 'forward' });
+    (path: string, direction:string = 'forward') => {
+      history.push(path, { direction: direction });
     },
     [history],
   );
 
   let myIconListener = (menuIcon:any) => {
     if (menuIcon.key === "back") {
-        goTo('/requests')
+        goTo('/requests', 'back')
     }
   };
 
@@ -55,16 +55,13 @@ const DetailsPage: React.FC = ({ history }: any) => {
   const { id } = useParams()
   let requestType:string = 'outgoing'
 
-  //Check in all outgoing transactions
+  //Check all outgoing transactions
   let requestDetails:any = []
 
   if(requests && requests.txn)
     requestDetails = requests.txn.filter((txn: any) => txn.id === id)
 
-  // console.log("requestDetails")
-  // console.log(requestDetails)
-
-  //Check in incoming transactions  
+  //Check all incoming transactions  
   if(!requestDetails.length){
       requestDetails = requests.incoming_txn.filter((txn: any) => txn.id === id)
       requestType = "incoming"
@@ -80,6 +77,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
     'logo': '', 
     'validation': {}
   }; 
+
   provider.validation[requestDetails.validationType] = {
     'next_steps': []
   }
@@ -134,10 +132,6 @@ const DetailsPage: React.FC = ({ history }: any) => {
    }
 
    const [sendCredIssueIntent] = useCredIssue((credentials:any) => { 
-     console.log("Time to approve the request")
-     console.log(credentials)
-
-    //  const confirmation_id = requestDetails.id
      sendApproveRequest({ 
        confirmationId: requestDetails.id,
        verifiedCredential: credentials

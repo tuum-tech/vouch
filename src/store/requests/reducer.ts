@@ -130,15 +130,6 @@ export const txnReducer = (
             return c > d ? 1 : -1;
           });
 
-          // console.log("Incoming new txn computed in reducer")
-          // console.log(incoming_txn_new)
-
-          // console.log("Incoming history txn computed in reducer")
-          // console.log(incoming_txn_history)          
-  
-          console.log("Combined and sorted")
-          // console.log(incoming_txn_new.concat(incoming_txn_history))
-
           return { 
             ...state, 
             incoming_txn: incoming_txn_new.concat(incoming_txn_history), 

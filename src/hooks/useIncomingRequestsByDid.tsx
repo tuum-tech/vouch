@@ -27,8 +27,6 @@ export function useIncomingRequestsByDid(optionalCallback: any = noop) {
       }
 
       if(userinfo){
-        console.log("userinfo.id.split(':').pop()")
-        console.log(userinfo.id.split(':').pop())
         const did = userinfo.id.split(':').pop();
         getData(`${process.env.REACT_APP_GET_INCOMING_VALIDATION_REQUESTS_BY_PROVIDER_DID}` + did)
         .then(response => {

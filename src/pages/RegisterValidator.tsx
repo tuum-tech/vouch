@@ -41,8 +41,7 @@ const updateItem = (val: string, newIsChecked: boolean) => {
   let g:any = checkedItems[index]
   g['isChecked'] = newIsChecked
   if (index === -1){
-    // handle error
-    console.log('no match')
+    // handle error 
   }
   else {
     setCheckedItems([
@@ -74,8 +73,6 @@ const updateItem = (val: string, newIsChecked: boolean) => {
 
   useEffect(() => {
       if(!providerServices){
-        console.log(providerServices)
-        console.log("Calling the API to get provider services")    
         sendGetProviderServices(user.id)
       } else {
         populateRegisteredServices(providerServices)
@@ -96,7 +93,6 @@ const updateItem = (val: string, newIsChecked: boolean) => {
 
   const [sendGetProviderServices] = useProviderServices((services:any) => { 
     if(services) {
-      console.log(services)
       dispatch(getProviderServices(services))
 
       populateRegisteredServices(services)
@@ -105,16 +101,9 @@ const updateItem = (val: string, newIsChecked: boolean) => {
 
   const populateRegisteredServices = (services:any) => {
     if(services && services.validationTypes){
-      // TODO:
-      console.log("found provider services to filter")
-      console.log(services)
       services.validationTypes.forEach(function(service:any) {
-        console.log(service)
         updateItem(service, true);
       })
-  
-      console.log("after transformation")
-      console.log(checkedItems)
     }    
   }
 
@@ -123,8 +112,6 @@ const updateItem = (val: string, newIsChecked: boolean) => {
   let services:object = {}
 
   const handleSubmitRequestClick = (e: any) => {
-    console.log("Submit request");
-    console.log(checkedItems);
 
     const tempServices = checkedItems.map(function(s){
       if(s.isChecked){
@@ -137,13 +124,8 @@ const updateItem = (val: string, newIsChecked: boolean) => {
       //Check if the service object is not empty
       if(!(Object.keys(tempServices[i]).length === 0 && [tempServices[i]].constructor === Object)){
         Object.assign(services, tempServices[i])
-        // console.log("assigned service")
-        // console.log(services)
       }
     }
-
-    console.log("Dynamic services")
-    console.log(services)
 
     /* Sample request data
     services = {
@@ -169,10 +151,6 @@ const updateItem = (val: string, newIsChecked: boolean) => {
 
   const [sendRegisterValidatorRequest] = useRegisterValidator((provider:any) => { 
     if(provider) {
-
-      console.log("Q hogaya na? register...")
-      console.log(provider)
-
       dispatch(setProviderServices(provider, () => goTo('/home')))
       dispatch(showNotification({"message": provider.message, "type": "success", "show": true}))
       setTimeout(() => {
@@ -180,8 +158,6 @@ const updateItem = (val: string, newIsChecked: boolean) => {
       }, 5000)      
     } 
     else {
-      console.log("Na bha na? tumse na hopayega...")
-
       history.push('/home');
       dispatch(showNotification({"message": provider.message, "type": "warning", "show": true}))
       setTimeout(() => {

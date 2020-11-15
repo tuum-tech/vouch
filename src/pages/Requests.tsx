@@ -20,17 +20,6 @@ const RequestsPage: React.FC = () => {
   const dispatch = useDispatch()  
   const requests = useSelector((state:AppState) => state.requests)
   const user = useSelector((state:AppState) => state.auth.user)  
-  // const providerServices = useSelector((state:AppState) => state.validationProviders.providerServices)
-
-  // const [sendGetProviderServices] = useProviderServices((services:any) => { 
-  //   if(services) {
-  //     console.log(services)
-  //     dispatch(getProviderServices(services))
-
-  //     console.log("Yeah.. Nailed it2 from Requests Page")
-  //     sendGetIncomingRequests(services.id)         
-  //   }
-  // }) 
 
   const doRefresh = (event: CustomEvent<RefresherEventDetail>) => {
     sendGetAllRequestsReq( user )
@@ -49,8 +38,6 @@ const RequestsPage: React.FC = () => {
 
    const [sendGetIncomingRequests] = useIncomingRequestsByDid((txn:any) => { 
     if(txn) {
-      console.log("found incoming txns on requests page")
-      console.log(txn)
       dispatch(getIncomingRequests(txn))
     }  
    })
@@ -58,30 +45,7 @@ const RequestsPage: React.FC = () => {
    useIonViewWillEnter(() => {
     sendGetAllRequestsReq( user )    
     sendGetIncomingRequests( user )
-
-    // if(!providerServices){
-    //   console.log(providerServices)
-    //   console.log("useIonViewWillEnter Calling the API to get provider services")    
-    //   sendGetProviderServices(user.id)
-    // }   
    });
-
-  //  useEffect(() => {
-    // console.log("Incoming Requests")
-    // console.log(requests.incoming_txn)
-    // console.log("Provider Services")
-    // console.log(providerServices)
-
-    // if(!requests.incoming_txn && providerServices && providerServices.validationTypes){
-      //sendGetIncomingRequests("5f7df136a8252d5778d583d8")        
-      // console.log("Yeah.. Nailed it from request page")
-
-      // sendGetIncomingRequests(providerServices.id)        
-    // }
-  //  },
-   // eslint-disable-next-line react-hooks/exhaustive-deps
-  //  []
-//  );
 
   const handleClick = function(e: any) {
     let tab_event = e.detail.value;
@@ -89,8 +53,6 @@ const RequestsPage: React.FC = () => {
       dispatch(setSelectedTabRequests({'name':'all','data':requests.txn}))
     }
     if(tab_event === 'incoming'){
-      // console.log("Checking incoming requests data while switching the tab")
-      // console.log(requests)
       dispatch(setSelectedTabRequests({'name':'incoming','data':requests.incoming_txn}))      
     }    
     if(tab_event === 'active'){

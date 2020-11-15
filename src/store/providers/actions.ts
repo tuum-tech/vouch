@@ -99,8 +99,6 @@ ValidationProviderActionTypes
         "did": response.data.did,
         "validationTypes": validationTypes
     }
-    console.log("Prepared to store in local storage")
-    console.log(providerServices)
 
     await Storage.set({ key: 'providerServices', value: JSON.stringify(providerServices)})
     dispatch(setProviderServicesSuccess(providerServices));

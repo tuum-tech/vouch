@@ -51,8 +51,6 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
       });
 
       titleBarManager.addOnItemClickedListener(myIconListener);
-      console.log("Service Invoke Page searching for credentialType")
-      console.log(credentialType)
 
       switch(credentialType){
         case 'email': sendGetEmailValidationProvidersReq('email'); break

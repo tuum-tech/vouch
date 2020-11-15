@@ -67,18 +67,14 @@ const HomePage: React.FC = ({ history }: any) => {
 
     const [sendGetProviderServices] = useProviderServices((services:any) => { 
       if(services) {
-        console.log(services)
         dispatch(getProviderServices(services))
-
-        console.log("Yeah.. Nailed it2")
         sendGetIncomingRequests(services.id)         
       }
     }) 
 
     useIonViewWillEnter(() => {    
       if(!providerServices){
-        console.log(providerServices)
-        console.log("useIonViewWillEnter Calling the API to get provider services")    
+        // Calling the API to get provider services
         sendGetProviderServices(user.id)
       }   
     });
@@ -100,8 +96,6 @@ const HomePage: React.FC = ({ history }: any) => {
 
      const [sendGetIncomingRequests] = useIncomingRequests((txn:any) => { 
       if(txn) {
-        console.log("found incoming txns")
-        console.log(txn)
         dispatch(getIncomingRequests(txn))
         filterIncomingTxn(txn)
       }  
@@ -112,17 +106,11 @@ const HomePage: React.FC = ({ history }: any) => {
         sendGetAllRequestsReq(user)
       }
 
-      console.log("Incoming Requests")
-      console.log(incoming_requests)
-      console.log("Provider Services")
-      console.log(providerServices)
-
       if(incoming_requests){
         filterIncomingTxn(incoming_requests)
       }
 
       if(!incoming_requests && providerServices && providerServices.validationTypes){
-        console.log("Yeah.. Nailed it")
         sendGetIncomingRequests(providerServices.id)        
       }
 
@@ -156,15 +144,8 @@ const HomePage: React.FC = ({ history }: any) => {
     }
 
     const filterIncomingTxn = function(incoming_requests: any) {
-
-      console.log("filterIncomingTxn: All incoming requests")
-      console.log(incoming_requests)
-
       let pendingIncomingRequests = incoming_requests.filter((txn: any) => (txn.status === "New" || txn.status === "In progress"))
       setFilteredIncomingTxn(pendingIncomingRequests)
-
-      console.log("filterIncomingTxn: Filtered incoming requests")
-      console.log(pendingIncomingRequests)      
     }
 
     return (
@@ -303,7 +284,7 @@ const HomePage: React.FC = ({ history }: any) => {
               </IonCol>
               <IonCol class="RequestBlock">
                 {/* Items Incoming Active */}
-                {filteredIncomingTxn && filteredIncomingTxn.map((txn: any) => 
+                {filteredIncomingTxn[0].id && filteredIncomingTxn.map((txn: any) => 
                   <IonItem className="request-Item" routerLink={`/requests/details/${txn.id}`} key={txn.id} >
                   <IonThumbnail slot="start">
                     <img src="../assets/images/components/icon-email--request.svg" alt="" />

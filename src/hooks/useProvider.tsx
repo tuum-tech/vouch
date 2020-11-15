@@ -27,8 +27,6 @@ export function useProvider(optionalCallback: any = noop) {
       // if(validationType === 'email' || validationType === 'telephone' || validationType === 'name'){
         getData(`${process.env.REACT_APP_GET_PROVIDERS_BY_VALIDATION_TYPE}`)
         .then(response => {
-          console.log("Response from provider list")
-          console.log(response)
           if(response.meta.code === 200) {
             optionalCallback(response.data);          
           }

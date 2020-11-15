@@ -270,22 +270,16 @@ const onReceiveIntent = async (intent: AppManagerPlugin.ReceivedIntent, goTo: an
 
 // store them in localstorage with the key incomingRequests 
 const storeIncomingRequests = async (user: any) => {   
-  console.log("user")
-  console.log(user)
   sendGetIncomingRequests( user )
 }
 
 const [sendGetIncomingRequests] = useIncomingRequestsByDid(async (incomingRequests:any) => { 
   if(incomingRequests) {
-    console.log("found incoming txns in notification service")
-    console.log(incomingRequests)
 
     let newIncomingRequests = [];
     for(let i=0;i<incomingRequests.length;i++){
       if(incomingRequests[i].status === "New"){
         newIncomingRequests.push(incomingRequests[i].id)
-        // dispatch(getIncomingRequests(txn))
-        // filterIncomingTxn(txn)
       }
     }
 
@@ -310,7 +304,7 @@ const checkIncomingRequests = async () => {
       let remainingIncomingRequests = JSON.parse(requestIds.value);
 
       const [sendGetRequest] = useRequest(async (response:any) => { 
-        console.log("279 page check incoming request") 
+
         if (response != null && response.data != null){
           if(response.data.status === "New"){
 
@@ -343,7 +337,7 @@ const checkIncomingRequests = async () => {
       let remainingIncomingRequests = JSON.parse(requestIds.value);
 
       const [sendGetRequest] = useRequest(async (response:any) => { 
-        console.log("279 page check incoming request") 
+
         if (response != null && response.data != null){
           if(response.data.status === "New"){
 

@@ -26,9 +26,6 @@ export function useRegisterValidator(optionalCallback: any = noop) {
         return response.json(); // parses JSON response into native JavaScript objects
       }
 
-      console.log("data in useRegisterValidator hook")
-      console.log(data)
-
       // const did = data.user.id.split(':').pop();      
       const provider = {
         "did": data.user.id,        
@@ -36,8 +33,6 @@ export function useRegisterValidator(optionalCallback: any = noop) {
         "logo": data.user.avatar,
         "validation": data.services
       }
-      console.log("HOOK having data")
-      console.log(provider)
 
       postData(`${process.env.REACT_APP_REGISTER_VALIDATOR}`, provider)
         .then(response => {
