@@ -1,7 +1,7 @@
 {
   "id": "tech.tuum.test.vouch",
-  "version": "1.1.0",
-  "version_code": 3,
+  "version": "1.2.0",
+  "version_code": 4,
   "name": "Vouch Test",
   "short_name": "Vouch Test",
   "short_description": "Get your DID verified",
