@@ -67,10 +67,10 @@ const IntentServiceInvokePage: React.FC = ({ history }: any) => {
   useEffect(() => {
 
     if(
-      !['email', 'name', 'phone'].includes(credentialType) ||  
+      !['email', 'name', 'telephone'].includes(credentialType) ||  
       (credentialType === 'email' && !validationProviders.emailValidationProviders) ||
       (credentialType === 'name' && !validationProviders.nameValidationProviders) ||
-      (credentialType === 'phone' && !validationProviders.phoneValidationProviders)
+      (credentialType === 'telephone' && !validationProviders.phoneValidationProviders)
     ) {
 
       const timer =
@@ -221,10 +221,10 @@ const IntentServiceInvokePage: React.FC = ({ history }: any) => {
 
                 {
                 (
-                  !['email', 'name', 'phone'].includes(credentialType) ||  
+                  !['email', 'name', 'telephone'].includes(credentialType) ||  
                   (credentialType === 'email' && !validationProviders.emailValidationProviders) ||
                   (credentialType === 'name' && !validationProviders.nameValidationProviders) ||
-                  (credentialType === 'phone' && !validationProviders.phoneValidationProviders)
+                  (credentialType === 'telephone' && !validationProviders.phoneValidationProviders)
                 )          
                 ? 
                 (           

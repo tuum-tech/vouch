@@ -19,15 +19,15 @@ declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 const DetailsPage: React.FC = ({ history }: any) => {
 
   const goTo = useCallback(
-    (path: string) => {
-      history.push(path, { direction: 'forward' });
+    (path: string, direction:string = 'forward') => {
+      history.push(path, { direction: direction });
     },
     [history],
   );
 
   let myIconListener = (menuIcon:any) => {
     if (menuIcon.key === "back") {
-        goTo('/requests')
+        goTo('/requests', 'back')
     }
   };
 
@@ -55,12 +55,13 @@ const DetailsPage: React.FC = ({ history }: any) => {
   const { id } = useParams()
   let requestType:string = 'outgoing'
 
-  //Check in all outgoing transactions
-  let requestDetails = requests.txn.filter((txn: any) => txn.id === id)
+  //Check all outgoing transactions
+  let requestDetails:any = []
 
-  console.log("requestDetails")
-  console.log(requestDetails)
-  //Check in incoming transactions  
+  if(requests && requests.txn)
+    requestDetails = requests.txn.filter((txn: any) => txn.id === id)
+
+  //Check all incoming transactions  
   if(!requestDetails.length){
       requestDetails = requests.incoming_txn.filter((txn: any) => txn.id === id)
       requestType = "incoming"
@@ -69,22 +70,30 @@ const DetailsPage: React.FC = ({ history }: any) => {
   if(requestDetails){
     requestDetails = requestDetails[0]
   }
-  
 
-
-  let provider = {
+  let provider:any = {
     'did': '',
     'name': '', 
     'logo': '', 
-    'validation': {
-      'email': {
-        'next_steps': []
-      }
-    }
+    'validation': {}
   }; 
+
+  provider.validation[requestDetails.validationType] = {
+    'next_steps': []
+  }
+
+
   if(requestDetails && requestDetails.validationType === 'email'){
      provider = validationProviders.emailValidationProviders.filter((provider:any) => provider.id === requestDetails.provider)[0]
   }
+
+  if(requestDetails && requestDetails.validationType === 'name'){
+    provider = validationProviders.nameValidationProviders.filter((provider:any) => provider.id === requestDetails.provider)[0]
+ }  
+
+ if(requestDetails && requestDetails.validationType === 'telephone'){
+  provider = validationProviders.phoneValidationProviders.filter((provider:any) => provider.id === requestDetails.provider)[0]
+}  
 
   const copyText = function (elementId: any){
     let copyText:any = document.querySelector("#" + elementId);
@@ -123,10 +132,6 @@ const DetailsPage: React.FC = ({ history }: any) => {
    }
 
    const [sendCredIssueIntent] = useCredIssue((credentials:any) => { 
-     console.log("Time to approve the request")
-     console.log(credentials)
-
-    //  const confirmation_id = requestDetails.id
      sendApproveRequest({ 
        confirmationId: requestDetails.id,
        verifiedCredential: credentials
@@ -135,15 +140,47 @@ const DetailsPage: React.FC = ({ history }: any) => {
 
    const handleApproveRequestClick = (e:any) => {
 
+    const validationtype = e.currentTarget.getAttribute('data-validationtype')
+
     //Sign the credential with validators DID using credissue intent
 
     let credIssueRequestData:any = {}
-    credIssueRequestData.identifier = "email"
-    credIssueRequestData.types = ["EmailCredential", "VerifiableCredential", "BasicProfileCredential"]
+    credIssueRequestData.identifier = validationtype    
+    credIssueRequestData.types = ["VerifiableCredential"]
     credIssueRequestData.subjectdid = "did:elastos:" + requestDetails.did.replace("did:elastos:", "")
     credIssueRequestData.properties = {}
-    credIssueRequestData.properties.email = requestDetails.requestParams.email
-    // credIssueRequestData.expirationdate = new Date(2025, 10, 10).toISOString() // Credential will expire on 2025-10-10 - Note the month's 0-index...
+
+
+    switch(validationtype) {
+      case 'email': {
+        credIssueRequestData.types.push("EmailCredential")
+        credIssueRequestData.types.push("BasicProfileCredential")
+        credIssueRequestData.properties.email = requestDetails.requestParams.email
+        break
+      }
+      case 'name': {
+        credIssueRequestData.types.push("NameCredential")
+        credIssueRequestData.types.push("BasicProfileCredential")
+        credIssueRequestData.properties.name = requestDetails.requestParams.name
+        break
+      }
+      case 'telephone': {
+        credIssueRequestData.types.push("PhoneCredential")
+        credIssueRequestData.types.push("BasicProfileCredential")
+        credIssueRequestData.properties.phone = requestDetails.requestParams.phone
+        break
+      }
+      default: {
+        let type = validationtype.charAt(0).toUpperCase() + validationtype.slice(1)
+        credIssueRequestData.types.push(type + "Credential")
+        credIssueRequestData.types.push("BasicProfileCredential")
+
+        credIssueRequestData.properties[validationtype] = requestDetails.requestParams[validationtype]        
+      }
+    }
+
+    let d = new Date();
+    credIssueRequestData.expirationdate = new Date(d.getFullYear() + 5, d.getMonth(), d.getDate()).toISOString() // Credential will expire on 2025-10-10 - Note the month's 0-index...
 
     sendCredIssueIntent(credIssueRequestData)
    }
@@ -181,17 +218,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
 
     let verifiedCredential = requestDetails.verifiedCredential
 
-    //Build request for credimport intent
-    // as found at https://developer.elastos.org/build/elastos_scheme/#request-parameters-2        
     verifiedCredential.credentialSubject.email = requestDetails.requestParams.email
-    // verifiedCredential.proof.jws = verifiedCredential.proof.signature
-    // delete verifiedCredential.proof.signature
-    // verifiedCredential.proof.proofPurpose = "assertionMethod"
-
-    // verifiedCredential["@context"] = [
-    //   "https://www.w3.org/2018/credentials/v1",
-    //   "https://www.w3.org/2018/credentials/examples/v1"
-    // ]
 
     sendCredSaveIntent({ verifiedCredential });
   }  
@@ -206,7 +233,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
         </IonToolbar>
         <IonGrid className="pad-me--top thick-padding">
 
-          {requestType === 'outgoing' &&
+          {/* {requestType === 'outgoing' && */}
           <IonRow 
           className={`text-center 
           ${requestDetails.status === "Approved" ? "approved-tooltip" : ""} 
@@ -240,7 +267,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
               </IonLabel>
             </IonCol>
           </IonRow>
-          }
+          {/* } */}
 
 
           <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px'}}>
@@ -253,7 +280,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
               <IonCol size="8" className='ion-text-right'>
                   <IonImg src={`
                     ${requestDetails.validationType === "email" ? "../assets/images/components/icon-email.svg" : ""}
-                    ${requestDetails.validationType === "phone" ? "../assets/images/components/icon-phone.svg" : ""}
+                    ${requestDetails.validationType === "telephone" ? "../assets/images/components/icon-phone.svg" : ""}
                     ${requestDetails.validationType === "name" ? "../assets/images/components/icon-name.svg" : ""}
                   `} style={{height: '32px', width: '32px', display: 'inline-block', verticalAlign: 'bottom'}}  /> 
                   <IonLabel className="value" style={{verticalAlign: 'super'}}>{requestDetails.validationType.charAt(0).toUpperCase()}{requestDetails.validationType.slice(1)}</IonLabel>
@@ -328,7 +355,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
           </IonRow>
 
           <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px',
-    marginTop: '10px', display: (requestType === 'outgoing' ? 'inline-block' : 'none')}}>
+    marginTop: '10px', display: (requestType === 'outgoing' ? 'block' : 'none')}}>
           <h2>Validator</h2>
           { requestDetails && requestDetails.provider &&           
             <IonListHeader className="fieldContainer2">
@@ -358,9 +385,10 @@ const DetailsPage: React.FC = ({ history }: any) => {
             </IonRow>
 
             <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px',
-    marginTop: '10px', display: (requestType === 'outgoing' ? 'inline-block' : 'none')}}>
+    marginTop: '10px', display: (requestType === 'outgoing' && requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') ? 'block' : 'none')}}>
             <h2>Next Steps</h2>
-            { requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') && provider.validation.email.next_steps.map((step: any, index: number) => 
+
+            { requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') && provider.validation[requestDetails.validationType].next_steps.map((step: any, index: number) => 
               <IonListHeader className="fieldContainer">
                   <IonLabel>
                     <span className="label">Step {index + 1}:</span><br/>
@@ -403,6 +431,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
             <IonCol>
               <IonButton className="btnApproveRequest text-center" fill="solid"
               onClick={(e) => handleApproveRequestClick(e)}
+              data-validationtype={requestDetails.validationType}
               color="success"
           >Approve</IonButton>
             </IonCol>

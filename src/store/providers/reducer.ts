@@ -2,6 +2,8 @@ import {
   ValidationProviderState,
   ValidationProviderActionTypes,
   GET_EMAIL_VALIDATION_PROVIDERS_SUCCESS,
+  GET_NAME_VALIDATION_PROVIDERS_SUCCESS,
+  GET_PHONE_VALIDATION_PROVIDERS_SUCCESS,
   GET_PROVIDER_SERVICES_SUCCESS,
   SET_PROVIDER_SERVICES_SUCCESS
 } from "./types";
@@ -22,6 +24,10 @@ export const validationProviderReducer = (
   switch (type) {
     case GET_EMAIL_VALIDATION_PROVIDERS_SUCCESS:
       return { ...state, emailValidationProviders: payload };
+    case GET_NAME_VALIDATION_PROVIDERS_SUCCESS:
+      return { ...state, nameValidationProviders: payload };      
+    case GET_PHONE_VALIDATION_PROVIDERS_SUCCESS:
+      return { ...state, phoneValidationProviders: payload };            
     case GET_PROVIDER_SERVICES_SUCCESS:
       return { ...state, providerServices: payload };
     case SET_PROVIDER_SERVICES_SUCCESS:

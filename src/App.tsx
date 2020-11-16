@@ -23,7 +23,7 @@ import SignIn from './pages/SignIn';
 import Support from './pages/Support';
 import IntentServiceInvoke from './pages/IntentServiceInvoke';
 import IntentDetails from './pages/IntentDetails';
-import { getEmailValidationProviders } from './store/providers';
+import { getEmailValidationProviders, getNameValidationProviders, getPhoneValidationProviders } from './store/providers';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -54,6 +54,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useProvider } from './hooks/useProvider';
 import { AppState } from './store';
 import RegisterValidator from './pages/RegisterValidator';
+import { useIncomingRequestsByDid } from './hooks/useIncomingRequestsByDid';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
@@ -72,6 +73,7 @@ const App: React.FC = () => {
 
   const dispatch = useDispatch()  
   const validationProviders = useSelector((state:AppState) => state.validationProviders)
+  // const user = useSelector((state:AppState) => state.auth.user)  
 
   const goTo = useCallback(
     (path: string) => {
@@ -111,14 +113,15 @@ const App: React.FC = () => {
     };
   }, [onDeviceReady]);
 
+  //Get the list of email validation providers  
   useEffect(() => {
-    if(!validationProviders.emailValidationProviders){
-      sendGetEmailValidationProvidersReq('email')
-    }
-   },
-   // eslint-disable-next-line react-hooks/exhaustive-deps
-   []
- );
+      if(!validationProviders.emailValidationProviders){
+        sendGetEmailValidationProvidersReq('email')
+      }
+     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+   );
 
   //Get the list of email validation providers
   const [sendGetEmailValidationProvidersReq] = useProvider((emailValidationProviders:any) => { 
@@ -126,6 +129,40 @@ const App: React.FC = () => {
       dispatch(getEmailValidationProviders(emailValidationProviders))
     }  
   })
+
+//Get the list of name validation providers  
+  useEffect(() => {
+    if(!validationProviders.nameValidationProviders){
+      sendGetNameValidationProvidersReq('name')
+    }
+   },
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  []
+ );
+
+//Get the list of name validation providers
+const [sendGetNameValidationProvidersReq] = useProvider((nameValidationProviders:any) => { 
+  if(nameValidationProviders) {
+    dispatch(getNameValidationProviders(nameValidationProviders))
+  }  
+})
+
+//Get the list of phone validation providers
+useEffect(() => {
+  if(!validationProviders.phoneValidationProviders){
+    sendGetPhoneValidationProvidersReq('telephone')
+  }
+ },
+// eslint-disable-next-line react-hooks/exhaustive-deps
+[]
+);
+
+//Get the list of phone validation providers
+const [sendGetPhoneValidationProvidersReq] = useProvider((phoneValidationProviders:any) => { 
+if(phoneValidationProviders) {
+  dispatch(getPhoneValidationProviders(phoneValidationProviders))
+}  
+})
 
   return (
   <IonApp>
@@ -204,6 +241,7 @@ const initServiceListener = () => {
     }
   });
 
+  checkIncomingRequests();
   checkPendingRequests();
 }
 
@@ -230,6 +268,107 @@ const onReceiveIntent = async (intent: AppManagerPlugin.ReceivedIntent, goTo: an
 
 }
 
+// store them in localstorage with the key incomingRequests 
+const storeIncomingRequests = async (user: any) => {   
+  sendGetIncomingRequests( user )
+}
+
+const [sendGetIncomingRequests] = useIncomingRequestsByDid(async (incomingRequests:any) => { 
+  if(incomingRequests) {
+
+    let newIncomingRequests = [];
+    for(let i=0;i<incomingRequests.length;i++){
+      if(incomingRequests[i].status === "New"){
+        newIncomingRequests.push(incomingRequests[i].id)
+      }
+    }
+
+    await Storage.set({ key: 'incomingRequests', value: JSON.stringify(newIncomingRequests) });                
+  }  
+ })
+
+const checkIncomingRequests = async () => {
+
+  const userdata = await Storage.get({key: 'user' })
+  await storeIncomingRequests(JSON.parse(userdata.value))  
+
+  // use hook to get all incoming requests for the user's DID and store it in localstorage
+  // setTimeout to run it first time (immediately) and send notifications
+  // setInterval for every minute and send notifications (for continuous monitoring if there are any new requests to be approved/rejected)
+
+  setTimeout(async () => {
+    const requestIds = await Storage.get({ key: 'incomingRequests' });
+
+    if(requestIds && requestIds.value){
+      let parsedIncomingRequests = JSON.parse(requestIds.value);
+      let remainingIncomingRequests = JSON.parse(requestIds.value);
+
+      const [sendGetRequest] = useRequest(async (response:any) => { 
+
+        if (response != null && response.data != null){
+          if(response.data.status === "New"){
+
+            let title = `${response.data.validationType.charAt(0).toUpperCase()}${response.data.validationType.slice(1)} Validation Request ${response.data.status}`
+            let message = `You have received ${response.data.validationType} validation request for the credential ${response.data.requestParams[response.data.validationType]}. Please Approve or Reject.`                              
+ 
+            notify(response.data.id, title, message)
+
+            remainingIncomingRequests = remainingIncomingRequests.filter((value:any) => value !== response.data.id)  
+            await Storage.set({ key: 'incomingRequests', value: JSON.stringify(remainingIncomingRequests) });                
+          }
+        }         
+      })          
+
+      for (let i = 0; i < parsedIncomingRequests.length; i++) {
+        sendGetRequest({ confirmation_id: parsedIncomingRequests[i] });
+      }
+    } else {
+        console.log("No incoming requests to notify")
+    }
+   }, 0 )
+
+  const intervalTime = (parseInt(`${process.env.REACT_APP_BACKGROUND_SERVICE_DELAY_MINUTES}`) * 60) * 1000;
+
+  setInterval(async () => {
+    const requestIds = await Storage.get({ key: 'incomingRequests' });
+
+    if(requestIds && requestIds.value){
+      let parsedIncomingRequests = JSON.parse(requestIds.value);
+      let remainingIncomingRequests = JSON.parse(requestIds.value);
+
+      const [sendGetRequest] = useRequest(async (response:any) => { 
+
+        if (response != null && response.data != null){
+          if(response.data.status === "New"){
+
+            let title = `${response.data.validationType.charAt(0).toUpperCase()}${response.data.validationType.slice(1)} Validation Request ${response.data.status}`
+            let message = `You have received ${response.data.validationType} validation request for the credential ${response.data.requestParams[response.data.validationType]}. Please Approve or Reject.`                              
+
+            notify(response.data.id, title, message)
+
+            remainingIncomingRequests = remainingIncomingRequests.filter((value:any) => value !== response.data.id)  
+            await Storage.set({ key: 'incomingRequests', value: JSON.stringify(remainingIncomingRequests) });                
+          }
+        }         
+      })          
+
+      for (let i = 0; i < parsedIncomingRequests.length; i++) {
+        sendGetRequest({ confirmation_id: parsedIncomingRequests[i] });
+      }
+    } else {
+        console.log("No incoming requests to notify")
+    }
+   }, intervalTime )
+}
+
+const notify = (key:string, title:string, message:string) => {
+  notificationManager.sendNotification({
+    key: key,
+    title: title,
+    message: message
+  })
+}
+
 const checkPendingRequests = () => {
 
   const intervalTime = (parseInt(`${process.env.REACT_APP_BACKGROUND_SERVICE_DELAY_MINUTES}`) * 60) * 1000;
@@ -237,6 +376,8 @@ const checkPendingRequests = () => {
   setInterval(async () => {
     const requestIds = await Storage.get({ key: 'pendingRequests' });
     const emailValidationProviders = await Storage.get({ key: 'emailValidationProviders'});
+    const nameValidationProviders = await Storage.get({ key: 'nameValidationProviders'});
+    const phoneValidationProviders = await Storage.get({ key: 'phoneValidationProviders'});
 
     if(requestIds && requestIds.value){
       let parsedPendingRequests = JSON.parse(requestIds.value);
@@ -252,27 +393,31 @@ const checkPendingRequests = () => {
               provider = JSON.parse(emailValidationProviders.value).filter((provider:any) => provider.id === response.data.provider)[0]
             }
 
+            if(response.data.validationType === 'name'){
+              provider = JSON.parse(nameValidationProviders.value).filter((provider:any) => provider.id === response.data.provider)[0]
+            }
+
+            if(response.data.validationType === 'telephone'){
+              provider = JSON.parse(phoneValidationProviders.value).filter((provider:any) => provider.id === response.data.provider)[0]
+            }
+
             let title = `${response.data.validationType.charAt(0).toUpperCase()}${response.data.validationType.slice(1)} Validation Request ${response.data.status}`
             let message = "";
             switch(response.data.status){
               case 'Approved': 
-                message = `Your email validation from ${provider.name ?? provider.id} has been approved.`
+                message = `Your ${response.data.validationType} validation from ${provider.name ?? provider.id} has been approved.`
                 break;              
               case 'Rejected': 
-                message = `Your email validation from ${provider.name ?? provider.id} has been rejected. Please try sending another request or choose another validator.`
+                message = `Your ${response.data.validationType} validation from ${provider.name ?? provider.id} has been rejected. Please try sending another request or choose another validator.`
                 break;
               case 'Canceled':
-                message = `Your email validation from ${provider.name ?? provider.id} has been cancelled because the validator did not respond to your request in time. Please try sending another request or choose another validator.`
+                message = `Your ${response.data.validationType} validation from ${provider.name ?? provider.id} has been cancelled because the validator did not respond to your request in time. Please try sending another request or choose another validator.`
                 break;
               default:
                 message = `Your ${response.data.validationType} validation request from ${provider.name ?? provider.id} has been ${response.data.status}.`                              
             }
 
-            notificationManager.sendNotification({
-              key: response.data.id,
-              title: title,
-              message: message
-            })
+            notify(response.data.id, title, message)
 
             remainingPendingRequests = remainingPendingRequests.filter((value:any) => value !== response.data.id)  
             await Storage.set({ key: 'pendingRequests', value: JSON.stringify(remainingPendingRequests) });                
@@ -284,7 +429,7 @@ const checkPendingRequests = () => {
         sendGetRequest({ confirmation_id: parsedPendingRequests[i] });
       }
     } else {
-        console.log("No pending requests")
+        console.log("No pending requests to notify")
     }
    }, intervalTime )
 

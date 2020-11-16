@@ -1,8 +1,8 @@
-export function useRegisterValidator(optionalCallback: any = noop) {
+export function usePhoneValidation(optionalCallback: any = noop) {
 
-  const registerValidatorRequest = (data: any) => {
+  const phoneValidationRequest = (data: any) => {
     /**
-     * Request registering as a validator to the backend API.
+     * Request phone validation to the backend API.
      */
 
       async function postData(url = '', data = {}) {
@@ -27,23 +27,27 @@ export function useRegisterValidator(optionalCallback: any = noop) {
       }
 
       // const did = data.user.id.split(':').pop();      
-      const provider = {
+      const txn = {
         "did": data.user.id,        
-        "name": data.user.name,
-        "logo": data.user.avatar,
-        "validation": data.services
+        "validationType": "telephone",
+        "provider": data.providerId,
+        "requestParams": {
+          "telephone": data.user.telephone
+        }
       }
 
-      postData(`${process.env.REACT_APP_REGISTER_VALIDATOR}`, provider)
+      postData(`${process.env.REACT_APP_SUBMIT_VALIDATION_REQUEST}`, txn)
         .then(response => {
           if(response.meta.code === 200) {
-            optionalCallback({"data": response.data, "message": "Successfully registered as a validator for the selected services."});          
-          } else {
-            optionalCallback({"data": null, "message": "Oops! something went wrong. Could not register as a validator."});          
+            if(response.data.duplicate === false){
+              optionalCallback({"data": response.data.validationtx, "message": "Request submitted successfully. Please check your email for the next step"});          
+            } else {
+              optionalCallback({"data": null, "message": "Previous request already in progress."});          
+            }
           }
         });
   }
-  return [registerValidatorRequest] as [(obj: any) => void]
+  return [phoneValidationRequest] as [(obj: any) => void]
 }
 
 function noop() {}

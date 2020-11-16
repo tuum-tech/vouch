@@ -189,7 +189,7 @@ const IntentDetailsPage: React.FC = () => {
               <IonCol size="8" className='ion-text-right'>
                   <IonImg src={`
                     ${requestDetails.validationType === "email" ? "../assets/images/components/icon-email.svg" : ""}
-                    ${requestDetails.validationType === "phone" ? "../assets/images/components/icon-phone.svg" : ""}
+                    ${requestDetails.validationType === "telephone" ? "../assets/images/components/icon-phone.svg" : ""}
                     ${requestDetails.validationType === "name" ? "../assets/images/components/icon-name.svg" : ""}
                   `} style={{height: '32px', width: '32px', display: 'inline-block', verticalAlign: 'bottom'}}  /> 
                   <IonLabel className="value" style={{verticalAlign: 'super'}}>{requestDetails.validationType.charAt(0).toUpperCase()}{requestDetails.validationType.slice(1)}</IonLabel>
