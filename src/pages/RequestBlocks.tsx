@@ -21,7 +21,7 @@ const RequestBlocks = (props: any) => {
           <IonCol className="RequestBlock">
           <IonItem routerLink={`/requests/details/${txn.id}`}>
                     <IonThumbnail slot="start">
-                      <img src="../assets/images/components/icon-email--request.svg" alt="" />
+                      <img src={`../assets/images/components/icon-${txn.validationType}--request.svg`} alt="" />
                     </IonThumbnail>
                     <IonLabel>
                       <h2>{txn.validationType.charAt(0).toUpperCase()}{txn.validationType.slice(1)} Validation</h2>

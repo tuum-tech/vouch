@@ -18,7 +18,11 @@ import {
   IonAlert,
   IonRefresher,
   IonRefresherContent,
-  useIonViewWillEnter
+  useIonViewWillEnter,
+  IonSelect,
+  IonSelectOption,
+  IonPopover,
+  IonList
 } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 import moment from 'moment'
@@ -40,7 +44,26 @@ import { login, logout } from '../store/auth';
 import { useIncomingRequests } from '../hooks/useIncomingRequests';
 import { useProviderServices } from '../hooks/useProviderServices';
 
+import CredentialCode from './CredentialCode';
+
 const HomePage: React.FC = ({ history }: any) => {
+
+    const [selectValidationService, setSelectValidationService] = useState<string>('none');
+    const [showPopover, setShowPopover] = useState<{open: boolean, event: Event | undefined}>({
+      open: false,
+      event: undefined,
+    });
+
+    const handleSelectValidationService = (selectedValidationService:string) => {
+      setSelectValidationService(selectedValidationService)
+      setShowPopover({open: false, event: undefined})
+      if(selectedValidationService !== 'none') {
+        history.push({
+          pathname: '/home/service-invoke',
+          state: { credentialType: selectedValidationService }                              
+        });
+      }
+    }
 
     const [showAlertNameValidation, setShowAlertNameValidation] = useState(false);
     const [showAlertEmailValidation, setShowAlertEmailValidation] = useState(false);
@@ -195,84 +218,45 @@ const HomePage: React.FC = ({ history }: any) => {
                   <IonLabel className="List-Header">Validation Services</IonLabel>
                 </IonListHeader>
               </IonCol>
-              <IonCol size="6">
-                {/* <IonCard routerLink={user && user.email ? '/home/service-invoke' : ''}> */}
-                <IonCard onClick={e => {
-                          e.preventDefault();
-                          // if(user && user.email){
-                            history.push({
-                              pathname: '/home/service-invoke',
-                              state: { credentialType: 'email' }                              
-                            });
-                          // } else { 
-                          //   //show alert
-                          //   setShowAlertEmailValidation(true);
-                          // }
-                        }}>
-                  <IonCardContent>
-                    <IonRow>
-                      <IonCol>
-                        <IonImg src="../assets/images/components/icon-email.svg"></IonImg>
-                      </IonCol>
-                      <IonCol>
-                        Email <br />  Validation 
-                      </IonCol>
-                    </IonRow>
+              <IonCol size="12">
+                <IonPopover
+                    isOpen={showPopover.open}
+                    event={showPopover.event}
+                    onDidDismiss={e => setShowPopover({open: false, event: undefined})}
+                >
+                <IonList>
+                      {/* <IonItem onClick={(e) => handleSelectValidationService('none')}>
+                        <IonLabel>-- Select Validation Service --</IonLabel>
+                      </IonItem>   */}
 
-                  </IonCardContent >
-                </IonCard>
-              </IonCol>
-                <IonCol size="6">
-                {/* <IonCard routerLink={user && user.telephone ? '/home/service-invoke' : ''}>                 */}
-                <IonCard onClick={e => {
-                          e.preventDefault();
-                          // if(user && user.telephone){
-                            history.push({
-                              pathname: '/home/service-invoke',
-                              state: { credentialType: 'telephone' }                              
-                            });
-                          // } else { 
-                          //   //show alert
-                          //   setShowAlertPhoneValidation(true);
-                          // }
-                        }}>
-                  <IonCardContent>
-                    <IonRow>
-                      <IonCol>
-                        {/* <IonImg src={user && user.telephone ? "../assets/images/components/icon-phone.svg" : "../assets/images/components/icon-phone--disabled.svg"}></IonImg>                         */}
-                        <IonImg src="../assets/images/components/icon-phone.svg"></IonImg>
-                      </IonCol>
-                      <IonCol>
-                        Phone <br />  Validation
-                      </IonCol>
-                    </IonRow>
-                  </IonCardContent>
-                </IonCard></IonCol><IonCol size="6">
-                {/* <IonCard routerLink={user && user.telephone ? '/home/service-invoke' : ''}>                 */}
-                <IonCard onClick={e => {
-                          e.preventDefault();
-                          // if(user && user.name){
-                            history.push({
-                              pathname: '/home/service-invoke',
-                              state: { credentialType: 'name' }                              
-                            });
-                          // } else { 
-                          //   //show alert
-                          //   setShowAlertNameValidation(true);
-                          // }
-                        }}>
-                  <IonCardContent>
-                    <IonRow>
-                      <IonCol>
-                        {/* <IonImg src={user && user.name ? "../assets/images/components/icon-name.svg" : "../assets/images/components/icon-name--disabled.svg"}></IonImg> */}
+
+                      {Object.values(CredentialCode).map(credCode => 
+                        <IonItem onClick={(e) => handleSelectValidationService(credCode)}>
+                          <IonImg src={`../assets/images/components/icon-${credCode}.svg`}></IonImg>
+                          <IonLabel>{credCode.charAt(0).toUpperCase()}{credCode.slice(1)} Validation</IonLabel>
+                        </IonItem>                        
+                      )}
+                      {/* <IonItem onClick={(e) => handleSelectValidationService('email')}>
+                        <IonImg src="../assets/images/components/icon-email.svg"></IonImg>
+                        <IonLabel>Email Validation</IonLabel>
+                      </IonItem>
+                      <IonItem onClick={(e) => handleSelectValidationService('name')}>
                         <IonImg src="../assets/images/components/icon-name.svg"></IonImg>
-                      </IonCol>
-                      <IonCol>
-                        Name <br />  Validation
-                      </IonCol>
-                    </IonRow>
-                  </IonCardContent>
-                </IonCard></IonCol>
+                        <IonLabel>Name Validation</IonLabel>
+                      </IonItem>      
+                      <IonItem onClick={(e) => handleSelectValidationService('telephone')}>
+                        <IonImg src="../assets/images/components/icon-telephone.svg"></IonImg>
+                        <IonLabel>Telephone Validation</IonLabel>
+                      </IonItem>                             */}
+                </IonList>
+                </IonPopover>
+                <IonButton fill="solid" color="secondary" className="text-center" style={{'textTransform':'none', fontWeight: 'bold'}} onClick={(e) => setShowPopover({open: true, event: e.nativeEvent})}>
+                  {selectValidationService !== 'none' &&
+                    <IonImg src={`../assets/images/components/icon-${selectValidationService}.svg`}></IonImg>
+                  }
+                  {selectValidationService === 'none' ? 'Select Validation Service' : selectValidationService.charAt(0).toUpperCase() + selectValidationService.slice(1) + ' Validation'}
+                </IonButton>  
+              </IonCol>
             </IonRow>
             <IonRow style={{display: (providerServices && providerServices.validationTypes.length ? 'block' : 'none')}}>
               <IonCol size="12">

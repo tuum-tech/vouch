@@ -10,6 +10,8 @@ import { useRegisterValidator } from '../hooks/useRegisterValidator';
 import { showNotification, hideNotification } from '../store/requests';
 import { useDID } from '../hooks/useDID';
 import { login } from '../store/auth';
+import CredentialCode from './CredentialCode';
+import CredentialType from './CredentialType';
 
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
@@ -20,7 +22,7 @@ const RegisterValidatorPage: React.FC = ({ history }: any) => {
     type: CredentialType;
     isChecked: boolean
   }
-
+/*
   enum CredentialCode {
       EMAIL = "email",
       NAME = "name",
@@ -40,11 +42,11 @@ const RegisterValidatorPage: React.FC = ({ history }: any) => {
       PAYPAL = "paypal",
       ELA = "ela"
   }
-
-  enum CredentialType {
-      BASIC_PROFILE_CREDENTIAL = "BasicProfileCredential",
-      INTERNET_ACCOUNT_CREDENTIAL = "InternetAccountCredential"
-  }
+*/
+  // enum CredentialType {
+  //     BASIC_PROFILE_CREDENTIAL = "BasicProfileCredential",
+  //     INTERNET_ACCOUNT_CREDENTIAL = "InternetAccountCredential"
+  // }
 
   const[checkedItems,setCheckedItems]= useState([
     { val: CredentialCode.EMAIL, type: CredentialType.BASIC_PROFILE_CREDENTIAL, isChecked: false },
@@ -215,7 +217,7 @@ const updateItem = (val: CredentialCode, newIsChecked: boolean) => {
                   // disabled={(providerServices && providerServices.validationTypes.includes(val)) ?? isChecked}
                   >
                     <IonCheckbox slot="end" value={val} checked={isChecked} onIonChange={e => updateItem(val, e.detail.checked)} />
-                    <IonLabel>{val}</IonLabel>
+                    <IonLabel>{val.charAt(0).toUpperCase()}{val.slice(1)} Validation</IonLabel>
                   </IonItem>
                 )) }
               </IonList>
