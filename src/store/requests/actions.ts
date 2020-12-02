@@ -9,7 +9,21 @@ import {
     REQUEST_APPROVED_SUCCESS,
     REQUEST_REJECTED_SUCCESS,
     NAME_VALIDATION_REQUEST_SUCCESS,
-    PHONE_VALIDATION_REQUEST_SUCCESS
+    TELEPHONE_VALIDATION_REQUEST_SUCCESS,
+    GENDER_VALIDATION_REQUEST_SUCCESS,
+    LOCATION_VALIDATION_REQUEST_SUCCESS,
+    BIRTHDATE_VALIDATION_REQUEST_SUCCESS,
+    BIRTHPLACE_VALIDATION_REQUEST_SUCCESS,
+    EDUCATION_VALIDATION_REQUEST_SUCCESS,
+    OCCUPATION_VALIDATION_REQUEST_SUCCESS,
+    WECHAT_VALIDATION_REQUEST_SUCCESS,
+    INSTAGRAM_VALIDATION_REQUEST_SUCCESS,
+    FACEBOOK_VALIDATION_REQUEST_SUCCESS,
+    SNAPCHAT_VALIDATION_REQUEST_SUCCESS,
+    TWITTER_VALIDATION_REQUEST_SUCCESS,
+    TELEGRAM_VALIDATION_REQUEST_SUCCESS,
+    PAYPAL_VALIDATION_REQUEST_SUCCESS,
+    ELA_VALIDATION_REQUEST_SUCCESS
 } from "./types";
   
 import { ThunkAction } from "redux-thunk";
@@ -50,20 +64,259 @@ type: NAME_VALIDATION_REQUEST_SUCCESS,
 payload: txn
 });
 
-export const phoneValidation = (txn: any, callback: any = noop): ThunkAction<
+export const telephoneValidation = (txn: any, callback: any = noop): ThunkAction<
 void,
 AppState,
 null,
 TxnActionTypes
 > => dispatch => {
 (async function(){
-    dispatch(phoneValidationSuccess(txn));
+    dispatch(telephoneValidationSuccess(txn));
     callback();
 })()
 };
 
-export const phoneValidationSuccess = (txn: any): TxnActionTypes => ({
-type: PHONE_VALIDATION_REQUEST_SUCCESS,
+export const telephoneValidationSuccess = (txn: any): TxnActionTypes => ({
+type: TELEPHONE_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
+////
+export const genderValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(genderValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const genderValidationSuccess = (txn: any): TxnActionTypes => ({
+type: GENDER_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
+export const locationValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(locationValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const locationValidationSuccess = (txn: any): TxnActionTypes => ({
+type: LOCATION_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
+export const birthdateValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(birthdateValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const birthdateValidationSuccess = (txn: any): TxnActionTypes => ({
+type: BIRTHDATE_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
+export const birthplaceValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(birthplaceValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const birthplaceValidationSuccess = (txn: any): TxnActionTypes => ({
+type: BIRTHPLACE_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
+export const educationValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(educationValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const educationValidationSuccess = (txn: any): TxnActionTypes => ({
+type: EDUCATION_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
+export const occupationValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(occupationValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const occupationValidationSuccess = (txn: any): TxnActionTypes => ({
+type: OCCUPATION_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
+export const wechatValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(wechatValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const wechatValidationSuccess = (txn: any): TxnActionTypes => ({
+type: WECHAT_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
+export const instagramValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(instagramValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const instagramValidationSuccess = (txn: any): TxnActionTypes => ({
+type: INSTAGRAM_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
+export const facebookValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(facebookValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const facebookValidationSuccess = (txn: any): TxnActionTypes => ({
+type: FACEBOOK_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
+export const snapchatValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(snapchatValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const snapchatValidationSuccess = (txn: any): TxnActionTypes => ({
+type: SNAPCHAT_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
+export const twitterValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(twitterValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const twitterValidationSuccess = (txn: any): TxnActionTypes => ({
+type: TWITTER_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
+export const telegramValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(telegramValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const telegramValidationSuccess = (txn: any): TxnActionTypes => ({
+type: TELEGRAM_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
+export const paypalValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(paypalValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const paypalValidationSuccess = (txn: any): TxnActionTypes => ({
+type: PAYPAL_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
+export const elaValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(elaValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const elaValidationSuccess = (txn: any): TxnActionTypes => ({
+type: ELA_VALIDATION_REQUEST_SUCCESS,
 payload: txn
 });
 

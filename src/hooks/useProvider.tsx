@@ -1,6 +1,6 @@
 export function useProvider(optionalCallback: any = noop) {
 
-  const providers = (validationType: any) => {
+  const providers = (validationType: any, isComplete: any) => {
     /**
      * Request to get all providers for a validation type e.g. email
      */
@@ -28,14 +28,19 @@ export function useProvider(optionalCallback: any = noop) {
         getData(`${process.env.REACT_APP_GET_PROVIDERS_BY_VALIDATION_TYPE}`)
         .then(response => {
           if(response.meta.code === 200) {
-            optionalCallback(response.data);          
+            optionalCallback(response.data);  
+            isComplete(true)        
           }
 
+        }
+        
+        , ()=> {
+          isComplete(false)
         });
       // }
 
   }
-  return [providers] as [(obj:any) => void]
+  return [providers] as [(obj:any, obj1:any) => boolean]
 }
 
 function noop() {}

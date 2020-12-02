@@ -60,7 +60,7 @@ const IntentServiceInvokePage: React.FC = ({ history }: any) => {
       const credentialType = await getIntentCredentialType();
       setCredentialType(credentialType);
       if(credentialType === 'email'){
-        sendGetEmailValidationProvidersReq('email')        
+        sendGetEmailValidationProvidersReq('email', {})        
       }
   });
 
@@ -70,7 +70,7 @@ const IntentServiceInvokePage: React.FC = ({ history }: any) => {
       !['email', 'name', 'telephone'].includes(credentialType) ||  
       (credentialType === 'email' && !validationProviders.emailValidationProviders) ||
       (credentialType === 'name' && !validationProviders.nameValidationProviders) ||
-      (credentialType === 'telephone' && !validationProviders.phoneValidationProviders)
+      (credentialType === 'telephone' && !validationProviders.telephoneValidationProviders)
     ) {
 
       const timer =
@@ -194,7 +194,7 @@ const IntentServiceInvokePage: React.FC = ({ history }: any) => {
   }
 
   const doRefresh = (event: CustomEvent<RefresherEventDetail>) => {
-    sendGetEmailValidationProvidersReq('email')
+    sendGetEmailValidationProvidersReq('email', {})
     setTimeout(() => {
       event.detail.complete();
     }, 2000);
@@ -224,7 +224,7 @@ const IntentServiceInvokePage: React.FC = ({ history }: any) => {
                   !['email', 'name', 'telephone'].includes(credentialType) ||  
                   (credentialType === 'email' && !validationProviders.emailValidationProviders) ||
                   (credentialType === 'name' && !validationProviders.nameValidationProviders) ||
-                  (credentialType === 'telephone' && !validationProviders.phoneValidationProviders)
+                  (credentialType === 'telephone' && !validationProviders.telephoneValidationProviders)
                 )          
                 ? 
                 (           

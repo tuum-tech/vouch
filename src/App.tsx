@@ -23,7 +23,7 @@ import SignIn from './pages/SignIn';
 import Support from './pages/Support';
 import IntentServiceInvoke from './pages/IntentServiceInvoke';
 import IntentDetails from './pages/IntentDetails';
-import { getEmailValidationProviders, getNameValidationProviders, getPhoneValidationProviders } from './store/providers';
+import { getEmailValidationProviders, getNameValidationProviders, getTelephoneValidationProviders } from './store/providers';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -55,6 +55,7 @@ import { useProvider } from './hooks/useProvider';
 import { AppState } from './store';
 import RegisterValidator from './pages/RegisterValidator';
 import { useIncomingRequestsByDid } from './hooks/useIncomingRequestsByDid';
+import Dashboard from './pages/Dashboard';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
@@ -88,7 +89,8 @@ const App: React.FC = () => {
 
       appManager.getStartupMode((startupInfo: AppManagerPlugin.StartupInfo) => {
         if (startupInfo.startupMode === 'service'){
-          initServiceListener();
+          console.log("I am working in the background");
+          initServiceListener(dispatch);
         } else {
               appManager.setIntentListener((intent: AppManagerPlugin.ReceivedIntent) => {
                 onReceiveIntent(intent, goTo, dispatch);
@@ -113,68 +115,69 @@ const App: React.FC = () => {
     };
   }, [onDeviceReady]);
 
-  //Get the list of email validation providers  
-  useEffect(() => {
-      if(!validationProviders.emailValidationProviders){
-        sendGetEmailValidationProvidersReq('email')
-      }
-     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-   );
+//   //Get the list of email validation providers  
+//   useEffect(() => {
+//       if(!validationProviders.emailValidationProviders){
+//         sendGetEmailValidationProvidersReq('email')
+//       }
+//      },
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//     []
+//    );
 
-  //Get the list of email validation providers
-  const [sendGetEmailValidationProvidersReq] = useProvider((emailValidationProviders:any) => { 
-    if(emailValidationProviders) {
-      dispatch(getEmailValidationProviders(emailValidationProviders))
-    }  
-  })
+  //Get the list of validation providers
+  // const [sendGetValidationProvidersReq] = useProvider((validationProviders:any) => { 
+  //   if(validationProviders) {
+  //     // switch()
+  //     dispatch(getEmailValidationProviders(validationProviders))
+  //   }  
+  // })
 
-//Get the list of name validation providers  
-  useEffect(() => {
-    if(!validationProviders.nameValidationProviders){
-      sendGetNameValidationProvidersReq('name')
-    }
-   },
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  []
- );
+// //Get the list of name validation providers  
+//   useEffect(() => {
+//     if(!validationProviders.nameValidationProviders){
+//       sendGetNameValidationProvidersReq('name')
+//     }
+//    },
+//   // eslint-disable-next-line react-hooks/exhaustive-deps
+//   []
+//  );
 
-//Get the list of name validation providers
-const [sendGetNameValidationProvidersReq] = useProvider((nameValidationProviders:any) => { 
-  if(nameValidationProviders) {
-    dispatch(getNameValidationProviders(nameValidationProviders))
-  }  
-})
+// //Get the list of name validation providers
+// const [sendGetNameValidationProvidersReq] = useProvider((nameValidationProviders:any) => { 
+//   if(nameValidationProviders) {
+//     dispatch(getNameValidationProviders(nameValidationProviders))
+//   }  
+// })
 
-//Get the list of phone validation providers
-useEffect(() => {
-  if(!validationProviders.phoneValidationProviders){
-    sendGetPhoneValidationProvidersReq('telephone')
-  }
- },
-// eslint-disable-next-line react-hooks/exhaustive-deps
-[]
-);
+// //Get the list of phone validation providers
+// useEffect(() => {
+//   if(!validationProviders.telephoneValidationProviders){
+//     sendGetTelephoneValidationProvidersReq('telephone')
+//   }
+//  },
+// // eslint-disable-next-line react-hooks/exhaustive-deps
+// []
+// );
 
-//Get the list of phone validation providers
-const [sendGetPhoneValidationProvidersReq] = useProvider((phoneValidationProviders:any) => { 
-if(phoneValidationProviders) {
-  dispatch(getPhoneValidationProviders(phoneValidationProviders))
-}  
-})
+// //Get the list of phone validation providers
+// const [sendGetTelephoneValidationProvidersReq] = useProvider((telephoneValidationProviders:any) => { 
+// if(telephoneValidationProviders) {
+//   dispatch(getTelephoneValidationProviders(telephoneValidationProviders))
+// }  
+// })
 
   return (
   <IonApp>
     <IonReactRouter>
-    <IonRouterOutlet>
-      <Route path="/splashscreen" component={SplashScreen} exact={true} />
-      <Route path="/onboarding" component={OnBoarding} exact={true} />                
-      <Route path="/signin" component={SignIn} exact={true} />                      
-      <Route exact path="/" render={() => <Redirect to="/splashscreen" />} />
-      <Route path="/register-validator" component={RegisterValidator} exact={true} />
-      <Route path="/home/intent-service-invoke" component={IntentServiceInvoke} exact={true} />
-      <Route path="/requests/intent-details/:id" component={IntentDetails} />
+      <IonRouterOutlet>
+        <Route path="/splashscreen" component={SplashScreen} exact={true} />
+        <Route path="/onboarding" component={OnBoarding} exact={true} />                
+        <Route path="/signin" component={SignIn} exact={true} />                      
+        <Route exact path="/" render={() => <Redirect to="/splashscreen" />} />
+        <Route path="/register-validator" component={RegisterValidator} exact={true} />
+        <Route path="/home/intent-service-invoke" component={IntentServiceInvoke} exact={true} />
+        <Route path="/requests/intent-details/:id" component={IntentDetails} />
 
       <IonTabs>
         <IonRouterOutlet>
@@ -207,12 +210,12 @@ if(phoneValidationProviders) {
         </IonTabBar>
       </IonTabs>
       </IonRouterOutlet>
-
+      {/* <Route path="/dashboard" component={Dashboard} exact={true} /> */}
     </IonReactRouter>
   </IonApp>
   )};
 
-const initServiceListener = () => {
+const initServiceListener = (dispatch:any) => {
 
   appManager.setListener(async (message: AppManagerPlugin.ReceivedMessage) => {
     let rpcMessage = JSON.parse(message.message) as RPCMessage;
@@ -242,7 +245,7 @@ const initServiceListener = () => {
   });
 
   checkIncomingRequests();
-  checkPendingRequests();
+  checkPendingRequests(dispatch);
 }
 
 const onReceiveIntent = async (intent: AppManagerPlugin.ReceivedIntent, goTo: any, dispatch: any) => {
@@ -270,12 +273,14 @@ const onReceiveIntent = async (intent: AppManagerPlugin.ReceivedIntent, goTo: an
 
 // store them in localstorage with the key incomingRequests 
 const storeIncomingRequests = async (user: any) => {   
+  console.log("storing incoming requests for notification");
   sendGetIncomingRequests( user )
 }
 
 const [sendGetIncomingRequests] = useIncomingRequestsByDid(async (incomingRequests:any) => { 
   if(incomingRequests) {
-
+    console.log("stored successfully");
+    
     let newIncomingRequests = [];
     for(let i=0;i<incomingRequests.length;i++){
       if(incomingRequests[i].status === "New"){
@@ -298,6 +303,10 @@ const checkIncomingRequests = async () => {
 
   setTimeout(async () => {
     const requestIds = await Storage.get({ key: 'incomingRequests' });
+    console.log("got incoming requests list");
+    console.log(requestIds);
+    
+    
 
     if(requestIds && requestIds.value){
       let parsedIncomingRequests = JSON.parse(requestIds.value);
@@ -369,15 +378,32 @@ const notify = (key:string, title:string, message:string) => {
   })
 }
 
-const checkPendingRequests = () => {
+const checkPendingRequests = (dispatch:any) => {
 
+  console.log("checkPendingRequests");
   const intervalTime = (parseInt(`${process.env.REACT_APP_BACKGROUND_SERVICE_DELAY_MINUTES}`) * 60) * 1000;
+  // const dispatchValidationProviders = useDispatch()
 
   setInterval(async () => {
     const requestIds = await Storage.get({ key: 'pendingRequests' });
-    const emailValidationProviders = await Storage.get({ key: 'emailValidationProviders'});
-    const nameValidationProviders = await Storage.get({ key: 'nameValidationProviders'});
-    const phoneValidationProviders = await Storage.get({ key: 'phoneValidationProviders'});
+    let emailValidationProviders = await Storage.get({ key: 'emailValidationProviders'});
+    let nameValidationProviders = await Storage.get({ key: 'nameValidationProviders'});
+    // let telephoneValidationProviders = await Storage.get({ key: 'telephoneValidationProviders'});
+
+    console.log("setInterval");
+    console.log(nameValidationProviders);
+
+    //Get the list of validation providers
+    const [sendGetValidationProvidersReq]= useProvider((validationProviders:any) => { 
+      if(validationProviders) {
+        // switch()
+        // dispatchValidationProviders(getEmailValidationProviders(validationProviders))
+        dispatch(getEmailValidationProviders(validationProviders))
+        return true
+      }
+      return false
+
+    })
 
     if(requestIds && requestIds.value){
       let parsedPendingRequests = JSON.parse(requestIds.value);
@@ -390,16 +416,35 @@ const checkPendingRequests = () => {
             let provider = {'id': response.data.provider, 'name': ''};
 
             if(response.data.validationType === 'email'){
-              provider = JSON.parse(emailValidationProviders.value).filter((provider:any) => provider.id === response.data.provider)[0]
-            }
+              console.log("Before if !emailValidationProviders || !emailValidationProviders.value")
+              if(!emailValidationProviders || !emailValidationProviders.value){
+                  console.log("inside if")
+                  sendGetValidationProvidersReq('email', async (isComplete: boolean)=> {
+                    console.log("did i get the result: " + isComplete);
+                    emailValidationProviders = await Storage.get({ key: 'emailValidationProviders'});                                      
+                  })
 
-            if(response.data.validationType === 'name'){
-              provider = JSON.parse(nameValidationProviders.value).filter((provider:any) => provider.id === response.data.provider)[0]
-            }
+                  // setTimeout(async() => {
+                  //   console.log("finding val providers if set or not")
+                  //   emailValidationProviders = await Storage.get({ key: 'emailValidationProviders'});                  
+                  //   console.log("emailValidationProviders")
+                  //   console.log(emailValidationProviders)
+                  //   if(!emailValidationProviders || !emailValidationProviders.value){
+                  //     console.log("Parsing emailvalidation providers value");                      
+                  //     provider = JSON.parse(emailValidationProviders.value).filter((provider:any) => provider.id === response.data.provider)[0]
+                  //   }
+                  // }, 500)
+                }
+              }
+            // }
 
-            if(response.data.validationType === 'telephone'){
-              provider = JSON.parse(phoneValidationProviders.value).filter((provider:any) => provider.id === response.data.provider)[0]
-            }
+            // if(response.data.validationType === 'name'){
+            //   provider = JSON.parse(nameValidationProviders.value).filter((provider:any) => provider.id === response.data.provider)[0]
+            // }
+
+            // if(response.data.validationType === 'telephone'){
+            //   provider = JSON.parse(telephoneValidationProviders.value).filter((provider:any) => provider.id === response.data.provider)[0]
+            // }
 
             let title = `${response.data.validationType.charAt(0).toUpperCase()}${response.data.validationType.slice(1)} Validation Request ${response.data.status}`
             let message = "";

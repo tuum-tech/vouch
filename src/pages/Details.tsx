@@ -92,7 +92,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
  }  
 
  if(requestDetails && requestDetails.validationType === 'telephone'){
-  provider = validationProviders.phoneValidationProviders.filter((provider:any) => provider.id === requestDetails.provider)[0]
+  provider = validationProviders.telephoneValidationProviders.filter((provider:any) => provider.id === requestDetails.provider)[0]
 }  
 
   const copyText = function (elementId: any){

@@ -1,6 +1,4 @@
 import {
-  IonCard,
-  IonCardContent,
   IonContent,
   IonHeader,
   IonPage,
@@ -19,8 +17,6 @@ import {
   IonRefresher,
   IonRefresherContent,
   useIonViewWillEnter,
-  IonSelect,
-  IonSelectOption,
   IonPopover,
   IonList
 } from '@ionic/react';
@@ -40,7 +36,7 @@ import { useProvider } from '../hooks/useProvider'
 import { getEmailValidationProviders, getProviderServices } from '../store/providers'
 
 import { useDID } from '../hooks/useDID';
-import { login, logout } from '../store/auth';
+import { login } from '../store/auth';
 import { useIncomingRequests } from '../hooks/useIncomingRequests';
 import { useProviderServices } from '../hooks/useProviderServices';
 
@@ -48,6 +44,7 @@ import CredentialCode from './CredentialCode';
 
 const HomePage: React.FC = ({ history }: any) => {
 
+  console.log("I am at home man")
     const [selectValidationService, setSelectValidationService] = useState<string>('none');
     const [showPopover, setShowPopover] = useState<{open: boolean, event: Event | undefined}>({
       open: false,
@@ -138,7 +135,7 @@ const HomePage: React.FC = ({ history }: any) => {
       }
 
       if(!validationProviders.emailValidationProviders){
-        sendGetEmailValidationProvidersReq('email')
+        sendGetEmailValidationProvidersReq('email', {})
       }
      },
      // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -223,6 +220,7 @@ const HomePage: React.FC = ({ history }: any) => {
                     isOpen={showPopover.open}
                     event={showPopover.event}
                     onDidDismiss={e => setShowPopover({open: false, event: undefined})}
+                    cssClass='fullwidth-popover'
                 >
                 <IonList>
                       {/* <IonItem onClick={(e) => handleSelectValidationService('none')}>
@@ -232,7 +230,7 @@ const HomePage: React.FC = ({ history }: any) => {
 
                       {Object.values(CredentialCode).map(credCode => 
                         <IonItem onClick={(e) => handleSelectValidationService(credCode)}>
-                          <IonImg src={`../assets/images/components/icon-${credCode}.svg`}></IonImg>
+                          <IonImg style={{paddingRight: '20px'}} src={`../assets/images/components/icon-${credCode}.svg`}></IonImg>
                           <IonLabel>{credCode.charAt(0).toUpperCase()}{credCode.slice(1)} Validation</IonLabel>
                         </IonItem>                        
                       )}
@@ -250,15 +248,24 @@ const HomePage: React.FC = ({ history }: any) => {
                       </IonItem>                             */}
                 </IonList>
                 </IonPopover>
-                <IonButton fill="solid" color="secondary" className="text-center" style={{'textTransform':'none', fontWeight: 'bold'}} onClick={(e) => setShowPopover({open: true, event: e.nativeEvent})}>
-                  {selectValidationService !== 'none' &&
-                    <IonImg src={`../assets/images/components/icon-${selectValidationService}.svg`}></IonImg>
-                  }
-                  {selectValidationService === 'none' ? 'Select Validation Service' : selectValidationService.charAt(0).toUpperCase() + selectValidationService.slice(1) + ' Validation'}
+                <IonButton color="disabled" fill="solid" className="text-center" style={{'textTransform':'none', fontWeight: 'bold', width: '100%', backgroundColor: '#F8F8F8', border: '1px solid #F0F0F0', color: '#484848'}} onClick={(e) => setShowPopover({open: true, event: e.nativeEvent})}>
+                  <IonRow style={{width: '100%'}}>
+                      <IonCol size="2">
+                        <IonImg style={{width: '24px', height: '24px'}} src={`../assets/images/components/icon-${selectValidationService}.svg`}></IonImg>
+                      </IonCol>
+                      <IonCol size="8" style={{top: '5px'}}>
+                        {selectValidationService === 'none' ? 'Select Validation Service' : selectValidationService.charAt(0).toUpperCase() + selectValidationService.slice(1) + ' Validation'}                        
+                      </IonCol>
+                      <IonCol size="2" style={{top: '5px'}}>
+                        <img style={{'width': '9px', 'height': '16px', transform: 'rotate(90deg)'}} alt="" src="/assets/images/components/icon-arrow.svg" />                      
+                      </IonCol>
+                  </IonRow>
                 </IonButton>  
               </IonCol>
             </IonRow>
-            <IonRow style={{display: (providerServices && providerServices.validationTypes.length ? 'block' : 'none')}}>
+            <IonRow 
+            style={{display: (providerServices && providerServices.validationTypes.length ? 'block' : 'none')}}
+            >
               <IonCol size="12">
                 {/*-- List Header with Button --*/}<br></br>
                 <IonListHeader>
