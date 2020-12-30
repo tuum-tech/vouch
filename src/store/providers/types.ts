@@ -25,6 +25,9 @@ export const GET_EDUCATION_VALIDATION_PROVIDERS_SUCCESS = "GET_EDUCATION_VALIDAT
 export const GET_OCCUPATION_VALIDATION_PROVIDERS = "GET_OCCUPATION_VALIDATION_PROVIDERS";
 export const GET_OCCUPATION_VALIDATION_PROVIDERS_SUCCESS = "GET_OCCUPATION_VALIDATION_PROVIDERS_SUCCESS";
 
+export const GET_WEBSITE_VALIDATION_PROVIDERS = "GET_WEBSITE_VALIDATION_PROVIDERS";
+export const GET_WEBSITE_VALIDATION_PROVIDERS_SUCCESS = "GET_WEBSITE_VALIDATION_PROVIDERS_SUCCESS";
+
 export const GET_WECHAT_VALIDATION_PROVIDERS = "GET_WECHAT_VALIDATION_PROVIDERS";
 export const GET_WECHAT_VALIDATION_PROVIDERS_SUCCESS = "GET_WECHAT_VALIDATION_PROVIDERS_SUCCESS";
 
@@ -42,6 +45,12 @@ export const GET_TWITTER_VALIDATION_PROVIDERS_SUCCESS = "GET_TWITTER_VALIDATION_
 
 export const GET_TELEGRAM_VALIDATION_PROVIDERS = "GET_TELEGRAM_VALIDATION_PROVIDERS";
 export const GET_TELEGRAM_VALIDATION_PROVIDERS_SUCCESS = "GET_TELEGRAM_VALIDATION_PROVIDERS_SUCCESS";
+
+export const GET_TWITCH_VALIDATION_PROVIDERS = "GET_TWITCH_VALIDATION_PROVIDERS";
+export const GET_TWITCH_VALIDATION_PROVIDERS_SUCCESS = "GET_TWITCH_VALIDATION_PROVIDERS_SUCCESS";
+
+export const GET_WEIBO_VALIDATION_PROVIDERS = "GET_WEIBO_VALIDATION_PROVIDERS";
+export const GET_WEIBO_VALIDATION_PROVIDERS_SUCCESS = "GET_WEIBO_VALIDATION_PROVIDERS_SUCCESS";
 
 export const GET_PAYPAL_VALIDATION_PROVIDERS = "GET_PAYPAL_VALIDATION_PROVIDERS";
 export const GET_PAYPAL_VALIDATION_PROVIDERS_SUCCESS = "GET_PAYPAL_VALIDATION_PROVIDERS_SUCCESS";
@@ -66,12 +75,15 @@ export interface ValidationProviderState {
 // birthplaceValidationProviders
 // educationValidationProviders
 // occupationValidationProviders
+// websiteValidationProviders
 // wechatValidationProviders
 // instagramValidationProviders
 // facebookValidationProviders
 // snapchatValidationProviders
 // twitterValidationProviders
 // telegramValidationProviders
+// twitchValidationProviders
+// weiboValidationProviders
 // paypalValidationProviders
 // elaValidationProviders
 // providerServices
@@ -167,6 +179,16 @@ interface GetOccupationValidationProvidersSuccessAction {
   payload?: any
 }
 
+interface GetWebsiteValidationProvidersAction {
+  type: typeof GET_WEBSITE_VALIDATION_PROVIDERS;
+  payload?: any
+}  
+
+interface GetWebsiteValidationProvidersSuccessAction {
+  type: typeof GET_WEBSITE_VALIDATION_PROVIDERS_SUCCESS;
+  payload?: any
+}
+
 interface GetWechatValidationProvidersAction {
   type: typeof GET_WECHAT_VALIDATION_PROVIDERS;
   payload?: any
@@ -224,6 +246,26 @@ interface GetTelegramValidationProvidersAction {
 
 interface GetTelegramValidationProvidersSuccessAction {
   type: typeof GET_TELEGRAM_VALIDATION_PROVIDERS_SUCCESS;
+  payload?: any
+}
+
+interface GetTwitchValidationProvidersAction {
+  type: typeof GET_TWITCH_VALIDATION_PROVIDERS;
+  payload?: any
+}  
+
+interface GetTwitchValidationProvidersSuccessAction {
+  type: typeof GET_TWITCH_VALIDATION_PROVIDERS_SUCCESS;
+  payload?: any
+}
+
+interface GetWeiboValidationProvidersAction {
+  type: typeof GET_WEIBO_VALIDATION_PROVIDERS;
+  payload?: any
+}  
+
+interface GetWeiboValidationProvidersSuccessAction {
+  type: typeof GET_WEIBO_VALIDATION_PROVIDERS_SUCCESS;
   payload?: any
 }
 
@@ -286,6 +328,8 @@ export type ValidationProviderActionTypes =
   | GetEducationValidationProvidersSuccessAction
   | GetOccupationValidationProvidersAction
   | GetOccupationValidationProvidersSuccessAction
+  | GetWebsiteValidationProvidersAction
+  | GetWebsiteValidationProvidersSuccessAction  
   | GetWechatValidationProvidersAction
   | GetWechatValidationProvidersSuccessAction
   | GetInstagramValidationProvidersAction
@@ -298,6 +342,10 @@ export type ValidationProviderActionTypes =
   | GetTwitterValidationProvidersSuccessAction
   | GetTelegramValidationProvidersAction
   | GetTelegramValidationProvidersSuccessAction
+  | GetTwitchValidationProvidersAction
+  | GetTwitchValidationProvidersSuccessAction
+  | GetWeiboValidationProvidersAction
+  | GetWeiboValidationProvidersSuccessAction  
   | GetPaypalValidationProvidersAction
   | GetPaypalValidationProvidersSuccessAction
   | GetElaValidationProvidersAction

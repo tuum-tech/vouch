@@ -6,7 +6,7 @@ export function useDID(optionalCallback: any = noop) {
     /**
      * Request some credentials to the DID application.
      */
-    appManager.sendIntent("credaccess", { claims }, {}, (response: any) => {
+    appManager.sendIntent("https://did.elastos.net/credaccess", { claims }, {}, (response: any) => {
 
       if (response && response.result && response.result.presentation) {
 

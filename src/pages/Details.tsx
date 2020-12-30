@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { IonContent, IonPage, IonTitle,IonListHeader, IonGrid,IonRow,IonCol,IonLabel,IonToolbar, IonTextarea, IonIcon, IonButton, useIonViewWillEnter, useIonViewWillLeave, IonImg } from '@ionic/react';
+import { IonContent, IonPage, IonTitle,IonListHeader, IonGrid,IonRow,IonCol,IonLabel,IonToolbar, IonTextarea, IonIcon, IonButton, useIonViewWillEnter, useIonViewWillLeave, IonImg, useIonViewDidEnter } from '@ionic/react';
 import './Details.css';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -13,6 +13,9 @@ import { useCancelRequest } from '../hooks/useCancelRequest';
 import { useApproveRequest } from '../hooks/useApproveRequest';
 import { useRejectRequest } from '../hooks/useRejectRequest';
 import { useCredIssue } from '../hooks/useCredIssue';
+import { useProvider } from '../hooks/useProvider';
+import { getBirthdateValidationProviders, getBirthplaceValidationProviders, getEducationValidationProviders, getElaValidationProviders, getEmailValidationProviders, getFacebookValidationProviders, getGenderValidationProviders, getInstagramValidationProviders, getLocationValidationProviders, getNameValidationProviders, getOccupationValidationProviders, getPaypalValidationProviders, getSnapchatValidationProviders, getTelegramValidationProviders, getTelephoneValidationProviders, getTwitchValidationProviders, getTwitterValidationProviders, getWebsiteValidationProviders, getWechatValidationProviders, getWeiboValidationProviders, ValidationProviderState } from '../store/providers';
+import { Storage } from '@capacitor/core';
 
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
 
@@ -31,15 +34,6 @@ const DetailsPage: React.FC = ({ history }: any) => {
     }
   };
 
-  useIonViewWillEnter(() => {    
-      titleBarManager.setIcon(1, {
-        key: "back",
-        iconPath: "back"
-      });
-
-      titleBarManager.addOnItemClickedListener(myIconListener);
-  });
-
   useIonViewWillLeave(() => {
     titleBarManager.removeOnItemClickedListener(myIconListener);    
     titleBarManager.setIcon(1, {
@@ -51,25 +45,10 @@ const DetailsPage: React.FC = ({ history }: any) => {
   const dispatch = useDispatch()
 
   const requests = useSelector((state:AppState) => state.requests)
-  const validationProviders = useSelector((state:AppState) => state.validationProviders)
   const { id } = useParams()
   let requestType:string = 'outgoing'
 
-  //Check all outgoing transactions
   let requestDetails:any = []
-
-  if(requests && requests.txn)
-    requestDetails = requests.txn.filter((txn: any) => txn.id === id)
-
-  //Check all incoming transactions  
-  if(!requestDetails.length){
-      requestDetails = requests.incoming_txn.filter((txn: any) => txn.id === id)
-      requestType = "incoming"
-  }
-
-  if(requestDetails){
-    requestDetails = requestDetails[0]
-  }
 
   let provider:any = {
     'did': '',
@@ -82,18 +61,107 @@ const DetailsPage: React.FC = ({ history }: any) => {
     'next_steps': []
   }
 
+    //Check all outgoing transactions
+    if(requests && requests.txn)
+      requestDetails = requests.txn.filter((txn: any) => txn.id === id)
 
-  if(requestDetails && requestDetails.validationType === 'email'){
-     provider = validationProviders.emailValidationProviders.filter((provider:any) => provider.id === requestDetails.provider)[0]
+    //Check all incoming transactions  
+    if(!requestDetails.length){
+        requestDetails = requests.incoming_txn.filter((txn: any) => txn.id === id)
+        requestType = "incoming"
+    }
+
+    if(requestDetails){
+      requestDetails = requestDetails[0]
+    }
+
+  useIonViewWillEnter(() => {    
+
+    titleBarManager.setIcon(1, {
+      key: "back",
+      iconPath: "back"
+    });
+
+    titleBarManager.addOnItemClickedListener(myIconListener);
+
+    switch(requestDetails.validationType){
+      case 'email': sendGetValidationProvidersReq('email', {}); break
+      case 'name': sendGetValidationProvidersReq('name', {}); break
+      case 'telephone': sendGetValidationProvidersReq('telephone', {}); break
+      case 'gender': sendGetValidationProvidersReq('gender', {}); break
+      case 'location': sendGetValidationProvidersReq('location', {}); break
+      case 'birthdate': sendGetValidationProvidersReq('birthdate', {}); break
+      case 'birthplace': sendGetValidationProvidersReq('birthplace', {}); break
+      case 'education': sendGetValidationProvidersReq('education', {}); break
+      case 'occupation': sendGetValidationProvidersReq('occupation', {}); break
+      case 'website': sendGetValidationProvidersReq('website', {}); break
+      case 'wechat': sendGetValidationProvidersReq('wechat', {}); break
+      case 'instagram': sendGetValidationProvidersReq('instagram', {}); break
+      case 'facebook': sendGetValidationProvidersReq('facebook', {}); break
+      case 'snapchat': sendGetValidationProvidersReq('snapchat', {}); break
+      case 'twitter': sendGetValidationProvidersReq('twitter', {}); break
+      case 'telegram': sendGetValidationProvidersReq('telegram', {}); break
+      case 'twitch': sendGetValidationProvidersReq('twitch', {}); break
+      case 'weibo': sendGetValidationProvidersReq('weibo', {}); break
+      case 'paypal': sendGetValidationProvidersReq('paypal', {}); break
+      case 'ela': sendGetValidationProvidersReq('ela', {}); break
+    }    
+  })
+
+
+  const validationProviders:ValidationProviderState = useSelector((state:AppState) => state.validationProviders)
+
+  if(validationProviders[requestDetails.validationType + "ValidationProviders"]){
+    provider = validationProviders[requestDetails.validationType + "ValidationProviders"].filter((provider:any) => provider.id === requestDetails.provider)[0]
   }
 
-  if(requestDetails && requestDetails.validationType === 'name'){
-    provider = validationProviders.nameValidationProviders.filter((provider:any) => provider.id === requestDetails.provider)[0]
- }  
-
- if(requestDetails && requestDetails.validationType === 'telephone'){
-  provider = validationProviders.telephoneValidationProviders.filter((provider:any) => provider.id === requestDetails.provider)[0]
-}  
+  //Get the list of validation providers for the given service e.g. email, name, telephone etc.
+  const [sendGetValidationProvidersReq] = useProvider((validationProviders:any) => { 
+    if(validationProviders) {
+      switch(requestDetails.validationType){
+        case 'email':
+          dispatch(getEmailValidationProviders(validationProviders)); break;
+        case 'name':
+          dispatch(getNameValidationProviders(validationProviders)); break;          
+        case 'telephone':
+          dispatch(getTelephoneValidationProviders(validationProviders)); break;                    
+        case 'gender':
+          dispatch(getGenderValidationProviders(validationProviders)); break;
+        case 'location':
+          dispatch(getLocationValidationProviders(validationProviders)); break;          
+        case 'birthdate':
+          dispatch(getBirthdateValidationProviders(validationProviders)); break;                    
+        case 'birthplace':
+          dispatch(getBirthplaceValidationProviders(validationProviders)); break;
+        case 'education':
+          dispatch(getEducationValidationProviders(validationProviders)); break;          
+        case 'occupation':
+          dispatch(getOccupationValidationProviders(validationProviders)); break;                    
+        case 'website':
+          dispatch(getWebsiteValidationProviders(validationProviders)); break;          
+        case 'wechat':
+          dispatch(getWechatValidationProviders(validationProviders)); break;
+        case 'instagram':
+          dispatch(getInstagramValidationProviders(validationProviders)); break;          
+        case 'facebook':
+          dispatch(getFacebookValidationProviders(validationProviders)); break;                    
+        case 'snapchat':
+          dispatch(getSnapchatValidationProviders(validationProviders)); break;
+        case 'twitter':
+          dispatch(getTwitterValidationProviders(validationProviders)); break;          
+        case 'telegram':
+          dispatch(getTelegramValidationProviders(validationProviders)); break;                    
+        case 'twitch':
+          dispatch(getTwitchValidationProviders(validationProviders)); break;                    
+        case 'weibo':
+          dispatch(getWeiboValidationProviders(validationProviders)); break;                              
+        case 'paypal':
+          dispatch(getPaypalValidationProviders(validationProviders)); break;
+        case 'ela':
+          dispatch(getElaValidationProviders(validationProviders)); break;          
+      }
+    }  
+  })      
 
   const copyText = function (elementId: any){
     let copyText:any = document.querySelector("#" + elementId);
@@ -143,33 +211,47 @@ const DetailsPage: React.FC = ({ history }: any) => {
     const validationtype = e.currentTarget.getAttribute('data-validationtype')
 
     //Sign the credential with validators DID using credissue intent
-
     let credIssueRequestData:any = {}
     credIssueRequestData.identifier = validationtype    
     credIssueRequestData.types = ["VerifiableCredential"]
     credIssueRequestData.subjectdid = "did:elastos:" + requestDetails.did.replace("did:elastos:", "")
     credIssueRequestData.properties = {}
 
-
     switch(validationtype) {
-      case 'email': {
-        credIssueRequestData.types.push("EmailCredential")
+      case 'email': 
+      case 'name': 
+      case 'telephone':
+      case 'gender':
+      case 'location':
+      case 'birthdate':
+      case 'birthplace':
+      case 'education':
+      case 'occupation':
+      case 'website':       
+      {
+        let type = validationtype.charAt(0).toUpperCase() + validationtype.slice(1)
+        credIssueRequestData.types.push(type + "Credential")
         credIssueRequestData.types.push("BasicProfileCredential")
-        credIssueRequestData.properties.email = requestDetails.requestParams.email
-        break
-      }
-      case 'name': {
-        credIssueRequestData.types.push("NameCredential")
-        credIssueRequestData.types.push("BasicProfileCredential")
-        credIssueRequestData.properties.name = requestDetails.requestParams.name
-        break
-      }
-      case 'telephone': {
-        credIssueRequestData.types.push("PhoneCredential")
-        credIssueRequestData.types.push("BasicProfileCredential")
-        credIssueRequestData.properties.phone = requestDetails.requestParams.phone
-        break
-      }
+
+        credIssueRequestData.properties[validationtype] = requestDetails.requestParams[validationtype]                
+      } break;
+      case 'wechat':
+      case 'instagram':
+      case 'facebook':
+      case 'snapchat':
+      case 'twitter':
+      case 'telegram':
+      case 'twitch':
+      case 'weibo':
+      case 'paypal':
+      case 'ela':
+      {
+        let type = validationtype.charAt(0).toUpperCase() + validationtype.slice(1)
+        credIssueRequestData.types.push(type + "Credential")
+        credIssueRequestData.types.push("InternetAccountCredential")
+
+        credIssueRequestData.properties[validationtype] = requestDetails.requestParams[validationtype]                
+      } break;        
       default: {
         let type = validationtype.charAt(0).toUpperCase() + validationtype.slice(1)
         credIssueRequestData.types.push(type + "Credential")
@@ -215,11 +297,8 @@ const DetailsPage: React.FC = ({ history }: any) => {
    })   
 
   const handleSaveCredClick = (e: any) => {
-
     let verifiedCredential = requestDetails.verifiedCredential
-
-    verifiedCredential.credentialSubject.email = requestDetails.requestParams.email
-
+    verifiedCredential.credentialSubject[requestDetails.validationType] = requestDetails.requestParams[requestDetails.validationType]
     sendCredSaveIntent({ verifiedCredential });
   }  
 
@@ -278,11 +357,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
                 <IonLabel className="label">Validation Type</IonLabel>
               </IonCol>
               <IonCol size="8" className='ion-text-right'>
-                  <IonImg src={`
-                    ${requestDetails.validationType === "email" ? "../assets/images/components/icon-email.svg" : ""}
-                    ${requestDetails.validationType === "telephone" ? "../assets/images/components/icon-phone.svg" : ""}
-                    ${requestDetails.validationType === "name" ? "../assets/images/components/icon-name.svg" : ""}
-                  `} style={{height: '32px', width: '32px', display: 'inline-block', verticalAlign: 'bottom'}}  /> 
+                  <IonImg src={`../assets/images/components/icon-${requestDetails.validationType}.svg`} style={{height: '32px', width: '32px', display: 'inline-block', verticalAlign: 'bottom'}}  /> 
                   <IonLabel className="value" style={{verticalAlign: 'super'}}>{requestDetails.validationType.charAt(0).toUpperCase()}{requestDetails.validationType.slice(1)}</IonLabel>
               </IonCol>
             </IonListHeader>
@@ -322,73 +397,53 @@ const DetailsPage: React.FC = ({ history }: any) => {
               <IonIcon name="copy-outline" src="/assets/images/icons/copy-outline.svg" onClick={(e:any) => copyText("userDID")} />
             </IonCol>           
             </IonListHeader> 
-            { requestDetails && requestDetails.requestParams && requestDetails.requestParams.name &&          
+            { requestDetails && requestDetails.requestParams && requestDetails.requestParams[requestDetails.validationType] &&          
             <IonListHeader>
               <IonCol size="3">
-                <IonLabel className="label">Name</IonLabel>
+                <IonLabel className="label">{requestDetails.validationType.charAt(0).toUpperCase()}{requestDetails.validationType.slice(1)}</IonLabel>
               </IonCol>
               <IonCol size="9" className="ion-text-right">
-                <IonLabel className="value">{requestDetails.requestParams.name}</IonLabel>
+                <IonLabel className="value">{requestDetails.requestParams[requestDetails.validationType]}</IonLabel>
               </IonCol>
             </IonListHeader>
             }
-            { requestDetails && requestDetails.requestParams && requestDetails.requestParams.email &&          
-            <IonListHeader>
-              <IonCol size="3">
-                <IonLabel className="label">Email</IonLabel>
-              </IonCol>
-              <IonCol size="9" className="ion-text-right">
-                <IonLabel className="value">{requestDetails.requestParams.email}</IonLabel>
-              </IonCol>
-            </IonListHeader>
-            }
-            { requestDetails && requestDetails.requestParams && requestDetails.requestParams.telephone &&          
-            <IonListHeader>
-              <IonCol size="3">
-                <IonLabel className="label">Mobile Phone</IonLabel>
-              </IonCol>
-              <IonCol size="9" className="ion-text-right">
-                <IonLabel className="value">{requestDetails.requestParams.telephone}</IonLabel>
-              </IonCol>
-            </IonListHeader>
-            }                        
           </IonRow>
 
+          {requestDetails && provider && provider.did &&     
           <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px',
-    marginTop: '10px', display: (requestType === 'outgoing' ? 'block' : 'none')}}>
-          <h2>Validator</h2>
-          { requestDetails && requestDetails.provider &&           
-            <IonListHeader className="fieldContainer2">
-              <IonCol size="4">
-                <IonLabel className="label">Name</IonLabel>
-              </IonCol>                
-              <IonCol size="8" className="ion-text-right">
-                <img src={provider.logo} style={{height: '32px', width: '32px', display: 'inline-block', verticalAlign: 'bottom', borderRadius: '50%'}} alt="" /> 
-                <IonLabel className="value ion-text-right" style={{paddingLeft: '5px', verticalAlign: 'super'}}>{provider.name}</IonLabel>
-              </IonCol>
-            </IonListHeader>
-            }
-            { requestDetails && requestDetails.provider &&            
-            <IonListHeader>
-            <IonCol size="3">
-              <IonLabel className="label">DID</IonLabel>
-            </IonCol>            
-            <IonCol size="8" className="validatordid ion-text-right">
-              <IonTextarea rows={2} cols={12} id="validatorDID" readonly value={provider.did}>
-              </IonTextarea>
-            </IonCol>
-            <IonCol size="1" style={{margin: 'auto'}}>
-              <IonIcon name="copy-outline" src="/assets/images/icons/copy-outline.svg" onClick={(e:any) => copyText("validatorDID")} />
-            </IonCol>           
-            </IonListHeader> 
-            }           
+          marginTop: '10px', display: (requestType === 'outgoing' ? 'block' : 'none')}}>
+                <h2>Validator</h2>   
+
+              <IonListHeader className="fieldContainer2">
+                <IonCol size="4">
+                  <IonLabel className="label">Name</IonLabel>
+                </IonCol>                
+                <IonCol size="8" className="ion-text-right">
+                  <img src={provider.logo} style={{height: '32px', width: '32px', display: 'inline-block', verticalAlign: 'bottom', borderRadius: '50%'}} alt="" /> 
+                  <IonLabel className="value ion-text-right" style={{paddingLeft: '5px', verticalAlign: 'super'}}>{provider.name}</IonLabel>
+                </IonCol>
+              </IonListHeader>
+
+              <IonListHeader>
+                <IonCol size="3">
+                  <IonLabel className="label">DID</IonLabel>
+                </IonCol>            
+                <IonCol size="8" className="validatordid ion-text-right">
+                  <IonTextarea rows={2} cols={12} id="validatorDID" readonly value={provider.did}>
+                  </IonTextarea>
+                </IonCol>
+                <IonCol size="1" style={{margin: 'auto'}}>
+                  <IonIcon name="copy-outline" src="/assets/images/icons/copy-outline.svg" onClick={(e:any) => copyText("validatorDID")} />
+                </IonCol>           
+              </IonListHeader> 
             </IonRow>
+          }
 
             <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px',
     marginTop: '10px', display: (requestType === 'outgoing' && requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') ? 'block' : 'none')}}>
             <h2>Next Steps</h2>
 
-            { requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') && provider.validation[requestDetails.validationType].next_steps.map((step: any, index: number) => 
+            { requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') && provider && provider.validation && provider.validation[requestDetails.validationType] && provider.validation[requestDetails.validationType].next_steps && provider.validation[requestDetails.validationType].next_steps.map((step: any, index: number) => 
               <IonListHeader className="fieldContainer">
                   <IonLabel>
                     <span className="label">Step {index + 1}:</span><br/>

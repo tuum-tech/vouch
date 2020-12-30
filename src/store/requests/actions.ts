@@ -23,7 +23,10 @@ import {
     TWITTER_VALIDATION_REQUEST_SUCCESS,
     TELEGRAM_VALIDATION_REQUEST_SUCCESS,
     PAYPAL_VALIDATION_REQUEST_SUCCESS,
-    ELA_VALIDATION_REQUEST_SUCCESS
+    ELA_VALIDATION_REQUEST_SUCCESS,
+    WEBSITE_VALIDATION_REQUEST_SUCCESS,
+    TWITCH_VALIDATION_REQUEST_SUCCESS,
+    WEIBO_VALIDATION_REQUEST_SUCCESS
 } from "./types";
   
 import { ThunkAction } from "redux-thunk";
@@ -184,6 +187,23 @@ type: OCCUPATION_VALIDATION_REQUEST_SUCCESS,
 payload: txn
 });
 
+export const websiteValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(websiteValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const websiteValidationSuccess = (txn: any): TxnActionTypes => ({
+type: WEBSITE_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
 export const wechatValidation = (txn: any, callback: any = noop): ThunkAction<
 void,
 AppState,
@@ -283,6 +303,40 @@ TxnActionTypes
 
 export const telegramValidationSuccess = (txn: any): TxnActionTypes => ({
 type: TELEGRAM_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
+export const twitchValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(twitchValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const twitchValidationSuccess = (txn: any): TxnActionTypes => ({
+type: TWITCH_VALIDATION_REQUEST_SUCCESS,
+payload: txn
+});
+
+export const weiboValidation = (txn: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+TxnActionTypes
+> => dispatch => {
+(async function(){
+    dispatch(weiboValidationSuccess(txn));
+    callback();
+})()
+};
+
+export const weiboValidationSuccess = (txn: any): TxnActionTypes => ({
+type: WEIBO_VALIDATION_REQUEST_SUCCESS,
 payload: txn
 });
 

@@ -29,13 +29,9 @@ export function useProvider(optionalCallback: any = noop) {
         .then(response => {
           if(response.meta.code === 200) {
             optionalCallback(response.data);  
-            isComplete(true)        
           }
+        },() => {
 
-        }
-        
-        , ()=> {
-          isComplete(false)
         });
       // }
 

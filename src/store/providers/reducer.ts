@@ -12,12 +12,15 @@ import {
   GET_BIRTHPLACE_VALIDATION_PROVIDERS_SUCCESS,
   GET_EDUCATION_VALIDATION_PROVIDERS_SUCCESS,
   GET_OCCUPATION_VALIDATION_PROVIDERS_SUCCESS,
+  GET_WEBSITE_VALIDATION_PROVIDERS_SUCCESS,
   GET_WECHAT_VALIDATION_PROVIDERS_SUCCESS,
   GET_INSTAGRAM_VALIDATION_PROVIDERS_SUCCESS,
   GET_FACEBOOK_VALIDATION_PROVIDERS_SUCCESS,
   GET_SNAPCHAT_VALIDATION_PROVIDERS_SUCCESS,
   GET_TWITTER_VALIDATION_PROVIDERS_SUCCESS,
   GET_TELEGRAM_VALIDATION_PROVIDERS_SUCCESS,
+  GET_TWITCH_VALIDATION_PROVIDERS_SUCCESS,
+  GET_WEIBO_VALIDATION_PROVIDERS_SUCCESS,
   GET_PAYPAL_VALIDATION_PROVIDERS_SUCCESS,
   GET_ELA_VALIDATION_PROVIDERS_SUCCESS
 } from "./types";
@@ -32,12 +35,15 @@ const initialState: ValidationProviderState = {
   birthplaceValidationProviders: null,
   educationValidationProviders: null,
   occupationValidationProviders: null,
+  websiteValidationProviders: null,
   wechatValidationProviders: null,
   instagramValidationProviders: null,
   facebookValidationProviders: null,
   snapchatValidationProviders: null,
   twitterValidationProviders: null,
   telegramValidationProviders: null,
+  twitchValidationProviders: null,
+  weiboValidationProviders: null,
   paypalValidationProviders: null,
   elaValidationProviders: null,
   providerServices:null
@@ -68,6 +74,8 @@ export const validationProviderReducer = (
       return { ...state, educationValidationProviders: payload };            
     case GET_OCCUPATION_VALIDATION_PROVIDERS_SUCCESS:
       return { ...state, occupationValidationProviders: payload };            
+    case GET_WEBSITE_VALIDATION_PROVIDERS_SUCCESS:
+      return { ...state, websiteValidationProviders: payload };                  
     case GET_WECHAT_VALIDATION_PROVIDERS_SUCCESS:
       return { ...state, wechatValidationProviders: payload };            
     case GET_INSTAGRAM_VALIDATION_PROVIDERS_SUCCESS:
@@ -80,6 +88,10 @@ export const validationProviderReducer = (
       return { ...state, twitterValidationProviders: payload };            
     case GET_TELEGRAM_VALIDATION_PROVIDERS_SUCCESS:
       return { ...state, telegramValidationProviders: payload };            
+    case GET_TWITCH_VALIDATION_PROVIDERS_SUCCESS:
+      return { ...state, twitchValidationProviders: payload };            
+    case GET_WEIBO_VALIDATION_PROVIDERS_SUCCESS:
+      return { ...state, weiboValidationProviders: payload };                    
     case GET_PAYPAL_VALIDATION_PROVIDERS_SUCCESS:
       return { ...state, paypalValidationProviders: payload };            
     case GET_ELA_VALIDATION_PROVIDERS_SUCCESS:

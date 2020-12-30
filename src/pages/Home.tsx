@@ -44,7 +44,6 @@ import CredentialCode from './CredentialCode';
 
 const HomePage: React.FC = ({ history }: any) => {
 
-  console.log("I am at home man")
     const [selectValidationService, setSelectValidationService] = useState<string>('none');
     const [showPopover, setShowPopover] = useState<{open: boolean, event: Event | undefined}>({
       open: false,
@@ -134,20 +133,10 @@ const HomePage: React.FC = ({ history }: any) => {
         sendGetIncomingRequests(providerServices.id)        
       }
 
-      if(!validationProviders.emailValidationProviders){
-        sendGetEmailValidationProvidersReq('email', {})
-      }
      },
      // eslint-disable-next-line react-hooks/exhaustive-deps
      []
    );
-
-    //Get the list of email validation providers
-    const [sendGetEmailValidationProvidersReq] = useProvider((emailValidationProviders:any) => { 
-      if(emailValidationProviders) {
-        dispatch(getEmailValidationProviders(emailValidationProviders))
-      }  
-    })   
   
     const [signIn] = useDID((credentials:any) => {
       if(credentials.length) {
@@ -223,29 +212,12 @@ const HomePage: React.FC = ({ history }: any) => {
                     cssClass='fullwidth-popover'
                 >
                 <IonList>
-                      {/* <IonItem onClick={(e) => handleSelectValidationService('none')}>
-                        <IonLabel>-- Select Validation Service --</IonLabel>
-                      </IonItem>   */}
-
-
-                      {Object.values(CredentialCode).map(credCode => 
-                        <IonItem onClick={(e) => handleSelectValidationService(credCode)}>
-                          <IonImg style={{paddingRight: '20px'}} src={`../assets/images/components/icon-${credCode}.svg`}></IonImg>
-                          <IonLabel>{credCode.charAt(0).toUpperCase()}{credCode.slice(1)} Validation</IonLabel>
-                        </IonItem>                        
-                      )}
-                      {/* <IonItem onClick={(e) => handleSelectValidationService('email')}>
-                        <IonImg src="../assets/images/components/icon-email.svg"></IonImg>
-                        <IonLabel>Email Validation</IonLabel>
-                      </IonItem>
-                      <IonItem onClick={(e) => handleSelectValidationService('name')}>
-                        <IonImg src="../assets/images/components/icon-name.svg"></IonImg>
-                        <IonLabel>Name Validation</IonLabel>
-                      </IonItem>      
-                      <IonItem onClick={(e) => handleSelectValidationService('telephone')}>
-                        <IonImg src="../assets/images/components/icon-telephone.svg"></IonImg>
-                        <IonLabel>Telephone Validation</IonLabel>
-                      </IonItem>                             */}
+                {Object.values(CredentialCode).map(credCode => 
+                  <IonItem onClick={(e) => handleSelectValidationService(credCode)}>
+                    <IonImg style={{paddingRight: '20px'}} src={`../assets/images/components/icon-${credCode}.svg`}></IonImg>
+                    <IonLabel>{credCode.charAt(0).toUpperCase()}{credCode.slice(1)} Validation</IonLabel>
+                  </IonItem>                        
+                )}
                 </IonList>
                 </IonPopover>
                 <IonButton color="disabled" fill="solid" className="text-center" style={{'textTransform':'none', fontWeight: 'bold', width: '100%', backgroundColor: '#F8F8F8', border: '1px solid #F0F0F0', color: '#484848'}} onClick={(e) => setShowPopover({open: true, event: e.nativeEvent})}>
@@ -278,7 +250,7 @@ const HomePage: React.FC = ({ history }: any) => {
                 {filteredIncomingTxn && filteredIncomingTxn[0] && filteredIncomingTxn[0].id && filteredIncomingTxn.map((txn: any) => 
                   <IonItem className="request-Item" routerLink={`/requests/details/${txn.id}`} key={txn.id} >
                   <IonThumbnail slot="start">
-                    <img src="../assets/images/components/icon-email--request.svg" alt="" />
+                    <img src={`../assets/images/components/icon-${txn.validationType}--request.svg`} alt="" />
                   </IonThumbnail>
                   <IonLabel>
                     <h5>{txn.did}</h5>
@@ -309,7 +281,7 @@ const HomePage: React.FC = ({ history }: any) => {
                 {pending_requests && pending_requests.map((txn: any) => 
                   <IonItem className="request-Item" routerLink={`/requests/details/${txn.id}`} key={txn.id} >
                   <IonThumbnail slot="start">
-                    <img src="../assets/images/components/icon-email--request.svg" alt="" />
+                    <img src={`../assets/images/components/icon-${txn.validationType}--request.svg`} alt="" />
                   </IonThumbnail>
                   <IonLabel>
                     <h2>{txn.validationType.charAt(0).toUpperCase()}{txn.validationType.slice(1)} Validation</h2>
@@ -411,24 +383,6 @@ const HomePage: React.FC = ({ history }: any) => {
             }            
           ]}
         />
-
-        {/* <IonAlert
-          isOpen={showAlertPhoneValidation}
-          onDidDismiss={() => setShowAlertPhoneValidation(false)}
-          cssClass='service-popup-alert custom-info'
-          header={'Service Unavailable'}
-          message={'There are currently no validators available to validate phone numbers.'}
-          buttons={['OK']}
-        />
-
-        <IonAlert
-          isOpen={showAlertNameValidation}
-          onDidDismiss={() => setShowAlertNameValidation(false)}
-          cssClass='service-popup-alert custom-info'
-          header={'Service Unavailable'}
-          message={'There are currently no validators available to validate name.'}
-          buttons={['OK']}
-        />         */}
 
       </IonPage>
     );

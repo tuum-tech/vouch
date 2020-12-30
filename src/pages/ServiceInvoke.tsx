@@ -5,14 +5,14 @@ import { IonContent ,IonListHeader, IonPage, IonTitle, IonGrid, IonRow, IonCol, 
 import './ServiceInvoke.css';
 
 // import { useEmailValidation } from '../hooks/useEmailValidation'
-import { emailValidation, showNotification, hideNotification, nameValidation, telephoneValidation, genderValidation, locationValidation, birthdateValidation, birthplaceValidation, educationValidation, occupationValidation, wechatValidation, instagramValidation, facebookValidation, snapchatValidation, twitterValidation, telegramValidation, paypalValidation, elaValidation } from '../store/requests'
+import { emailValidation, showNotification, hideNotification, nameValidation, telephoneValidation, genderValidation, locationValidation, birthdateValidation, birthplaceValidation, educationValidation, occupationValidation, wechatValidation, instagramValidation, facebookValidation, snapchatValidation, twitterValidation, telegramValidation, paypalValidation, elaValidation, websiteValidation, twitchValidation, weiboValidation } from '../store/requests'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../store'
 import { useDID } from '../hooks/useDID';
 import { login } from '../store/auth';
 
-import { getBirthdateValidationProviders, getBirthplaceValidationProviders, getEducationValidationProviders, getElaValidationProviders, getEmailValidationProviders, getFacebookValidationProviders, getGenderValidationProviders, getInstagramValidationProviders, getLocationValidationProviders, getNameValidationProviders, getOccupationValidationProviders, getTelephoneValidationProviders, getSnapchatValidationProviders, getTelegramValidationProviders, getTwitterValidationProviders, getWechatValidationProviders, getPaypalValidationProviders, ValidationProviderState } from '../store/providers';
+import { getBirthdateValidationProviders, getBirthplaceValidationProviders, getEducationValidationProviders, getElaValidationProviders, getEmailValidationProviders, getFacebookValidationProviders, getGenderValidationProviders, getInstagramValidationProviders, getLocationValidationProviders, getNameValidationProviders, getOccupationValidationProviders, getTelephoneValidationProviders, getSnapchatValidationProviders, getTelegramValidationProviders, getTwitterValidationProviders, getWechatValidationProviders, getPaypalValidationProviders, ValidationProviderState, getWebsiteValidationProviders, getTwitchValidationProviders, getWeiboValidationProviders } from '../store/providers';
 import { useProvider } from '../hooks/useProvider';
 
 import { RefresherEventDetail } from '@ionic/core';
@@ -63,12 +63,15 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
         case 'birthplace': sendGetValidationProvidersReq('birthplace', {}); break
         case 'education': sendGetValidationProvidersReq('education', {}); break
         case 'occupation': sendGetValidationProvidersReq('occupation', {}); break
+        case 'website': sendGetValidationProvidersReq('website', {}); break
         case 'wechat': sendGetValidationProvidersReq('wechat', {}); break
         case 'instagram': sendGetValidationProvidersReq('instagram', {}); break
         case 'facebook': sendGetValidationProvidersReq('facebook', {}); break
         case 'snapchat': sendGetValidationProvidersReq('snapchat', {}); break
         case 'twitter': sendGetValidationProvidersReq('twitter', {}); break
         case 'telegram': sendGetValidationProvidersReq('telegram', {}); break
+        case 'twitch': sendGetValidationProvidersReq('twitch', {}); break
+        case 'weibo': sendGetValidationProvidersReq('weibo', {}); break
         case 'paypal': sendGetValidationProvidersReq('paypal', {}); break
         case 'ela': sendGetValidationProvidersReq('ela', {}); break
       }
@@ -84,7 +87,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
 
   const dispatch = useDispatch()
 
-  const validationProviders: ValidationProviderState = useSelector((state:AppState) => state.validationProviders)
+  const validationProviders:ValidationProviderState = useSelector((state:AppState) => state.validationProviders)
 
   console.log("validationProviders");
   console.log(validationProviders);
@@ -115,6 +118,8 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
           dispatch(getEducationValidationProviders(validationProviders)); break;          
         case 'occupation':
           dispatch(getOccupationValidationProviders(validationProviders)); break;                    
+        case 'website':
+          dispatch(getWebsiteValidationProviders(validationProviders)); break;          
         case 'wechat':
           dispatch(getWechatValidationProviders(validationProviders)); break;
         case 'instagram':
@@ -127,6 +132,10 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
           dispatch(getTwitterValidationProviders(validationProviders)); break;          
         case 'telegram':
           dispatch(getTelegramValidationProviders(validationProviders)); break;                    
+        case 'twitch':
+          dispatch(getTwitchValidationProviders(validationProviders)); break;                    
+        case 'weibo':
+          dispatch(getWeiboValidationProviders(validationProviders)); break;                              
         case 'paypal':
           dispatch(getPaypalValidationProviders(validationProviders)); break;
         case 'ela':
@@ -183,6 +192,8 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
           dispatch(occupationValidation(txn.data, () => goTo('/home'))); break;                    
         case 'wechat':
           dispatch(wechatValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'website':
+          dispatch(websiteValidation(txn.data, () => goTo('/home'))); break;                    
         case 'instagram':
           dispatch(instagramValidation(txn.data, () => goTo('/home'))); break;                    
         case 'facebook':
@@ -193,6 +204,10 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
           dispatch(twitterValidation(txn.data, () => goTo('/home'))); break;                    
         case 'telegram':
           dispatch(telegramValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'twitch':
+          dispatch(twitchValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'weibo':
+          dispatch(weiboValidation(txn.data, () => goTo('/home'))); break;                    
         case 'paypal':
           dispatch(paypalValidation(txn.data, () => goTo('/home'))); break;                    
         case 'ela':
@@ -220,7 +235,9 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
     providerid = e.currentTarget.getAttribute('data-providerid');
     validationtype = e.currentTarget.getAttribute('data-validationtype');
 
-    let claim:any = {email: false, name: false, telephone: false, gender: false, location: false, birthdate: false, birthplace: false, education: false, occupation: false, wechat: false, instagram: false, facebook: false, snapchat: false, twitter: false, telegram: false, paypal: false, ela: false, avatar: false}
+    let claim:any = {}
+
+    // let claim:any = {email: false, name: false, telephone: false, gender: false, location: false, birthdate: false, birthplace: false, education: false, occupation: false, website: false, wechat: false, instagram: false, facebook: false, snapchat: false, twitter: false, telegram: false, twitch: false, weibo: false, paypal: false, ela: false, avatar: false}
 
     claim[validationtype] = true
 

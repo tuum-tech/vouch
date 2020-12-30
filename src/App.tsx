@@ -23,7 +23,6 @@ import SignIn from './pages/SignIn';
 import Support from './pages/Support';
 import IntentServiceInvoke from './pages/IntentServiceInvoke';
 import IntentDetails from './pages/IntentDetails';
-import { getEmailValidationProviders, getNameValidationProviders, getTelephoneValidationProviders } from './store/providers';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -55,7 +54,6 @@ import { useProvider } from './hooks/useProvider';
 import { AppState } from './store';
 import RegisterValidator from './pages/RegisterValidator';
 import { useIncomingRequestsByDid } from './hooks/useIncomingRequestsByDid';
-import Dashboard from './pages/Dashboard';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
@@ -65,8 +63,6 @@ type RPCMessage = {
   method: string;
   param: any;
 }
-
-
 
 const App: React.FC = () => {
 
@@ -109,63 +105,11 @@ const App: React.FC = () => {
 
   useEffect(() => {
     document.addEventListener('deviceready', onDeviceReady, false);
-
+    
     return () => {
       document.removeEventListener('deviceready', onDeviceReady);
     };
   }, [onDeviceReady]);
-
-//   //Get the list of email validation providers  
-//   useEffect(() => {
-//       if(!validationProviders.emailValidationProviders){
-//         sendGetEmailValidationProvidersReq('email')
-//       }
-//      },
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//     []
-//    );
-
-  //Get the list of validation providers
-  // const [sendGetValidationProvidersReq] = useProvider((validationProviders:any) => { 
-  //   if(validationProviders) {
-  //     // switch()
-  //     dispatch(getEmailValidationProviders(validationProviders))
-  //   }  
-  // })
-
-// //Get the list of name validation providers  
-//   useEffect(() => {
-//     if(!validationProviders.nameValidationProviders){
-//       sendGetNameValidationProvidersReq('name')
-//     }
-//    },
-//   // eslint-disable-next-line react-hooks/exhaustive-deps
-//   []
-//  );
-
-// //Get the list of name validation providers
-// const [sendGetNameValidationProvidersReq] = useProvider((nameValidationProviders:any) => { 
-//   if(nameValidationProviders) {
-//     dispatch(getNameValidationProviders(nameValidationProviders))
-//   }  
-// })
-
-// //Get the list of phone validation providers
-// useEffect(() => {
-//   if(!validationProviders.telephoneValidationProviders){
-//     sendGetTelephoneValidationProvidersReq('telephone')
-//   }
-//  },
-// // eslint-disable-next-line react-hooks/exhaustive-deps
-// []
-// );
-
-// //Get the list of phone validation providers
-// const [sendGetTelephoneValidationProvidersReq] = useProvider((telephoneValidationProviders:any) => { 
-// if(telephoneValidationProviders) {
-//   dispatch(getTelephoneValidationProviders(telephoneValidationProviders))
-// }  
-// })
 
   return (
   <IonApp>
@@ -179,7 +123,7 @@ const App: React.FC = () => {
         <Route path="/home/intent-service-invoke" component={IntentServiceInvoke} exact={true} />
         <Route path="/requests/intent-details/:id" component={IntentDetails} />
 
-      <IonTabs>
+        <IonTabs>
         <IonRouterOutlet>
           <Route path="/home" component={Home} exact={true} />
           <Route path="/home/service-invoke" component={ServiceInvoke} exact={true} />
@@ -210,7 +154,7 @@ const App: React.FC = () => {
         </IonTabBar>
       </IonTabs>
       </IonRouterOutlet>
-      {/* <Route path="/dashboard" component={Dashboard} exact={true} /> */}
+      {/* <Route path="/dashboard" component={Dashboard} exact={true} />       */}
     </IonReactRouter>
   </IonApp>
   )};
@@ -273,13 +217,11 @@ const onReceiveIntent = async (intent: AppManagerPlugin.ReceivedIntent, goTo: an
 
 // store them in localstorage with the key incomingRequests 
 const storeIncomingRequests = async (user: any) => {   
-  console.log("storing incoming requests for notification");
   sendGetIncomingRequests( user )
 }
 
 const [sendGetIncomingRequests] = useIncomingRequestsByDid(async (incomingRequests:any) => { 
   if(incomingRequests) {
-    console.log("stored successfully");
     
     let newIncomingRequests = [];
     for(let i=0;i<incomingRequests.length;i++){
@@ -303,10 +245,6 @@ const checkIncomingRequests = async () => {
 
   setTimeout(async () => {
     const requestIds = await Storage.get({ key: 'incomingRequests' });
-    console.log("got incoming requests list");
-    console.log(requestIds);
-    
-    
 
     if(requestIds && requestIds.value){
       let parsedIncomingRequests = JSON.parse(requestIds.value);
@@ -380,29 +318,39 @@ const notify = (key:string, title:string, message:string) => {
 
 const checkPendingRequests = (dispatch:any) => {
 
-  console.log("checkPendingRequests");
+  // console.log("checkPendingRequests");
   const intervalTime = (parseInt(`${process.env.REACT_APP_BACKGROUND_SERVICE_DELAY_MINUTES}`) * 60) * 1000;
-  // const dispatchValidationProviders = useDispatch()
 
   setInterval(async () => {
     const requestIds = await Storage.get({ key: 'pendingRequests' });
     let emailValidationProviders = await Storage.get({ key: 'emailValidationProviders'});
     let nameValidationProviders = await Storage.get({ key: 'nameValidationProviders'});
-    // let telephoneValidationProviders = await Storage.get({ key: 'telephoneValidationProviders'});
-
-    console.log("setInterval");
-    console.log(nameValidationProviders);
+    let telephoneValidationProviders = await Storage.get({ key: 'telephoneValidationProviders'});
+    let genderValidationProviders = await Storage.get({ key: 'genderValidationProviders'});
+    let locationValidationProviders = await Storage.get({ key: 'locationValidationProviders'});
+    let birthdateValidationProviders = await Storage.get({ key: 'birthdateValidationProviders'});
+    let birthplaceValidationProviders = await Storage.get({ key: 'birthplaceValidationProviders'});
+    let educationValidationProviders = await Storage.get({ key: 'educationValidationProviders'});
+    let occupationValidationProviders = await Storage.get({ key: 'occupationValidationProviders'});
+    let websiteValidationProviders = await Storage.get({ key: 'websiteValidationProviders'});
+    let wechatValidationProviders = await Storage.get({ key: 'wechatValidationProviders'});
+    let instagramValidationProviders = await Storage.get({ key: 'instagramValidationProviders'});
+    let facebookValidationProviders = await Storage.get({ key: 'facebookValidationProviders'});
+    let snapchatValidationProviders = await Storage.get({ key: 'snapchatValidationProviders'});
+    let twitterValidationProviders = await Storage.get({ key: 'twitterValidationProviders'});
+    let telegramValidationProviders = await Storage.get({ key: 'telegramValidationProviders'});
+    let twitchValidationProviders = await Storage.get({ key: 'twitchValidationProviders'});
+    let weiboValidationProviders = await Storage.get({ key: 'weiboValidationProviders'});
+    let paypalValidationProviders = await Storage.get({ key: 'paypalValidationProviders'});
+    let elaValidationProviders = await Storage.get({ key: 'elaValidationProviders'});
 
     //Get the list of validation providers
     const [sendGetValidationProvidersReq]= useProvider((validationProviders:any) => { 
       if(validationProviders) {
-        // switch()
-        // dispatchValidationProviders(getEmailValidationProviders(validationProviders))
-        dispatch(getEmailValidationProviders(validationProviders))
+        // dispatch(getNameValidationProviders(validationProviders))
         return true
       }
       return false
-
     })
 
     if(requestIds && requestIds.value){
@@ -415,36 +363,148 @@ const checkPendingRequests = (dispatch:any) => {
 
             let provider = {'id': response.data.provider, 'name': ''};
 
-            if(response.data.validationType === 'email'){
-              console.log("Before if !emailValidationProviders || !emailValidationProviders.value")
-              if(!emailValidationProviders || !emailValidationProviders.value){
-                  console.log("inside if")
+            switch(response.data.validationType){
+              case 'email': {
+                if(!emailValidationProviders || !emailValidationProviders.value){
                   sendGetValidationProvidersReq('email', async (isComplete: boolean)=> {
-                    console.log("did i get the result: " + isComplete);
                     emailValidationProviders = await Storage.get({ key: 'emailValidationProviders'});                                      
                   })
-
-                  // setTimeout(async() => {
-                  //   console.log("finding val providers if set or not")
-                  //   emailValidationProviders = await Storage.get({ key: 'emailValidationProviders'});                  
-                  //   console.log("emailValidationProviders")
-                  //   console.log(emailValidationProviders)
-                  //   if(!emailValidationProviders || !emailValidationProviders.value){
-                  //     console.log("Parsing emailvalidation providers value");                      
-                  //     provider = JSON.parse(emailValidationProviders.value).filter((provider:any) => provider.id === response.data.provider)[0]
-                  //   }
-                  // }, 500)
                 }
-              }
-            // }
-
-            // if(response.data.validationType === 'name'){
-            //   provider = JSON.parse(nameValidationProviders.value).filter((provider:any) => provider.id === response.data.provider)[0]
-            // }
-
-            // if(response.data.validationType === 'telephone'){
-            //   provider = JSON.parse(telephoneValidationProviders.value).filter((provider:any) => provider.id === response.data.provider)[0]
-            // }
+              } break;
+              case 'name': {
+                if(!nameValidationProviders || !nameValidationProviders.value){
+                  sendGetValidationProvidersReq('name', async (isComplete: boolean)=> {
+                    nameValidationProviders = await Storage.get({ key: 'nameValidationProviders'});                                      
+                  })
+                }
+              } break;
+              case 'telephone': {
+                if(!telephoneValidationProviders || !telephoneValidationProviders.value){
+                  sendGetValidationProvidersReq('telephone', async (isComplete: boolean)=> {
+                    telephoneValidationProviders = await Storage.get({ key: 'telephoneValidationProviders'});                                      
+                  })
+                }
+              } break;
+              case 'gender': {
+                if(!genderValidationProviders || !genderValidationProviders.value){
+                  sendGetValidationProvidersReq('gender', async (isComplete: boolean)=> {
+                    genderValidationProviders = await Storage.get({ key: 'genderValidationProviders'});                                      
+                  })
+                }
+              } break;
+              case 'location': {
+                if(!locationValidationProviders || !locationValidationProviders.value){
+                  sendGetValidationProvidersReq('location', async (isComplete: boolean)=> {
+                    locationValidationProviders = await Storage.get({ key: 'locationValidationProviders'});                                      
+                  })
+                }
+              } break;
+              case 'birthdate': {
+                if(!birthdateValidationProviders || !birthdateValidationProviders.value){
+                  sendGetValidationProvidersReq('birthdate', async (isComplete: boolean)=> {
+                    birthdateValidationProviders = await Storage.get({ key: 'birthdateValidationProviders'});                                      
+                  })
+                }
+              } break;
+              case 'birthplace': {
+                if(!birthplaceValidationProviders || !birthplaceValidationProviders.value){
+                  sendGetValidationProvidersReq('birthplace', async (isComplete: boolean)=> {
+                    birthplaceValidationProviders = await Storage.get({ key: 'birthplaceValidationProviders'});                                      
+                  })
+                }
+              } break;
+              case 'education': {
+                if(!educationValidationProviders || !educationValidationProviders.value){
+                  sendGetValidationProvidersReq('education', async (isComplete: boolean)=> {
+                    educationValidationProviders = await Storage.get({ key: 'educationValidationProviders'});                                      
+                  })
+                }
+              } break;
+              case 'occupation': {
+                if(!occupationValidationProviders || !occupationValidationProviders.value){
+                  sendGetValidationProvidersReq('occupation', async (isComplete: boolean)=> {
+                    occupationValidationProviders = await Storage.get({ key: 'occupationValidationProviders'});                                      
+                  })
+                }
+              } break;
+              case 'website': {
+                if(!websiteValidationProviders || !websiteValidationProviders.value){
+                  sendGetValidationProvidersReq('website', async (isComplete: boolean)=> {
+                    websiteValidationProviders = await Storage.get({ key: 'websiteValidationProviders'});                                      
+                  })
+                }
+              } break;              
+              case 'wechat': {
+                if(!wechatValidationProviders || !wechatValidationProviders.value){
+                  sendGetValidationProvidersReq('wechat', async (isComplete: boolean)=> {
+                    wechatValidationProviders = await Storage.get({ key: 'wechatValidationProviders'});                                      
+                  })
+                }
+              } break;
+              case 'instagram': {
+                if(!instagramValidationProviders || !instagramValidationProviders.value){
+                  sendGetValidationProvidersReq('instagram', async (isComplete: boolean)=> {
+                    instagramValidationProviders = await Storage.get({ key: 'instagramValidationProviders'});                                      
+                  })
+                }
+              } break;
+              case 'facebook': {
+                if(!facebookValidationProviders || !facebookValidationProviders.value){
+                  sendGetValidationProvidersReq('facebook', async (isComplete: boolean)=> {
+                    facebookValidationProviders = await Storage.get({ key: 'facebookValidationProviders'});                                      
+                  })
+                }
+              } break;
+              case 'snapchat': {
+                if(!snapchatValidationProviders || !snapchatValidationProviders.value){
+                  sendGetValidationProvidersReq('snapchat', async (isComplete: boolean)=> {
+                    snapchatValidationProviders = await Storage.get({ key: 'snapchatValidationProviders'});                                      
+                  })
+                }
+              } break;
+              case 'twitter': {
+                if(!twitterValidationProviders || !twitterValidationProviders.value){
+                  sendGetValidationProvidersReq('twitter', async (isComplete: boolean)=> {
+                    twitterValidationProviders = await Storage.get({ key: 'twitterValidationProviders'});                                      
+                  })
+                }
+              } break;
+              case 'telegram': {
+                if(!telegramValidationProviders || !telegramValidationProviders.value){
+                  sendGetValidationProvidersReq('telegram', async (isComplete: boolean)=> {
+                    telegramValidationProviders = await Storage.get({ key: 'telegramValidationProviders'});                                      
+                  })
+                }
+              } break;
+              case 'twitch': {
+                if(!twitchValidationProviders || !twitchValidationProviders.value){
+                  sendGetValidationProvidersReq('twitch', async (isComplete: boolean)=> {
+                    twitchValidationProviders = await Storage.get({ key: 'twitchValidationProviders'});                                      
+                  })
+                }
+              } break;              
+              case 'weibo': {
+                if(!weiboValidationProviders || !weiboValidationProviders.value){
+                  sendGetValidationProvidersReq('weibo', async (isComplete: boolean)=> {
+                    weiboValidationProviders = await Storage.get({ key: 'weiboValidationProviders'});                                      
+                  })
+                }
+              } break;
+              case 'paypal': {
+                if(!paypalValidationProviders || !paypalValidationProviders.value){
+                  sendGetValidationProvidersReq('paypal', async (isComplete: boolean)=> {
+                    paypalValidationProviders = await Storage.get({ key: 'paypalValidationProviders'});                                      
+                  })
+                }
+              } break;
+              case 'ela': {
+                if(!elaValidationProviders || !elaValidationProviders.value){
+                  sendGetValidationProvidersReq('ela', async (isComplete: boolean)=> {
+                    elaValidationProviders = await Storage.get({ key: 'elaValidationProviders'});                                      
+                  })
+                }
+              } break;
+            }
 
             let title = `${response.data.validationType.charAt(0).toUpperCase()}${response.data.validationType.slice(1)} Validation Request ${response.data.status}`
             let message = "";

@@ -22,31 +22,6 @@ const RegisterValidatorPage: React.FC = ({ history }: any) => {
     type: CredentialType;
     isChecked: boolean
   }
-/*
-  enum CredentialCode {
-      EMAIL = "email",
-      NAME = "name",
-      TELEPHONE = "telephone",
-      GENDER = "gender",
-      LOCATION = "location",
-      BIRTHDATE = "birthdate",
-      BIRTHPLACE = "birthplace",
-      EDUCATION = "education",
-      OCCUPATION = "occupation",
-      WECHAT = "wechat",
-      INSTAGRAM = "instagram",
-      FACEBOOK = "facebook",
-      SNAPCHAT = "snapchat",
-      TWITTER = "twitter",
-      TELEGRAM = "telegram",
-      PAYPAL = "paypal",
-      ELA = "ela"
-  }
-*/
-  // enum CredentialType {
-  //     BASIC_PROFILE_CREDENTIAL = "BasicProfileCredential",
-  //     INTERNET_ACCOUNT_CREDENTIAL = "InternetAccountCredential"
-  // }
 
   const[checkedItems,setCheckedItems]= useState([
     { val: CredentialCode.EMAIL, type: CredentialType.BASIC_PROFILE_CREDENTIAL, isChecked: false },
@@ -58,12 +33,15 @@ const RegisterValidatorPage: React.FC = ({ history }: any) => {
     { val: CredentialCode.BIRTHPLACE, type: CredentialType.BASIC_PROFILE_CREDENTIAL, isChecked: false },
     { val: CredentialCode.EDUCATION, type: CredentialType.BASIC_PROFILE_CREDENTIAL, isChecked: false },
     { val: CredentialCode.OCCUPATION, type: CredentialType.BASIC_PROFILE_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.WEBSITE, type: CredentialType.BASIC_PROFILE_CREDENTIAL, isChecked: false },
     { val: CredentialCode.WECHAT, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false },
     { val: CredentialCode.INSTAGRAM, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false },
     { val: CredentialCode.FACEBOOK, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false },
     { val: CredentialCode.SNAPCHAT, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false },
     { val: CredentialCode.TWITTER, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false },
     { val: CredentialCode.TELEGRAM, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.TWITCH, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false },
+    { val: CredentialCode.WEIBO, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false },
     { val: CredentialCode.PAYPAL, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false },
     { val: CredentialCode.ELA, type: CredentialType.INTERNET_ACCOUNT_CREDENTIAL, isChecked: false }     
   ])

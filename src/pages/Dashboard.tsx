@@ -23,7 +23,7 @@ const Dashboard: React.FC = () => {
                 <Route path="/profile" render={() => <Profile />} exact={true} /> 
                 <Route path="/support" render={() => <Support />} exact={true} />
                 {/* <Route path="/dashboard" render={() => <Redirect to="/home" />} exact={true} /> */}
-                {/* <Route path="/" render={() => <Redirect to="/home" />} exact={true} /> */}
+                <Route path="/" render={() => <Redirect to="/home" />} exact={true} />
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
                 <IonTabButton tab="home" href="/home">

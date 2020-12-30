@@ -11,12 +11,15 @@ import {
     GET_BIRTHPLACE_VALIDATION_PROVIDERS_SUCCESS,
     GET_EDUCATION_VALIDATION_PROVIDERS_SUCCESS,
     GET_OCCUPATION_VALIDATION_PROVIDERS_SUCCESS,
+    GET_WEBSITE_VALIDATION_PROVIDERS_SUCCESS,
     GET_WECHAT_VALIDATION_PROVIDERS_SUCCESS,
     GET_INSTAGRAM_VALIDATION_PROVIDERS_SUCCESS,
     GET_FACEBOOK_VALIDATION_PROVIDERS_SUCCESS,
     GET_SNAPCHAT_VALIDATION_PROVIDERS_SUCCESS,
     GET_TWITTER_VALIDATION_PROVIDERS_SUCCESS,
     GET_TELEGRAM_VALIDATION_PROVIDERS_SUCCESS,
+    GET_TWITCH_VALIDATION_PROVIDERS_SUCCESS,
+    GET_WEIBO_VALIDATION_PROVIDERS_SUCCESS,
     GET_PAYPAL_VALIDATION_PROVIDERS_SUCCESS,
     GET_ELA_VALIDATION_PROVIDERS_SUCCESS,
     GET_PROVIDER_SERVICES_SUCCESS,
@@ -208,6 +211,24 @@ export const getOccupationValidationProvidersSuccess = (occupationValidationProv
     payload: occupationValidationProviders
 });
 
+// Website
+export const getWebsiteValidationProviders = (websiteValidationProviders: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+ValidationProviderActionTypes
+> => dispatch => {
+(async function(){
+    await Storage.set({ key: 'websiteValidationProviders', value: JSON.stringify(websiteValidationProviders)})
+    dispatch(getWebsiteValidationProvidersSuccess(websiteValidationProviders));
+    callback();
+})()
+};
+
+export const getWebsiteValidationProvidersSuccess = (websiteValidationProviders: any): ValidationProviderActionTypes => ({
+    type: GET_WEBSITE_VALIDATION_PROVIDERS_SUCCESS,
+    payload: websiteValidationProviders
+});
 
 // Wechat
 export const getWechatValidationProviders = (wechatValidationProviders: any, callback: any = noop): ThunkAction<
@@ -328,6 +349,43 @@ export const getTelegramValidationProvidersSuccess = (telegramValidationProvider
     payload: telegramValidationProviders
 });
 
+// Twitch
+export const getTwitchValidationProviders = (twitchValidationProviders: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+ValidationProviderActionTypes
+> => dispatch => {
+(async function(){
+    await Storage.set({ key: 'twitchValidationProviders', value: JSON.stringify(twitchValidationProviders)})
+    dispatch(getTwitchValidationProvidersSuccess(twitchValidationProviders));
+    callback();
+})()
+};
+
+export const getTwitchValidationProvidersSuccess = (twitchValidationProviders: any): ValidationProviderActionTypes => ({
+    type: GET_TWITCH_VALIDATION_PROVIDERS_SUCCESS,
+    payload: twitchValidationProviders
+});
+
+// Weibo
+export const getWeiboValidationProviders = (weiboValidationProviders: any, callback: any = noop): ThunkAction<
+void,
+AppState,
+null,
+ValidationProviderActionTypes
+> => dispatch => {
+(async function(){
+    await Storage.set({ key: 'weiboValidationProviders', value: JSON.stringify(weiboValidationProviders)})
+    dispatch(getWeiboValidationProvidersSuccess(weiboValidationProviders));
+    callback();
+})()
+};
+
+export const getWeiboValidationProvidersSuccess = (weiboValidationProviders: any): ValidationProviderActionTypes => ({
+    type: GET_WEIBO_VALIDATION_PROVIDERS_SUCCESS,
+    payload: weiboValidationProviders
+});
 
 // Paypal
 export const getPaypalValidationProviders = (paypalValidationProviders: any, callback: any = noop): ThunkAction<

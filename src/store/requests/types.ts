@@ -25,6 +25,9 @@ export const EDUCATION_VALIDATION_REQUEST_SUCCESS = "EDUCATION_VALIDATION_REQUES
 export const OCCUPATION_VALIDATION_REQUEST = "OCCUPATION_VALIDATION_REQUEST";
 export const OCCUPATION_VALIDATION_REQUEST_SUCCESS = "OCCUPATION_VALIDATION_REQUEST_SUCCESS";
 
+export const WEBSITE_VALIDATION_REQUEST = "WEBSITE_VALIDATION_REQUEST";
+export const WEBSITE_VALIDATION_REQUEST_SUCCESS = "WEBSITE_VALIDATION_REQUEST_SUCCESS";
+
 export const WECHAT_VALIDATION_REQUEST = "WECHAT_VALIDATION_REQUEST";
 export const WECHAT_VALIDATION_REQUEST_SUCCESS = "WECHAT_VALIDATION_REQUEST_SUCCESS";
 
@@ -42,6 +45,12 @@ export const TWITTER_VALIDATION_REQUEST_SUCCESS = "TWITTER_VALIDATION_REQUEST_SU
 
 export const TELEGRAM_VALIDATION_REQUEST = "TELEGRAM_VALIDATION_REQUEST";
 export const TELEGRAM_VALIDATION_REQUEST_SUCCESS = "TELEGRAM_VALIDATION_REQUEST_SUCCESS";
+
+export const TWITCH_VALIDATION_REQUEST = "TWITCH_VALIDATION_REQUEST";
+export const TWITCH_VALIDATION_REQUEST_SUCCESS = "TWITCH_VALIDATION_REQUEST_SUCCESS";
+
+export const WEIBO_VALIDATION_REQUEST = "WEIBO_VALIDATION_REQUEST";
+export const WEIBO_VALIDATION_REQUEST_SUCCESS = "WEIBO_VALIDATION_REQUEST_SUCCESS";
 
 export const PAYPAL_VALIDATION_REQUEST = "PAYPAL_VALIDATION_REQUEST";
 export const PAYPAL_VALIDATION_REQUEST_SUCCESS = "PAYPAL_VALIDATION_REQUEST_SUCCESS";
@@ -174,7 +183,17 @@ interface GenderValidationRequestAction {
     type: typeof OCCUPATION_VALIDATION_REQUEST_SUCCESS;
     payload?: any
   }
+
+  interface WebsiteValidationRequestAction {
+    type: typeof WEBSITE_VALIDATION_REQUEST;
+    payload?: any
+  }  
   
+  interface WebsiteValidationRequestSuccessAction {
+    type: typeof WEBSITE_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }  
+
   interface WechatValidationRequestAction {
     type: typeof WECHAT_VALIDATION_REQUEST;
     payload?: any
@@ -234,7 +253,27 @@ interface GenderValidationRequestAction {
     type: typeof TELEGRAM_VALIDATION_REQUEST_SUCCESS;
     payload?: any
   }
+
+  interface TwitchValidationRequestAction {
+    type: typeof TWITCH_VALIDATION_REQUEST;
+    payload?: any
+  }  
   
+  interface TwitchValidationRequestSuccessAction {
+    type: typeof TWITCH_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }
+
+  interface WeiboValidationRequestAction {
+    type: typeof WEIBO_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface WeiboValidationRequestSuccessAction {
+    type: typeof WEIBO_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }  
+
   interface PaypalValidationRequestAction {
     type: typeof PAYPAL_VALIDATION_REQUEST;
     payload?: any
@@ -349,6 +388,8 @@ export type TxnActionTypes =
     | EducationValidationRequestSuccessAction
     | OccupationValidationRequestAction
     | OccupationValidationRequestSuccessAction
+    | WebsiteValidationRequestAction
+    | WebsiteValidationRequestSuccessAction    
     | WechatValidationRequestAction
     | WechatValidationRequestSuccessAction
     | InstagramValidationRequestAction
@@ -361,6 +402,10 @@ export type TxnActionTypes =
     | TwitterValidationRequestSuccessAction
     | TelegramValidationRequestAction
     | TelegramValidationRequestSuccessAction
+    | TwitchValidationRequestAction
+    | TwitchValidationRequestSuccessAction
+    | WeiboValidationRequestAction
+    | WeiboValidationRequestSuccessAction    
     | PaypalValidationRequestAction
     | PaypalValidationRequestSuccessAction
     | ElaValidationRequestAction
