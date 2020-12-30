@@ -66,27 +66,6 @@ export const SET_PROVIDER_SERVICES_SUCCESS = "SET_PROVIDER_SERVICES_SUCCESS";
 
 export interface ValidationProviderState {
   [key: string]: any;
-// emailValidationProviders
-// telephoneValidationProviders
-// nameValidationProviders
-// genderValidationProviders
-// locationValidationProviders
-// birthdateValidationProviders
-// birthplaceValidationProviders
-// educationValidationProviders
-// occupationValidationProviders
-// websiteValidationProviders
-// wechatValidationProviders
-// instagramValidationProviders
-// facebookValidationProviders
-// snapchatValidationProviders
-// twitterValidationProviders
-// telegramValidationProviders
-// twitchValidationProviders
-// weiboValidationProviders
-// paypalValidationProviders
-// elaValidationProviders
-// providerServices
 }
 
 interface GetEmailValidationProvidersAction {

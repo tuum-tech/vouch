@@ -7,7 +7,6 @@ import { Plugins } from '@capacitor/core';
 
 const SplashScreenPage: React.FC = ({ history }: any) => {
 
-  console.log("I am at splash screen")
   const { Storage } = Plugins;
   const dispatch = useDispatch()
 

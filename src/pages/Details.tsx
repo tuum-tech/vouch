@@ -83,29 +83,7 @@ const DetailsPage: React.FC = ({ history }: any) => {
     });
 
     titleBarManager.addOnItemClickedListener(myIconListener);
-
-    switch(requestDetails.validationType){
-      case 'email': sendGetValidationProvidersReq('email', {}); break
-      case 'name': sendGetValidationProvidersReq('name', {}); break
-      case 'telephone': sendGetValidationProvidersReq('telephone', {}); break
-      case 'gender': sendGetValidationProvidersReq('gender', {}); break
-      case 'location': sendGetValidationProvidersReq('location', {}); break
-      case 'birthdate': sendGetValidationProvidersReq('birthdate', {}); break
-      case 'birthplace': sendGetValidationProvidersReq('birthplace', {}); break
-      case 'education': sendGetValidationProvidersReq('education', {}); break
-      case 'occupation': sendGetValidationProvidersReq('occupation', {}); break
-      case 'website': sendGetValidationProvidersReq('website', {}); break
-      case 'wechat': sendGetValidationProvidersReq('wechat', {}); break
-      case 'instagram': sendGetValidationProvidersReq('instagram', {}); break
-      case 'facebook': sendGetValidationProvidersReq('facebook', {}); break
-      case 'snapchat': sendGetValidationProvidersReq('snapchat', {}); break
-      case 'twitter': sendGetValidationProvidersReq('twitter', {}); break
-      case 'telegram': sendGetValidationProvidersReq('telegram', {}); break
-      case 'twitch': sendGetValidationProvidersReq('twitch', {}); break
-      case 'weibo': sendGetValidationProvidersReq('weibo', {}); break
-      case 'paypal': sendGetValidationProvidersReq('paypal', {}); break
-      case 'ela': sendGetValidationProvidersReq('ela', {}); break
-    }    
+    sendGetValidationProvidersReq(requestDetails.validationType, {})
   })
 
 

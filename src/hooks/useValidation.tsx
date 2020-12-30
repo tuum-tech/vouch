@@ -33,10 +33,6 @@ export function useValidation(optionalCallback: any = noop) {
       txn.requestParams = {}
       txn.requestParams[data.validationType] = data.user[data.validationType]
 
-      console.log(data);
-      console.log("useValidation api data");
-      console.log(txn)
-
       postData(`${process.env.REACT_APP_SUBMIT_VALIDATION_REQUEST}`, txn)
         .then(response => {
           if(response.meta.code === 200) {

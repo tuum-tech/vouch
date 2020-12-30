@@ -35,8 +35,6 @@ export function useEmailValidation(optionalCallback: any = noop) {
           "email": data.user.email
         }
       }
-      // console.log("use Email Validation api data");
-      // console.log(txn)
 
       postData(`${process.env.REACT_APP_SUBMIT_VALIDATION_REQUEST}`, txn)
         .then(response => {
