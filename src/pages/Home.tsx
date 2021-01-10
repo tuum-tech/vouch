@@ -50,7 +50,7 @@ const HomePage: React.FC = ({ history }: any) => {
       event: undefined,
     });
 
-    const handleSelectValidationService = (selectedValidationService:string) => {
+    const handleSelectValidationService = (selectedValidationService:string) => {      
       setSelectValidationService(selectedValidationService)
       setShowPopover({open: false, event: undefined})
       if(selectedValidationService !== 'none') {
@@ -61,9 +61,6 @@ const HomePage: React.FC = ({ history }: any) => {
       }
     }
 
-    const [showAlertNameValidation, setShowAlertNameValidation] = useState(false);
-    const [showAlertEmailValidation, setShowAlertEmailValidation] = useState(false);
-    const [showAlertPhoneValidation, setShowAlertPhoneValidation] = useState(false);
     const [filteredIncomingTxn, setFilteredIncomingTxn] = useState([
       {
         id: "",
@@ -302,88 +299,6 @@ const HomePage: React.FC = ({ history }: any) => {
             </IonRow>
           </IonGrid>
         </IonContent>
-
-        <IonAlert
-          isOpen={showAlertEmailValidation}
-          onDidDismiss={() => setShowAlertEmailValidation(false)}
-          cssClass='service-popup-alert no-image'
-          header={'Could not read the Email'}
-          message={'In order to proceed with Email validation, Please set the email address in Identity app and allow access while signing in to Vouch dApp.'}
-          buttons={[
-            {
-              text: 'Re-sign In',
-              cssClass: 'btn-resignin btn-center',
-              handler: () => {
-                // 'Sign him out and take him to sign in screen'
-                // dispatch(logout(() => signIn({ name: false, email: true, phone: false, avatar: false }))) 
-                signIn({ name: false, email: true, phone: false, avatar: false })                                
-              }
-            },
-            {
-              text: 'OK',
-              role: 'cancel',
-              cssClass: 'btn-center',
-              handler: blah => {
-                // console.log('OK');
-              }
-            }            
-          ]}
-        />        
-
-<IonAlert
-          isOpen={showAlertPhoneValidation}
-          onDidDismiss={() => setShowAlertPhoneValidation(false)}
-          cssClass='service-popup-alert no-image'
-          header={'Could not read the Phone'}
-          message={'In order to proceed with Phone validation, Please set the phone number in Identity app and allow access while signing in to Vouch dApp.'}
-          buttons={[
-            {
-              text: 'Re-sign In',
-              cssClass: 'btn-resignin btn-center',
-              handler: () => {
-                // 'Sign him out and take him to sign in screen'
-                // dispatch(logout(() => signIn({ name: false, email: false, phone: true, avatar: false })))                
-                signIn({ name: false, email: false, phone: true, avatar: false })                        
-              }
-            },
-            {
-              text: 'OK',
-              role: 'cancel',
-              cssClass: 'btn-center',
-              handler: blah => {
-                // console.log('OK');
-              }
-            }            
-          ]}
-        /> 
-
-<IonAlert
-          isOpen={showAlertNameValidation}
-          onDidDismiss={() => setShowAlertNameValidation(false)}
-          cssClass='service-popup-alert no-image'
-          header={'Could not read the Name'}
-          message={'In order to proceed with Name validation, Please set the name in Identity app and allow access while signing in to Vouch dApp.'}
-          buttons={[
-            {
-              text: 'Re-sign In',
-              cssClass: 'btn-resignin btn-center',
-              handler: () => {
-                // 'Sign him out and take him to sign in screen'
-                // dispatch(logout(() => signIn({ name: true, email: false, phone: false, avatar: false })))                
-                signIn({ name: true, email: false, phone: false, avatar: false })                        
-              }
-            },
-            {
-              text: 'OK',
-              role: 'cancel',
-              cssClass: 'btn-center',
-              handler: blah => {
-                // console.log('OK');
-              }
-            }            
-          ]}
-        />
-
       </IonPage>
     );
   }

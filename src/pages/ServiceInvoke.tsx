@@ -34,7 +34,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
 
   const goTo = useCallback(
     (path: string) => {
-      history.push(path, { direction: 'forward' });
+      history.push(path, { direction: 'back' });
     },
     [history],
   );
