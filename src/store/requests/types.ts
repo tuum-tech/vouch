@@ -4,8 +4,59 @@ export const EMAIL_VALIDATION_REQUEST_SUCCESS = "EMAIL_VALIDATION_REQUEST_SUCCES
 export const NAME_VALIDATION_REQUEST = "NAME_VALIDATION_REQUEST";
 export const NAME_VALIDATION_REQUEST_SUCCESS = "NAME_VALIDATION_REQUEST_SUCCESS";
 
-export const PHONE_VALIDATION_REQUEST = "PHONE_VALIDATION_REQUEST";
-export const PHONE_VALIDATION_REQUEST_SUCCESS = "PHONE_VALIDATION_REQUEST_SUCCESS";
+export const TELEPHONE_VALIDATION_REQUEST = "TELEPHONE_VALIDATION_REQUEST";
+export const TELEPHONE_VALIDATION_REQUEST_SUCCESS = "TELEPHONE_VALIDATION_REQUEST_SUCCESS";
+
+export const GENDER_VALIDATION_REQUEST = "GENDER_VALIDATION_REQUEST";
+export const GENDER_VALIDATION_REQUEST_SUCCESS = "GENDER_VALIDATION_REQUEST_SUCCESS";
+
+export const LOCATION_VALIDATION_REQUEST = "LOCATION_VALIDATION_REQUEST";
+export const LOCATION_VALIDATION_REQUEST_SUCCESS = "LOCATION_VALIDATION_REQUEST_SUCCESS";
+
+export const BIRTHDATE_VALIDATION_REQUEST = "BIRTHDATE_VALIDATION_REQUEST";
+export const BIRTHDATE_VALIDATION_REQUEST_SUCCESS = "BIRTHDATE_VALIDATION_REQUEST_SUCCESS";
+
+export const BIRTHPLACE_VALIDATION_REQUEST = "BIRTHPLACE_VALIDATION_REQUEST";
+export const BIRTHPLACE_VALIDATION_REQUEST_SUCCESS = "BIRTHPLACE_VALIDATION_REQUEST_SUCCESS";
+
+export const EDUCATION_VALIDATION_REQUEST = "EDUCATION_VALIDATION_REQUEST";
+export const EDUCATION_VALIDATION_REQUEST_SUCCESS = "EDUCATION_VALIDATION_REQUEST_SUCCESS";
+
+export const OCCUPATION_VALIDATION_REQUEST = "OCCUPATION_VALIDATION_REQUEST";
+export const OCCUPATION_VALIDATION_REQUEST_SUCCESS = "OCCUPATION_VALIDATION_REQUEST_SUCCESS";
+
+export const WEBSITE_VALIDATION_REQUEST = "WEBSITE_VALIDATION_REQUEST";
+export const WEBSITE_VALIDATION_REQUEST_SUCCESS = "WEBSITE_VALIDATION_REQUEST_SUCCESS";
+
+export const WECHAT_VALIDATION_REQUEST = "WECHAT_VALIDATION_REQUEST";
+export const WECHAT_VALIDATION_REQUEST_SUCCESS = "WECHAT_VALIDATION_REQUEST_SUCCESS";
+
+export const INSTAGRAM_VALIDATION_REQUEST = "INSTAGRAM_VALIDATION_REQUEST";
+export const INSTAGRAM_VALIDATION_REQUEST_SUCCESS = "INSTAGRAM_VALIDATION_REQUEST_SUCCESS";
+
+export const FACEBOOK_VALIDATION_REQUEST = "FACEBOOK_VALIDATION_REQUEST";
+export const FACEBOOK_VALIDATION_REQUEST_SUCCESS = "FACEBOOK_VALIDATION_REQUEST_SUCCESS";
+
+export const SNAPCHAT_VALIDATION_REQUEST = "SNAPCHAT_VALIDATION_REQUEST";
+export const SNAPCHAT_VALIDATION_REQUEST_SUCCESS = "SNAPCHAT_VALIDATION_REQUEST_SUCCESS";
+
+export const TWITTER_VALIDATION_REQUEST = "TWITTER_VALIDATION_REQUEST";
+export const TWITTER_VALIDATION_REQUEST_SUCCESS = "TWITTER_VALIDATION_REQUEST_SUCCESS";
+
+export const TELEGRAM_VALIDATION_REQUEST = "TELEGRAM_VALIDATION_REQUEST";
+export const TELEGRAM_VALIDATION_REQUEST_SUCCESS = "TELEGRAM_VALIDATION_REQUEST_SUCCESS";
+
+export const TWITCH_VALIDATION_REQUEST = "TWITCH_VALIDATION_REQUEST";
+export const TWITCH_VALIDATION_REQUEST_SUCCESS = "TWITCH_VALIDATION_REQUEST_SUCCESS";
+
+export const WEIBO_VALIDATION_REQUEST = "WEIBO_VALIDATION_REQUEST";
+export const WEIBO_VALIDATION_REQUEST_SUCCESS = "WEIBO_VALIDATION_REQUEST_SUCCESS";
+
+export const PAYPAL_VALIDATION_REQUEST = "PAYPAL_VALIDATION_REQUEST";
+export const PAYPAL_VALIDATION_REQUEST_SUCCESS = "PAYPAL_VALIDATION_REQUEST_SUCCESS";
+
+export const ELA_VALIDATION_REQUEST = "ELA_VALIDATION_REQUEST";
+export const ELA_VALIDATION_REQUEST_SUCCESS = "ELA_VALIDATION_REQUEST_SUCCESS";
 
 export const GET_ALL_REQUESTS = "GET_ALL_REQUESTS";
 export const GET_ALL_REQUESTS_SUCCESS = "GET_ALL_REQUESTS_SUCCESS";
@@ -64,14 +115,184 @@ interface NameValidationRequestSuccessAction {
 }  
 
 interface PhoneValidationRequestAction {
-    type: typeof PHONE_VALIDATION_REQUEST;
+    type: typeof TELEPHONE_VALIDATION_REQUEST;
     payload?: any
 }
 
 interface PhoneValidationRequestSuccessAction {
-    type: typeof PHONE_VALIDATION_REQUEST_SUCCESS;
+    type: typeof TELEPHONE_VALIDATION_REQUEST_SUCCESS;
     payload?: any
 }  
+
+interface GenderValidationRequestAction {
+    type: typeof GENDER_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface GenderValidationRequestSuccessAction {
+    type: typeof GENDER_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }
+  
+  interface LocationValidationRequestAction {
+    type: typeof LOCATION_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface LocationValidationRequestSuccessAction {
+    type: typeof LOCATION_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }
+  
+  interface BirthdateValidationRequestAction {
+    type: typeof BIRTHDATE_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface BirthdateValidationRequestSuccessAction {
+    type: typeof BIRTHDATE_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }
+  
+  interface BirthplaceValidationRequestAction {
+    type: typeof BIRTHPLACE_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface BirthplaceValidationRequestSuccessAction {
+    type: typeof BIRTHPLACE_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }
+  
+  interface EducationValidationRequestAction {
+    type: typeof EDUCATION_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface EducationValidationRequestSuccessAction {
+    type: typeof EDUCATION_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }
+  
+  interface OccupationValidationRequestAction {
+    type: typeof OCCUPATION_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface OccupationValidationRequestSuccessAction {
+    type: typeof OCCUPATION_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }
+
+  interface WebsiteValidationRequestAction {
+    type: typeof WEBSITE_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface WebsiteValidationRequestSuccessAction {
+    type: typeof WEBSITE_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }  
+
+  interface WechatValidationRequestAction {
+    type: typeof WECHAT_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface WechatValidationRequestSuccessAction {
+    type: typeof WECHAT_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }
+  
+  interface InstagramValidationRequestAction {
+    type: typeof INSTAGRAM_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface InstagramValidationRequestSuccessAction {
+    type: typeof INSTAGRAM_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }
+  
+  interface FacebookValidationRequestAction {
+    type: typeof FACEBOOK_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface FacebookValidationRequestSuccessAction {
+    type: typeof FACEBOOK_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }
+  
+  interface SnapchatValidationRequestAction {
+    type: typeof SNAPCHAT_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface SnapchatValidationRequestSuccessAction {
+    type: typeof SNAPCHAT_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }
+  
+  interface TwitterValidationRequestAction {
+    type: typeof TWITTER_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface TwitterValidationRequestSuccessAction {
+    type: typeof TWITTER_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }
+  
+  interface TelegramValidationRequestAction {
+    type: typeof TELEGRAM_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface TelegramValidationRequestSuccessAction {
+    type: typeof TELEGRAM_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }
+
+  interface TwitchValidationRequestAction {
+    type: typeof TWITCH_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface TwitchValidationRequestSuccessAction {
+    type: typeof TWITCH_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }
+
+  interface WeiboValidationRequestAction {
+    type: typeof WEIBO_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface WeiboValidationRequestSuccessAction {
+    type: typeof WEIBO_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }  
+
+  interface PaypalValidationRequestAction {
+    type: typeof PAYPAL_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface PaypalValidationRequestSuccessAction {
+    type: typeof PAYPAL_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }
+  
+  interface ElaValidationRequestAction {
+    type: typeof ELA_VALIDATION_REQUEST;
+    payload?: any
+  }  
+  
+  interface ElaValidationRequestSuccessAction {
+    type: typeof ELA_VALIDATION_REQUEST_SUCCESS;
+    payload?: any
+  }
 
 interface GetAllRequestsAction {
     type: typeof GET_ALL_REQUESTS;
@@ -154,7 +375,41 @@ export type TxnActionTypes =
     | NameValidationRequestAction
     | NameValidationRequestSuccessAction
     | PhoneValidationRequestAction
-    | PhoneValidationRequestSuccessAction    
+    | PhoneValidationRequestSuccessAction
+    | GenderValidationRequestAction
+    | GenderValidationRequestSuccessAction
+    | LocationValidationRequestAction
+    | LocationValidationRequestSuccessAction
+    | BirthdateValidationRequestAction
+    | BirthdateValidationRequestSuccessAction
+    | BirthplaceValidationRequestAction
+    | BirthplaceValidationRequestSuccessAction
+    | EducationValidationRequestAction
+    | EducationValidationRequestSuccessAction
+    | OccupationValidationRequestAction
+    | OccupationValidationRequestSuccessAction
+    | WebsiteValidationRequestAction
+    | WebsiteValidationRequestSuccessAction    
+    | WechatValidationRequestAction
+    | WechatValidationRequestSuccessAction
+    | InstagramValidationRequestAction
+    | InstagramValidationRequestSuccessAction
+    | FacebookValidationRequestAction
+    | FacebookValidationRequestSuccessAction
+    | SnapchatValidationRequestAction
+    | SnapchatValidationRequestSuccessAction
+    | TwitterValidationRequestAction
+    | TwitterValidationRequestSuccessAction
+    | TelegramValidationRequestAction
+    | TelegramValidationRequestSuccessAction
+    | TwitchValidationRequestAction
+    | TwitchValidationRequestSuccessAction
+    | WeiboValidationRequestAction
+    | WeiboValidationRequestSuccessAction    
+    | PaypalValidationRequestAction
+    | PaypalValidationRequestSuccessAction
+    | ElaValidationRequestAction
+    | ElaValidationRequestSuccessAction    
     | GetAllRequestsAction
     | GetAllRequestsSuccessAction
     | GetIncomingRequestsAction

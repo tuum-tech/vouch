@@ -4,20 +4,21 @@ import React, { useCallback } from 'react';
 import { IonContent ,IonListHeader, IonPage, IonTitle, IonGrid, IonRow, IonCol, IonLabel, IonToolbar, useIonViewWillEnter, useIonViewWillLeave, IonRefresher, IonRefresherContent } from '@ionic/react';
 import './ServiceInvoke.css';
 
-import { useEmailValidation } from '../hooks/useEmailValidation'
-import { emailValidation, showNotification, hideNotification, nameValidation, phoneValidation } from '../store/requests'
+// import { useEmailValidation } from '../hooks/useEmailValidation'
+import { emailValidation, showNotification, hideNotification, nameValidation, telephoneValidation, genderValidation, locationValidation, birthdateValidation, birthplaceValidation, educationValidation, occupationValidation, wechatValidation, instagramValidation, facebookValidation, snapchatValidation, twitterValidation, telegramValidation, paypalValidation, elaValidation, websiteValidation, twitchValidation, weiboValidation } from '../store/requests'
 
 import { useDispatch, useSelector } from 'react-redux';
 import { AppState } from '../store'
 import { useDID } from '../hooks/useDID';
 import { login } from '../store/auth';
 
-import { getEmailValidationProviders, getNameValidationProviders, getPhoneValidationProviders } from '../store/providers';
+import { getBirthdateValidationProviders, getBirthplaceValidationProviders, getEducationValidationProviders, getElaValidationProviders, getEmailValidationProviders, getFacebookValidationProviders, getGenderValidationProviders, getInstagramValidationProviders, getLocationValidationProviders, getNameValidationProviders, getOccupationValidationProviders, getTelephoneValidationProviders, getSnapchatValidationProviders, getTelegramValidationProviders, getTwitterValidationProviders, getWechatValidationProviders, getPaypalValidationProviders, ValidationProviderState, getWebsiteValidationProviders, getTwitchValidationProviders, getWeiboValidationProviders } from '../store/providers';
 import { useProvider } from '../hooks/useProvider';
 
 import { RefresherEventDetail } from '@ionic/core';
-import { useNameValidation } from '../hooks/useNameValidation';
-import { usePhoneValidation } from '../hooks/usePhoneValidation';
+import { useValidation } from '../hooks/useValidation';
+// import { useNameValidation } from '../hooks/useNameValidation';
+// import { usePhoneValidation } from '../hooks/usePhoneValidation';
 
 declare let appManager: AppManagerPlugin.AppManager;
 declare let titleBarManager: TitleBarPlugin.TitleBarManager;
@@ -33,7 +34,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
 
   const goTo = useCallback(
     (path: string) => {
-      history.push(path, { direction: 'forward' });
+      history.push(path, { direction: 'back' });
     },
     [history],
   );
@@ -51,12 +52,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
       });
 
       titleBarManager.addOnItemClickedListener(myIconListener);
-
-      switch(credentialType){
-        case 'email': sendGetEmailValidationProvidersReq('email'); break
-        case 'name': sendGetNameValidationProvidersReq('name'); break
-        case 'telephone': sendGetPhoneValidationProvidersReq('telephone'); break
-      }
+      sendGetValidationProvidersReq(credentialType, {})
   });
 
   useIonViewWillLeave(() => {
@@ -69,30 +65,57 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
 
   const dispatch = useDispatch()
 
-  const validationProviders = useSelector((state:AppState) => state.validationProviders)
+  const validationProviders:ValidationProviderState = useSelector((state:AppState) => state.validationProviders)
 
-  //Get the list of email validation providers
-  const [sendGetEmailValidationProvidersReq] = useProvider((emailValidationProviders:any) => { 
-    if(emailValidationProviders) {
-      dispatch(getEmailValidationProviders(emailValidationProviders))
-    }  
-  })  
-
-  //Get the list of name validation providers
-  const [sendGetNameValidationProvidersReq] = useProvider((nameValidationProviders:any) => { 
-    if(nameValidationProviders) {
-      dispatch(getNameValidationProviders(nameValidationProviders))
-    }  
-  })  
-
-  //Get the list of phone validation providers
-  const [sendGetPhoneValidationProvidersReq] = useProvider((phoneValidationProviders:any) => { 
-    if(phoneValidationProviders) {
-      dispatch(getPhoneValidationProviders(phoneValidationProviders))
+  //Get the list of validation providers for the given service e.g. email, name, telephone etc.
+  const [sendGetValidationProvidersReq] = useProvider((validationProviders:any) => { 
+    if(validationProviders) {
+      switch(credentialType){
+        case 'email':
+          dispatch(getEmailValidationProviders(validationProviders)); break;
+        case 'name':
+          dispatch(getNameValidationProviders(validationProviders)); break;          
+        case 'telephone':
+          dispatch(getTelephoneValidationProviders(validationProviders)); break;                    
+        case 'gender':
+          dispatch(getGenderValidationProviders(validationProviders)); break;
+        case 'location':
+          dispatch(getLocationValidationProviders(validationProviders)); break;          
+        case 'birthdate':
+          dispatch(getBirthdateValidationProviders(validationProviders)); break;                    
+        case 'birthplace':
+          dispatch(getBirthplaceValidationProviders(validationProviders)); break;
+        case 'education':
+          dispatch(getEducationValidationProviders(validationProviders)); break;          
+        case 'occupation':
+          dispatch(getOccupationValidationProviders(validationProviders)); break;                    
+        case 'website':
+          dispatch(getWebsiteValidationProviders(validationProviders)); break;          
+        case 'wechat':
+          dispatch(getWechatValidationProviders(validationProviders)); break;
+        case 'instagram':
+          dispatch(getInstagramValidationProviders(validationProviders)); break;          
+        case 'facebook':
+          dispatch(getFacebookValidationProviders(validationProviders)); break;                    
+        case 'snapchat':
+          dispatch(getSnapchatValidationProviders(validationProviders)); break;
+        case 'twitter':
+          dispatch(getTwitterValidationProviders(validationProviders)); break;          
+        case 'telegram':
+          dispatch(getTelegramValidationProviders(validationProviders)); break;                    
+        case 'twitch':
+          dispatch(getTwitchValidationProviders(validationProviders)); break;                    
+        case 'weibo':
+          dispatch(getWeiboValidationProviders(validationProviders)); break;                              
+        case 'paypal':
+          dispatch(getPaypalValidationProviders(validationProviders)); break;
+        case 'ela':
+          dispatch(getElaValidationProviders(validationProviders)); break;          
+      }
     }  
   })    
 
-  const [sendEmailValidationRequest] = useEmailValidation((txn:any) => { 
+  const [sendValidationRequest] = useValidation((txn:any) => { 
     if(txn.data) {
 
       // let validationProvider:any = validationProviders.emailValidationProviders.filter((provider:any) => provider.id === txn.data.provider);
@@ -101,8 +124,8 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
           method: "new",
           param: {
             id: txn.data.id,
-            type: 'email',
-            value: txn.data.requestParams.email,
+            type: credentialType,
+            value: txn.data.requestParams[credentialType],
             validator: txn.data.provider //validationProvider.length > 0 ? validationProvider[0].name : txn.data.provider
           }
       }
@@ -119,7 +142,49 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
       });
 
 
-      dispatch(emailValidation(txn.data, () => goTo('/home')))
+      switch(credentialType){
+        case 'email':
+          dispatch(emailValidation(txn.data, () => goTo('/home'))); break;
+        case 'name':
+          dispatch(nameValidation(txn.data, () => goTo('/home'))); break;          
+        case 'telephone':
+          dispatch(telephoneValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'gender':
+          dispatch(genderValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'location':
+          dispatch(locationValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'birthdate':
+          dispatch(birthdateValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'birthplace':
+          dispatch(birthplaceValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'education':
+          dispatch(educationValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'occupation':
+          dispatch(occupationValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'wechat':
+          dispatch(wechatValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'website':
+          dispatch(websiteValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'instagram':
+          dispatch(instagramValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'facebook':
+          dispatch(facebookValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'snapchat':
+          dispatch(snapchatValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'twitter':
+          dispatch(twitterValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'telegram':
+          dispatch(telegramValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'twitch':
+          dispatch(twitchValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'weibo':
+          dispatch(weiboValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'paypal':
+          dispatch(paypalValidation(txn.data, () => goTo('/home'))); break;                    
+        case 'ela':
+          dispatch(elaValidation(txn.data, () => goTo('/home'))); break;                    
+      }      
+
       dispatch(showNotification({"message": txn.message, "type": "success", "show": true}))
       setTimeout(() => {
         dispatch(hideNotification())
@@ -133,87 +198,6 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
       }, 5000) 
     }
    })
-
-   const [sendNameValidationRequest] = useNameValidation((txn:any) => { 
-    if(txn.data) {
-
-      let payload = {
-          method: "new",
-          param: {
-            id: txn.data.id,
-            type: 'name',
-            value: txn.data.requestParams.name,
-            validator: txn.data.provider
-          }
-      }
-
-      // AppManagerPlugin.MessageType.INTERNAL = 1
-      // Cannot access ambient const enums when the '--isolatedModules' flag is provided.ts(2748)
-      // Using the real value of the constant due to above limitation
-
-      appManager.sendMessage("#service:backgroundservice", 1, JSON.stringify(payload), ()=>{
-          // Nothing to do
-          console.log("stored a request to be checked by background service")
-      }, (err:any)=>{
-          console.log("Failed to send RPC message to the background service", err);
-      });
-
-
-      dispatch(nameValidation(txn.data, () => goTo('/home')))
-      dispatch(showNotification({"message": txn.message, "type": "success", "show": true}))
-      setTimeout(() => {
-        dispatch(hideNotification())
-      }, 5000)      
-    } 
-    else {
-      history.push('/home');
-      dispatch(showNotification({"message": txn.message, "type": "warning", "show": true}))
-      setTimeout(() => {
-        dispatch(hideNotification())
-      }, 5000) 
-    }
-   })
-
-   const [sendPhoneValidationRequest] = usePhoneValidation((txn:any) => { 
-    if(txn.data) {
-
-      let payload = {
-          method: "new",
-          param: {
-            id: txn.data.id,
-            type: 'telephone',
-            value: txn.data.requestParams.phone,
-            validator: txn.data.provider
-          }
-      }
-
-      // AppManagerPlugin.MessageType.INTERNAL = 1
-      // Cannot access ambient const enums when the '--isolatedModules' flag is provided.ts(2748)
-      // Using the real value of the constant due to above limitation
-
-      appManager.sendMessage("#service:backgroundservice", 1, JSON.stringify(payload), ()=>{
-          // Nothing to do
-          console.log("stored a request to be checked by background service")
-      }, (err:any)=>{
-          console.log("Failed to send RPC message to the background service", err);
-      });
-
-
-      dispatch(phoneValidation(txn.data, () => goTo('/home')))
-      dispatch(showNotification({"message": txn.message, "type": "success", "show": true}))
-      setTimeout(() => {
-        dispatch(hideNotification())
-      }, 5000)      
-    } 
-    else {
-      history.push('/home');
-      dispatch(showNotification({"message": txn.message, "type": "warning", "show": true}))
-      setTimeout(() => {
-        dispatch(hideNotification())
-      }, 5000) 
-    }
-   })
-
 
    let providerid = ""
    let validationtype = ""
@@ -222,7 +206,10 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
     providerid = e.currentTarget.getAttribute('data-providerid');
     validationtype = e.currentTarget.getAttribute('data-validationtype');
 
-    let claim:any = {name: false, email: false, telephone: false, avatar: false}
+    let claim:any = {}
+
+    // let claim:any = {email: false, name: false, telephone: false, gender: false, location: false, birthdate: false, birthplace: false, education: false, occupation: false, website: false, wechat: false, instagram: false, facebook: false, snapchat: false, twitter: false, telegram: false, twitch: false, weibo: false, paypal: false, ela: false, avatar: false}
+
     claim[validationtype] = true
 
     signIn(claim)
@@ -232,49 +219,12 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
     if(credentials.length) {
       const credSubjects = credentials.map((cred:any) => cred.credentialSubject)
       const user = Object.assign({}, ...credSubjects)
-      if(validationtype === 'email'){
-        if(user.email) {
-          dispatch(login(user, () => sendEmailValidationRequest({ user: user, providerId: providerid })))
-        }
-        else {
-          history.push('/home');
-          dispatch(showNotification({"message": "Your request could not be submitted. Please try again", "type": "warning", "show": true}))
-          setTimeout(() => {
-            dispatch(hideNotification())
-          }, 5000) 
-        }
-      }
-
-      if(validationtype === 'name'){
-        if(user.name){
-          dispatch(login(user, () => sendNameValidationRequest({ user: user, providerId: providerid })))  
-        }
-        else {
-          history.push('/home');
-          dispatch(showNotification({"message": "Your request could not be submitted. Please try again", "type": "warning", "show": true}))
-          setTimeout(() => {
-            dispatch(hideNotification())
-          }, 5000) 
-        }
-      }
-
-      if(validationtype === 'telephone'){
-        if(user.telephone){
-          dispatch(login(user, () => sendPhoneValidationRequest({ user: user, providerId: providerid })))
-        }
-        else {
-          history.push('/home');
-          dispatch(showNotification({"message": "Your request could not be submitted. Please try again", "type": "warning", "show": true}))
-          setTimeout(() => {
-            dispatch(hideNotification())
-          }, 5000) 
-        }
-      }
+      dispatch(login(user, () => sendValidationRequest({ user: user, providerId: providerid, validationType: credentialType })))
     }
    })
 
    const doRefresh = (event: CustomEvent<RefresherEventDetail>) => {
-    sendGetEmailValidationProvidersReq('email')
+    sendGetValidationProvidersReq(credentialType, {})
     setTimeout(() => {
       event.detail.complete();
     }, 2000);
@@ -298,13 +248,10 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
       <IonGrid className="pad-me--top thick-padding">
         <IonRow>
         <IonCol className="Providers-List Profile">
-
         {
                 (
-                  !['email', 'name', 'telephone'].includes(credentialType) ||  
-                  (credentialType === 'email' && !validationProviders.emailValidationProviders.length) ||
-                  (credentialType === 'name' && !validationProviders.nameValidationProviders.length) ||
-                  (credentialType === 'telephone' && !validationProviders.phoneValidationProviders.length)
+                  !validationProviders[credentialType + "ValidationProviders"] ||
+                  !validationProviders[credentialType + "ValidationProviders"].length
                 )          
                 ? 
                 (           
@@ -326,41 +273,41 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
 
 <br/>
 
-                {credentialType === 'email' && validationProviders.emailValidationProviders && validationProviders.emailValidationProviders.map((emailValidationProvider: any) => 
-                <IonListHeader key={emailValidationProvider.id} data-validationtype={credentialType} data-providerid={emailValidationProvider.id} className="fieldContainer" style={{'padding': '0', 'maxHeight': '85px', 'display': emailValidationProvider.did !== user.id.split(':').pop() ? 'inline-block' : 'none' }} onClick={(e) => handleValidationProviderClick(e)}>
+                {validationProviders[credentialType + "ValidationProviders"] && validationProviders[credentialType + "ValidationProviders"].map((validationProvider: any) => 
+                <IonListHeader key={validationProvider.id} data-validationtype={credentialType} data-providerid={validationProvider.id} className="fieldContainer" style={{'padding': '0', 'maxHeight': '85px', 'display': validationProvider.did !== user.id.split(':').pop() ? 'inline-block' : 'none' }} onClick={(e) => handleValidationProviderClick(e)}>
                   <IonGrid>
                     <IonRow>
                       <IonCol size="3">
-                        <img src={emailValidationProvider.logo} alt="" style={{'width': '64px', 'height': '64px'}}/>
+                        <img src={validationProvider.logo} alt="" style={{'width': '64px', 'height': '64px'}}/>
                       </IonCol>
                       <IonCol size="9">
 
                         <IonGrid style={{'marginTop': '5px'}}>
                           <IonRow><IonCol style={{'padding': '0'}}>                  
-                            <h2 style={{'margin': '0', 'padding': '0', 'fontSize': '12px'}}>{emailValidationProvider.name}</h2>
+                            <h2 style={{'margin': '0', 'padding': '0', 'fontSize': '12px'}}>{validationProvider.name}</h2>
                           </IonCol></IonRow>
                           <IonRow>
                             <IonCol style={{'padding': '0', 'fontSize': '10px'}}>
-                              {Object.values(emailValidationProvider.stats).reduce((a:any, b:any) => a + b, 0)} total requests
+                              {Object.values(validationProvider.stats).reduce((a:any, b:any) => a + b, 0)} total requests
                             </IonCol>
                           </IonRow>
 
                           <IonRow>
                             <IonCol style={{'paddingLeft': '0', 'fontSize': '10px'}}>
                               <img style={{'height': '8px', 'width': '8px', 'margin': '0'}} alt="" src="/assets/images/components/icon-check.svg" />
-                              <span> {emailValidationProvider.stats.Approved ?? 0}</span> 
+                              <span> {validationProvider.stats.Approved ?? 0}</span> 
                             </IonCol>
 
                             <IonCol style={{'paddingLeft': '0', 'fontSize': '10px'}}>
                               <img style={{'height': '8px', 'width': '8px', 'margin': '0'}} alt="" src="/assets/images/components/icon-rejected.svg" />
-                              <span> {emailValidationProvider.stats.Rejected ?? 0}</span> 
+                              <span> {validationProvider.stats.Rejected ?? 0}</span> 
                             </IonCol>
 
                             <IonCol style={{'paddingLeft': '0', 'fontSize': '10px'}}>
                               <img style={{'height': '8px', 'width': '8px', 'margin': '0'}} alt="" src="/assets/images/components/icon-wait.svg" />
-                              <span> {Object.keys(emailValidationProvider.stats).reduce(function (previous, key) {
+                              <span> {Object.keys(validationProvider.stats).reduce(function (previous, key) {
 if(key === 'New' || key === 'In progress'){
-    return previous + emailValidationProvider.stats[key];
+    return previous + validationProvider.stats[key];
 } else {
   return previous
 }
@@ -375,109 +322,6 @@ if(key === 'New' || key === 'In progress'){
                   <img style={{'width': '9px', 'height': '16px'}} alt="" src="/assets/images/components/icon-arrow.svg" />
                 </IonListHeader>
                 )} 
-
-{credentialType === 'name' && validationProviders.nameValidationProviders && validationProviders.nameValidationProviders.map((nameValidationProvider: any) => 
-                <IonListHeader key={nameValidationProvider.id} data-validationtype={credentialType} data-providerid={nameValidationProvider.id} className="fieldContainer" style={{'padding': '0', 'maxHeight': '85px', 'display': nameValidationProvider.did !== user.id.split(':').pop() ? 'inline-block' : 'none' }} onClick={(e) => handleValidationProviderClick(e)}>
-                  <IonGrid>
-                    <IonRow>
-                      <IonCol size="3">
-                        <img src={nameValidationProvider.logo} alt="" style={{'width': '64px', 'height': '64px'}}/>
-                      </IonCol>
-                      <IonCol size="9">
-
-                        <IonGrid style={{'marginTop': '5px'}}>
-                          <IonRow><IonCol style={{'padding': '0'}}>                  
-                            <h2 style={{'margin': '0', 'padding': '0', 'fontSize': '12px'}}>{nameValidationProvider.name}</h2>
-                          </IonCol></IonRow>
-                          <IonRow>
-                            <IonCol style={{'padding': '0', 'fontSize': '10px'}}>
-                              {Object.values(nameValidationProvider.stats).reduce((a:any, b:any) => a + b, 0)} total requests
-                            </IonCol>
-                          </IonRow>
-
-                          <IonRow>
-                            <IonCol style={{'paddingLeft': '0', 'fontSize': '10px'}}>
-                              <img style={{'height': '8px', 'width': '8px', 'margin': '0'}} alt="" src="/assets/images/components/icon-check.svg" />
-                              <span> {nameValidationProvider.stats.Approved ?? 0}</span> 
-                            </IonCol>
-
-                            <IonCol style={{'paddingLeft': '0', 'fontSize': '10px'}}>
-                              <img style={{'height': '8px', 'width': '8px', 'margin': '0'}} alt="" src="/assets/images/components/icon-rejected.svg" />
-                              <span> {nameValidationProvider.stats.Rejected ?? 0}</span> 
-                            </IonCol>
-
-                            <IonCol style={{'paddingLeft': '0', 'fontSize': '10px'}}>
-                              <img style={{'height': '8px', 'width': '8px', 'margin': '0'}} alt="" src="/assets/images/components/icon-wait.svg" />
-                              <span> {Object.keys(nameValidationProvider.stats).reduce(function (previous, key) {
-if(key === 'New' || key === 'In progress'){
-    return previous + nameValidationProvider.stats[key];
-} else {
-  return previous
-}
-}, 0)
-}</span>
-                            </IonCol>
-                          </IonRow>
-                        </IonGrid>
-                      </IonCol>
-                    </IonRow>
-                  </IonGrid>
-                  <img style={{'width': '9px', 'height': '16px'}} alt="" src="/assets/images/components/icon-arrow.svg" />
-                </IonListHeader>
-                )}
-
-{credentialType === 'telephone' && validationProviders.phoneValidationProviders && validationProviders.phoneValidationProviders.map((phoneValidationProvider: any) => 
-                <IonListHeader key={phoneValidationProvider.id} data-validationtype={credentialType} data-providerid={phoneValidationProvider.id} className="fieldContainer" style={{'padding': '0', 'maxHeight': '85px', 'display': phoneValidationProvider.did !== user.id.split(':').pop() ? 'inline-block' : 'none' }} onClick={(e) => handleValidationProviderClick(e)}>
-                  <IonGrid>
-                    <IonRow>
-                      <IonCol size="3">
-                        <img src={phoneValidationProvider.logo} alt="" style={{'width': '64px', 'height': '64px'}}/>
-                      </IonCol>
-                      <IonCol size="9">
-
-                        <IonGrid style={{'marginTop': '5px'}}>
-                          <IonRow><IonCol style={{'padding': '0'}}>                  
-                            <h2 style={{'margin': '0', 'padding': '0', 'fontSize': '12px'}}>{phoneValidationProvider.name}</h2>
-                          </IonCol></IonRow>
-                          <IonRow>
-                            <IonCol style={{'padding': '0', 'fontSize': '10px'}}>
-                              {Object.values(phoneValidationProvider.stats).reduce((a:any, b:any) => a + b, 0)} total requests
-                            </IonCol>
-                          </IonRow>
-
-                          <IonRow>
-                            <IonCol style={{'paddingLeft': '0', 'fontSize': '10px'}}>
-                              <img style={{'height': '8px', 'width': '8px', 'margin': '0'}} alt="" src="/assets/images/components/icon-check.svg" />
-                              <span> {phoneValidationProvider.stats.Approved ?? 0}</span> 
-                            </IonCol>
-
-                            <IonCol style={{'paddingLeft': '0', 'fontSize': '10px'}}>
-                              <img style={{'height': '8px', 'width': '8px', 'margin': '0'}} alt="" src="/assets/images/components/icon-rejected.svg" />
-                              <span> {phoneValidationProvider.stats.Rejected ?? 0}</span> 
-                            </IonCol>
-
-                            <IonCol style={{'paddingLeft': '0', 'fontSize': '10px'}}>
-                              <img style={{'height': '8px', 'width': '8px', 'margin': '0'}} alt="" src="/assets/images/components/icon-wait.svg" />
-                              <span> {Object.keys(phoneValidationProvider.stats).reduce(function (previous, key) {
-if(key === 'New' || key === 'In progress'){
-    return previous + phoneValidationProvider.stats[key];
-} else {
-  return previous
-}
-}, 0)
-}</span>
-                            </IonCol>
-                          </IonRow>
-                        </IonGrid>
-                      </IonCol>
-                    </IonRow>
-                  </IonGrid>
-                  <img style={{'width': '9px', 'height': '16px'}} alt="" src="/assets/images/components/icon-arrow.svg" />
-                </IonListHeader>
-                )}
-
-
-
         </IonCol>
         </IonRow>
 

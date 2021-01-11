@@ -1,6 +1,4 @@
 import {
-  IonCard,
-  IonCardContent,
   IonContent,
   IonHeader,
   IonPage,
@@ -18,7 +16,9 @@ import {
   IonAlert,
   IonRefresher,
   IonRefresherContent,
-  useIonViewWillEnter
+  useIonViewWillEnter,
+  IonPopover,
+  IonList
 } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 import moment from 'moment'
@@ -36,15 +36,31 @@ import { useProvider } from '../hooks/useProvider'
 import { getEmailValidationProviders, getProviderServices } from '../store/providers'
 
 import { useDID } from '../hooks/useDID';
-import { login, logout } from '../store/auth';
+import { login } from '../store/auth';
 import { useIncomingRequests } from '../hooks/useIncomingRequests';
 import { useProviderServices } from '../hooks/useProviderServices';
 
+import CredentialCode from './CredentialCode';
+
 const HomePage: React.FC = ({ history }: any) => {
 
-    const [showAlertNameValidation, setShowAlertNameValidation] = useState(false);
-    const [showAlertEmailValidation, setShowAlertEmailValidation] = useState(false);
-    const [showAlertPhoneValidation, setShowAlertPhoneValidation] = useState(false);
+    const [selectValidationService, setSelectValidationService] = useState<string>('none');
+    const [showPopover, setShowPopover] = useState<{open: boolean, event: Event | undefined}>({
+      open: false,
+      event: undefined,
+    });
+
+    const handleSelectValidationService = (selectedValidationService:string) => {      
+      setSelectValidationService(selectedValidationService)
+      setShowPopover({open: false, event: undefined})
+      if(selectedValidationService !== 'none') {
+        history.push({
+          pathname: '/home/service-invoke',
+          state: { credentialType: selectedValidationService }                              
+        });
+      }
+    }
+
     const [filteredIncomingTxn, setFilteredIncomingTxn] = useState([
       {
         id: "",
@@ -114,20 +130,10 @@ const HomePage: React.FC = ({ history }: any) => {
         sendGetIncomingRequests(providerServices.id)        
       }
 
-      if(!validationProviders.emailValidationProviders){
-        sendGetEmailValidationProvidersReq('email')
-      }
      },
      // eslint-disable-next-line react-hooks/exhaustive-deps
      []
    );
-
-    //Get the list of email validation providers
-    const [sendGetEmailValidationProvidersReq] = useProvider((emailValidationProviders:any) => { 
-      if(emailValidationProviders) {
-        dispatch(getEmailValidationProviders(emailValidationProviders))
-      }  
-    })   
   
     const [signIn] = useDID((credentials:any) => {
       if(credentials.length) {
@@ -195,86 +201,40 @@ const HomePage: React.FC = ({ history }: any) => {
                   <IonLabel className="List-Header">Validation Services</IonLabel>
                 </IonListHeader>
               </IonCol>
-              <IonCol size="6">
-                {/* <IonCard routerLink={user && user.email ? '/home/service-invoke' : ''}> */}
-                <IonCard onClick={e => {
-                          e.preventDefault();
-                          // if(user && user.email){
-                            history.push({
-                              pathname: '/home/service-invoke',
-                              state: { credentialType: 'email' }                              
-                            });
-                          // } else { 
-                          //   //show alert
-                          //   setShowAlertEmailValidation(true);
-                          // }
-                        }}>
-                  <IonCardContent>
-                    <IonRow>
-                      <IonCol>
-                        <IonImg src="../assets/images/components/icon-email.svg"></IonImg>
+              <IonCol size="12">
+                <IonPopover
+                    isOpen={showPopover.open}
+                    event={showPopover.event}
+                    onDidDismiss={e => setShowPopover({open: false, event: undefined})}
+                    cssClass='fullwidth-popover'
+                >
+                <IonList>
+                {Object.values(CredentialCode).map(credCode => 
+                  <IonItem onClick={(e) => handleSelectValidationService(credCode)}>
+                    <IonImg style={{paddingRight: '20px'}} src={`../assets/images/components/icon-${credCode}.svg`}></IonImg>
+                    <IonLabel>{credCode.charAt(0).toUpperCase()}{credCode.slice(1)} Validation</IonLabel>
+                  </IonItem>                        
+                )}
+                </IonList>
+                </IonPopover>
+                <IonButton color="disabled" fill="solid" className="text-center" style={{'textTransform':'none', fontWeight: 'bold', width: '100%', backgroundColor: '#F8F8F8', border: '1px solid #F0F0F0', color: '#484848'}} onClick={(e) => setShowPopover({open: true, event: e.nativeEvent})}>
+                  <IonRow style={{width: '100%'}}>
+                      <IonCol size="2">
+                        <IonImg style={{width: '24px', height: '24px'}} src={`../assets/images/components/icon-${selectValidationService}.svg`}></IonImg>
                       </IonCol>
-                      <IonCol>
-                        Email <br />  Validation 
+                      <IonCol size="8" style={{top: '5px'}}>
+                        {selectValidationService === 'none' ? 'Select Validation Service' : selectValidationService.charAt(0).toUpperCase() + selectValidationService.slice(1) + ' Validation'}                        
                       </IonCol>
-                    </IonRow>
-
-                  </IonCardContent >
-                </IonCard>
+                      <IonCol size="2" style={{top: '5px'}}>
+                        <img style={{'width': '9px', 'height': '16px', transform: 'rotate(90deg)'}} alt="" src="/assets/images/components/icon-arrow.svg" />                      
+                      </IonCol>
+                  </IonRow>
+                </IonButton>  
               </IonCol>
-                <IonCol size="6">
-                {/* <IonCard routerLink={user && user.telephone ? '/home/service-invoke' : ''}>                 */}
-                <IonCard onClick={e => {
-                          e.preventDefault();
-                          // if(user && user.telephone){
-                            history.push({
-                              pathname: '/home/service-invoke',
-                              state: { credentialType: 'telephone' }                              
-                            });
-                          // } else { 
-                          //   //show alert
-                          //   setShowAlertPhoneValidation(true);
-                          // }
-                        }}>
-                  <IonCardContent>
-                    <IonRow>
-                      <IonCol>
-                        {/* <IonImg src={user && user.telephone ? "../assets/images/components/icon-phone.svg" : "../assets/images/components/icon-phone--disabled.svg"}></IonImg>                         */}
-                        <IonImg src="../assets/images/components/icon-phone.svg"></IonImg>
-                      </IonCol>
-                      <IonCol>
-                        Phone <br />  Validation
-                      </IonCol>
-                    </IonRow>
-                  </IonCardContent>
-                </IonCard></IonCol><IonCol size="6">
-                {/* <IonCard routerLink={user && user.telephone ? '/home/service-invoke' : ''}>                 */}
-                <IonCard onClick={e => {
-                          e.preventDefault();
-                          // if(user && user.name){
-                            history.push({
-                              pathname: '/home/service-invoke',
-                              state: { credentialType: 'name' }                              
-                            });
-                          // } else { 
-                          //   //show alert
-                          //   setShowAlertNameValidation(true);
-                          // }
-                        }}>
-                  <IonCardContent>
-                    <IonRow>
-                      <IonCol>
-                        {/* <IonImg src={user && user.name ? "../assets/images/components/icon-name.svg" : "../assets/images/components/icon-name--disabled.svg"}></IonImg> */}
-                        <IonImg src="../assets/images/components/icon-name.svg"></IonImg>
-                      </IonCol>
-                      <IonCol>
-                        Name <br />  Validation
-                      </IonCol>
-                    </IonRow>
-                  </IonCardContent>
-                </IonCard></IonCol>
             </IonRow>
-            <IonRow style={{display: (providerServices && providerServices.validationTypes.length ? 'block' : 'none')}}>
+            <IonRow 
+            style={{display: (providerServices && providerServices.validationTypes.length ? 'block' : 'none')}}
+            >
               <IonCol size="12">
                 {/*-- List Header with Button --*/}<br></br>
                 <IonListHeader>
@@ -287,7 +247,7 @@ const HomePage: React.FC = ({ history }: any) => {
                 {filteredIncomingTxn && filteredIncomingTxn[0] && filteredIncomingTxn[0].id && filteredIncomingTxn.map((txn: any) => 
                   <IonItem className="request-Item" routerLink={`/requests/details/${txn.id}`} key={txn.id} >
                   <IonThumbnail slot="start">
-                    <img src="../assets/images/components/icon-email--request.svg" alt="" />
+                    <img src={`../assets/images/components/icon-${txn.validationType}--request.svg`} alt="" />
                   </IonThumbnail>
                   <IonLabel>
                     <h5>{txn.did}</h5>
@@ -318,7 +278,7 @@ const HomePage: React.FC = ({ history }: any) => {
                 {pending_requests && pending_requests.map((txn: any) => 
                   <IonItem className="request-Item" routerLink={`/requests/details/${txn.id}`} key={txn.id} >
                   <IonThumbnail slot="start">
-                    <img src="../assets/images/components/icon-email--request.svg" alt="" />
+                    <img src={`../assets/images/components/icon-${txn.validationType}--request.svg`} alt="" />
                   </IonThumbnail>
                   <IonLabel>
                     <h2>{txn.validationType.charAt(0).toUpperCase()}{txn.validationType.slice(1)} Validation</h2>
@@ -339,106 +299,6 @@ const HomePage: React.FC = ({ history }: any) => {
             </IonRow>
           </IonGrid>
         </IonContent>
-
-        <IonAlert
-          isOpen={showAlertEmailValidation}
-          onDidDismiss={() => setShowAlertEmailValidation(false)}
-          cssClass='service-popup-alert no-image'
-          header={'Could not read the Email'}
-          message={'In order to proceed with Email validation, Please set the email address in Identity app and allow access while signing in to Vouch dApp.'}
-          buttons={[
-            {
-              text: 'Re-sign In',
-              cssClass: 'btn-resignin btn-center',
-              handler: () => {
-                // 'Sign him out and take him to sign in screen'
-                // dispatch(logout(() => signIn({ name: false, email: true, phone: false, avatar: false }))) 
-                signIn({ name: false, email: true, phone: false, avatar: false })                                
-              }
-            },
-            {
-              text: 'OK',
-              role: 'cancel',
-              cssClass: 'btn-center',
-              handler: blah => {
-                // console.log('OK');
-              }
-            }            
-          ]}
-        />        
-
-<IonAlert
-          isOpen={showAlertPhoneValidation}
-          onDidDismiss={() => setShowAlertPhoneValidation(false)}
-          cssClass='service-popup-alert no-image'
-          header={'Could not read the Phone'}
-          message={'In order to proceed with Phone validation, Please set the phone number in Identity app and allow access while signing in to Vouch dApp.'}
-          buttons={[
-            {
-              text: 'Re-sign In',
-              cssClass: 'btn-resignin btn-center',
-              handler: () => {
-                // 'Sign him out and take him to sign in screen'
-                // dispatch(logout(() => signIn({ name: false, email: false, phone: true, avatar: false })))                
-                signIn({ name: false, email: false, phone: true, avatar: false })                        
-              }
-            },
-            {
-              text: 'OK',
-              role: 'cancel',
-              cssClass: 'btn-center',
-              handler: blah => {
-                // console.log('OK');
-              }
-            }            
-          ]}
-        /> 
-
-<IonAlert
-          isOpen={showAlertNameValidation}
-          onDidDismiss={() => setShowAlertNameValidation(false)}
-          cssClass='service-popup-alert no-image'
-          header={'Could not read the Name'}
-          message={'In order to proceed with Name validation, Please set the name in Identity app and allow access while signing in to Vouch dApp.'}
-          buttons={[
-            {
-              text: 'Re-sign In',
-              cssClass: 'btn-resignin btn-center',
-              handler: () => {
-                // 'Sign him out and take him to sign in screen'
-                // dispatch(logout(() => signIn({ name: true, email: false, phone: false, avatar: false })))                
-                signIn({ name: true, email: false, phone: false, avatar: false })                        
-              }
-            },
-            {
-              text: 'OK',
-              role: 'cancel',
-              cssClass: 'btn-center',
-              handler: blah => {
-                // console.log('OK');
-              }
-            }            
-          ]}
-        />
-
-        {/* <IonAlert
-          isOpen={showAlertPhoneValidation}
-          onDidDismiss={() => setShowAlertPhoneValidation(false)}
-          cssClass='service-popup-alert custom-info'
-          header={'Service Unavailable'}
-          message={'There are currently no validators available to validate phone numbers.'}
-          buttons={['OK']}
-        />
-
-        <IonAlert
-          isOpen={showAlertNameValidation}
-          onDidDismiss={() => setShowAlertNameValidation(false)}
-          cssClass='service-popup-alert custom-info'
-          header={'Service Unavailable'}
-          message={'There are currently no validators available to validate name.'}
-          buttons={['OK']}
-        />         */}
-
       </IonPage>
     );
   }

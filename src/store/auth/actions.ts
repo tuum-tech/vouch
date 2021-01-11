@@ -18,6 +18,23 @@ const { Storage } = Plugins;
     AuthActionTypes
 > => dispatch => {
     (async function(){
+
+        const savedUser = await Storage.get({ key: 'user' })
+        let mergedUserData:any = {}
+
+        if (savedUser && savedUser.value) {
+            const savedUserData = JSON.parse(savedUser.value);
+            
+            if (user.id === savedUserData.id){
+                // just replace old values with the new ones and keep the rest of user data intact
+                mergedUserData = {...savedUserData, ...user};
+            }
+        }
+
+        if(Object.keys(mergedUserData).length !== 0) {
+            user = mergedUserData
+        }
+
         await Storage.set({ key: 'user', value: JSON.stringify(user)})
         dispatch(loginSuccess(user));
         callback();

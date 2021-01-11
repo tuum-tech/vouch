@@ -26,7 +26,7 @@ export function useRequests(optionalCallback: any = noop) {
         return response.json(); // parses JSON response into native JavaScript objects
       }
 
-      if(userinfo){
+      if(userinfo && userinfo.id){
         const did = userinfo.id.split(':').pop();
         getData(`${process.env.REACT_APP_GET_ALL_VALIDATION_REQUESTS}` + did)
         .then(response => {
