@@ -37,7 +37,7 @@ export function useValidation(optionalCallback: any = noop) {
         .then(response => {
           if(response.meta.code === 200) {
             if(response.data.duplicate === false){
-              optionalCallback({"data": response.data.validationtx, "message": "Request submitted successfully. Please check your email for the next step"});          
+              optionalCallback({"data": response.data.validationtx, "message": "Request submitted successfully. Please check the next steps section on request details page for more information"});          
             } else {
               optionalCallback({"data": null, "message": "Previous request already in progress."});          
             }
