@@ -149,7 +149,7 @@ const updateItem = (val: CredentialCode, newIsChecked: boolean) => {
       }
     }*/
 
-    signIn({ name: true, avatar: true })
+    signIn({ publisheddid: false, name: true, avatar: true })
   }
 
   const [signIn] = useDID((credentials:any) => { 

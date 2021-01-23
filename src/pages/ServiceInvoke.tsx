@@ -206,7 +206,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
     providerid = e.currentTarget.getAttribute('data-providerid');
     validationtype = e.currentTarget.getAttribute('data-validationtype');
 
-    let claim:any = {}
+    let claim:any = {publisheddid: false}
 
     // let claim:any = {email: false, name: false, telephone: false, gender: false, location: false, birthdate: false, birthplace: false, education: false, occupation: false, website: false, wechat: false, instagram: false, facebook: false, snapchat: false, twitter: false, telegram: false, twitch: false, weibo: false, paypal: false, ela: false, avatar: false}
 
@@ -223,7 +223,7 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
     }
    })
 
-   const doRefresh = (event: CustomEvent<RefresherEventDetail>) => {
+  const doRefresh = (event: CustomEvent<RefresherEventDetail>) => {
     sendGetValidationProvidersReq(credentialType, {})
     setTimeout(() => {
       event.detail.complete();

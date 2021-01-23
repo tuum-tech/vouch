@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonPage, IonTitle,IonListHeader, IonGrid,IonRow,IonCol,IonLabel,IonToolbar, IonTextarea, IonIcon, IonButton, useIonViewWillEnter, useIonViewWillLeave, IonImg, useIonViewDidEnter } from '@ionic/react';
+import { IonContent, IonPage, IonTitle,IonListHeader, IonGrid,IonRow,IonCol,IonLabel,IonToolbar, IonTextarea, IonIcon, IonButton, IonImg } from '@ionic/react';
 import './Details.css';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { AppState } from '../store';
 import { useParams } from 'react-router-dom';
-import { showNotification, hideNotification, requestCancelled} from '../store/requests';
+import { showNotification, hideNotification, requestCancelled } from '../store/requests';
 import moment from 'moment'
 import { useCancelRequest } from '../hooks/useCancelRequest';
+import { ValidationProviderState } from '../store/providers';
 import { Storage } from '@capacitor/core';
 
 declare let appManager: AppManagerPlugin.AppManager;
@@ -16,7 +17,6 @@ const IntentDetailsPage: React.FC = () => {
 
   const dispatch = useDispatch()
   const requests = useSelector((state:AppState) => state.requests)
-  const validationProviders = useSelector((state:AppState) => state.validationProviders)
   const { id } = useParams()
   const [counter, setCounter] = useState(20);
   const [showCounter, setShowCounter] = useState('');
@@ -24,30 +24,19 @@ const IntentDetailsPage: React.FC = () => {
   //Check in all outgoing transactions
   let requestDetails = requests.txn.filter((txn: any) => txn.id === id)
 
-  console.log("requestDetails")
-  console.log(requestDetails)
-  //Check in incoming transactions  
-  if(!requestDetails.length){
-      requestDetails = requests.incoming_txn.filter((txn: any) => txn.id === id)
-  }  
-
   if(requestDetails){
     requestDetails = requestDetails[0]
   }
     
-  let provider = {
+  let provider:any = {
     'did': '',
     'name': '', 
     'logo': '', 
-    'validation': {
-      'email': {
-        'next_steps': []
-      }
-    }
+    'validation': {}
   };
 
-  if(requestDetails && requestDetails.validationType === 'email'){
-    provider = validationProviders.emailValidationProviders.filter((provider:any) => provider.id === requestDetails.provider)[0]
+  provider.validation[requestDetails.validationType] = {
+    'next_steps': []
   }
 
   useEffect(() => {
@@ -78,10 +67,8 @@ const IntentDetailsPage: React.FC = () => {
         {},
         parsedIntentData.intentId,
         success => {
-          console.log(success)
-          Storage.set({ 
-            key: 'intentData', 
-            value: ''
+          Storage.remove({ 
+            key: 'intentData'
             }) 
             appManager.close()
         },
@@ -93,12 +80,17 @@ const IntentDetailsPage: React.FC = () => {
       console.log("intent response sent")
     } else {
       console.log("closing without intent response")
-      Storage.set({ 
-        key: 'intentData', 
-        value: ''
+      Storage.remove({ 
+        key: 'intentData'
       }) 
       appManager.close()
     }
+  }
+
+  const validationProviders:ValidationProviderState = useSelector((state:AppState) => state.validationProviders)
+
+  if(validationProviders[requestDetails.validationType + "ValidationProviders"]){    
+    provider = validationProviders[requestDetails.validationType + "ValidationProviders"].filter((provider:any) => provider.id === requestDetails.provider)[0]
   }
 
   const copyText = function (elementId: any){
@@ -187,11 +179,7 @@ const IntentDetailsPage: React.FC = () => {
                 <IonLabel className="label">Validation Type</IonLabel>
               </IonCol>
               <IonCol size="8" className='ion-text-right'>
-                  <IonImg src={`
-                    ${requestDetails.validationType === "email" ? "../assets/images/components/icon-email.svg" : ""}
-                    ${requestDetails.validationType === "telephone" ? "../assets/images/components/icon-phone.svg" : ""}
-                    ${requestDetails.validationType === "name" ? "../assets/images/components/icon-name.svg" : ""}
-                  `} style={{height: '32px', width: '32px', display: 'inline-block', verticalAlign: 'bottom'}}  /> 
+                <IonImg src={`../assets/images/components/icon-${requestDetails.validationType}.svg`} style={{height: '32px', width: '32px', display: 'inline-block', verticalAlign: 'bottom'}}  />  
                   <IonLabel className="value" style={{verticalAlign: 'super'}}>{requestDetails.validationType.charAt(0).toUpperCase()}{requestDetails.validationType.slice(1)}</IonLabel>
               </IonCol>
             </IonListHeader>
@@ -228,42 +216,23 @@ const IntentDetailsPage: React.FC = () => {
               <IonIcon name="copy-outline" src="/assets/images/icons/copy-outline.svg" onClick={(e:any) => copyText("userDID")} />
             </IonCol>           
             </IonListHeader> 
-            { requestDetails && requestDetails.requestParams && requestDetails.requestParams.name &&          
+            { requestDetails && requestDetails.requestParams && requestDetails.requestParams[requestDetails.validationType] &&         
             <IonListHeader>
               <IonCol size="3">
-                <IonLabel className="label">Name</IonLabel>
+              <IonLabel className="label">{requestDetails.validationType.charAt(0).toUpperCase()}{requestDetails.validationType.slice(1)}</IonLabel>
               </IonCol>
               <IonCol size="9" className="ion-text-right">
-                <IonLabel className="value">{requestDetails.requestParams.name}</IonLabel>
-              </IonCol>
-            </IonListHeader>
-            }
-            { requestDetails && requestDetails.requestParams && requestDetails.requestParams.email &&          
-            <IonListHeader>
-              <IonCol size="3">
-                <IonLabel className="label">Email</IonLabel>
-              </IonCol>
-              <IonCol size="9" className="ion-text-right">
-                <IonLabel className="value">{requestDetails.requestParams.email}</IonLabel>
-              </IonCol>
-            </IonListHeader>
-            }
-            { requestDetails && requestDetails.requestParams && requestDetails.requestParams.telephone &&          
-            <IonListHeader>
-              <IonCol size="3">
-                <IonLabel className="label">Mobile Phone</IonLabel>
-              </IonCol>
-              <IonCol size="9" className="ion-text-right">
-                <IonLabel className="value">{requestDetails.requestParams.telephone}</IonLabel>
+                <IonLabel className="value">{requestDetails.requestParams[requestDetails.validationType]}</IonLabel>
               </IonCol>
             </IonListHeader>
             }
           </IonRow>
 
+          {requestDetails && provider && provider.did &&  
           <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px',
     marginTop: '10px'}}>
           <h2>Validator</h2>
-          { requestDetails && requestDetails.provider &&           
+
             <IonListHeader className="fieldContainer2">
               <IonCol size="4">
                 <IonLabel className="label">Name</IonLabel>
@@ -273,8 +242,7 @@ const IntentDetailsPage: React.FC = () => {
                 <IonLabel className="value ion-text-right" style={{paddingLeft: '5px', verticalAlign: 'super'}}>{provider.name}</IonLabel>
               </IonCol>
             </IonListHeader>
-            }
-            { requestDetails && requestDetails.provider &&            
+          
             <IonListHeader>
             <IonCol size="3">
               <IonLabel className="label">DID</IonLabel>
@@ -287,13 +255,14 @@ const IntentDetailsPage: React.FC = () => {
               <IonIcon name="copy-outline" src="/assets/images/icons/copy-outline.svg" onClick={(e:any) => copyText("validatorDID")} />
             </IonCol>           
             </IonListHeader> 
-            }           
             </IonRow>
+            }
 
             <IonRow style={{border: '1px solid #eee', borderRadius: '2%', padding: '10px',
     marginTop: '10px'}}>
             <h2>Next Steps</h2>
-            {requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') && provider.validation.email.next_steps.map((step: any, index: number) => 
+
+            { requestDetails && (requestDetails.status === 'New' || requestDetails.status === 'In progress') && provider && provider.validation && provider.validation[requestDetails.validationType] && provider.validation[requestDetails.validationType].next_steps && provider.validation[requestDetails.validationType].next_steps.map((step: any, index: number) => 
               <IonListHeader className="fieldContainer">
                   <IonLabel>
                     <span className="label">Step {index + 1}:</span><br/>

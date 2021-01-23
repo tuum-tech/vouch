@@ -43,7 +43,7 @@
   ],
   "intent_filters": [
     {
-      "action": "credverify"
+      "action": "https://did.elastos.net/credverify"
     }
   ],       
   "background_color": "#5432D3",
