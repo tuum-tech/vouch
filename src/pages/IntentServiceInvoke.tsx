@@ -113,7 +113,8 @@ const IntentServiceInvokePage: React.FC = ({ history }: any) => {
   useEffect(() => {
     if(
         !validationProviders[credentialType + "ValidationProviders"] ||
-        !validationProviders[credentialType + "ValidationProviders"].length
+        !validationProviders[credentialType + "ValidationProviders"].length ||
+        (validationProviders[credentialType + "ValidationProviders"].some((vp:any) => vp.did === user.id.split(':').pop()) && validationProviders[credentialType + "ValidationProviders"].length === 1)
     ) {
 
       const timer =
@@ -339,7 +340,8 @@ const IntentServiceInvokePage: React.FC = ({ history }: any) => {
                 {
                 (
                   !validationProviders[credentialType + "ValidationProviders"] ||
-                  !validationProviders[credentialType + "ValidationProviders"].length
+                  !validationProviders[credentialType + "ValidationProviders"].length ||
+                  (validationProviders[credentialType + "ValidationProviders"].some((vp:any) => vp.did === user.id.split(':').pop()) && validationProviders[credentialType + "ValidationProviders"].length === 1)
                 )          
                 ? 
                 (           
@@ -420,7 +422,12 @@ if(key === 'New' || key === 'In progress'){
                 </IonListHeader>
                 )}
 
-              {validationProviders[credentialType + "ValidationProviders"] && validationProviders[credentialType + "ValidationProviders"].length &&
+              {
+              (validationProviders[credentialType + "ValidationProviders"] && 
+              validationProviders[credentialType + "ValidationProviders"].length > 0) || 
+              (validationProviders[credentialType + "ValidationProviders"] && 
+              validationProviders[credentialType + "ValidationProviders"].length > 1 && 
+              validationProviders[credentialType + "ValidationProviders"].some((vp:any) => vp.did === user.id.split(':').pop())) &&
                 <IonGrid>
                   <IonRow className="text-center" style={{'marginTop': '80px'}}>
                     <IonButton className="text-center" 
