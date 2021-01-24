@@ -2,6 +2,7 @@ import React from 'react';
 import { IonRow,IonCol,IonLabel, IonThumbnail,IonButton, IonItem } from '@ionic/react';
 import './RequestBlocks.css';
 import moment from 'moment'
+import { textSpanContainsTextSpan } from 'typescript';
 
 const RequestBlocks = (props: any) => {
 
@@ -12,6 +13,7 @@ const RequestBlocks = (props: any) => {
   }    
 
   const requests_txn = props.requests
+  const user = props.user
   const tabName = props.tabName
   return (
         <>
@@ -25,23 +27,31 @@ const RequestBlocks = (props: any) => {
                     </IonThumbnail>
                     <IonLabel>
                       <h2>{txn.validationType.charAt(0).toUpperCase()}{txn.validationType.slice(1)} Validation</h2>
-                      { tabName === "incoming" &&
+                      {/* { tabName === "incoming" && */}
                         <p>{txn.requestParams[txn.validationType]}</p>
-                      }
+                      {/* } */}
                       <p>{relativeTime(txn.created)}</p>
                     </IonLabel>
-                    <IonButton shape="round" className="status" style={{margin: 0}} color={`${txn.status === "Approved" ? "success" : ""}${(txn.status === "New" || txn.status === 'Cancelation in progress') ? "light" : ""}${txn.status === "In progress" ? "primary" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}${txn.status === "Canceled" ? "warning" : ""}`} 
-                    slot="end">
-                      {`
-                        ${txn.status === "Approved" ? "Approved" : ""} 
-                        ${txn.status === "New" ? "New" : ""}
-                        ${txn.status === "In progress" ? "In Progress" : ""}
-                        ${txn.status === "Rejected" ? "Rejected" : ""}
-                        ${txn.status === "Expired" ? "Expired" : ""}
-                        ${txn.status === "Canceled" ? "Cancelled" : ""}
-                        ${txn.status === "Cancelation in progress" ? "Cancelling" : ""}
-                      `}                      
-                      </IonButton>
+
+                    <div>
+                      { tabName === "all" && txn.did !== user.id.split(':').pop() &&                    
+                      <IonButton shape="round" className="status" style={{margin: 0, display: 'block'}} color="primary" 
+                      slot="end">Incoming</IonButton>
+                      }
+
+                      <IonButton shape="round" className="status" style={{margin: 0}} color={`${txn.status === "Approved" ? "success" : ""}${(txn.status === "New" || txn.status === 'Cancelation in progress') ? "light" : ""}${txn.status === "In progress" ? "primary" : ""}${txn.status === "Rejected" ? "danger" : ""}${txn.status === "Expired" ? "medium" : ""}${txn.status === "Canceled" ? "warning" : ""}`} 
+                      slot="end">
+                        {`
+                          ${txn.status === "Approved" ? "Approved" : ""} 
+                          ${txn.status === "New" ? "New" : ""}
+                          ${txn.status === "In progress" ? "In Progress" : ""}
+                          ${txn.status === "Rejected" ? "Rejected" : ""}
+                          ${txn.status === "Expired" ? "Expired" : ""}
+                          ${txn.status === "Canceled" ? "Cancelled" : ""}
+                          ${txn.status === "Cancelation in progress" ? "Cancelling" : ""}
+                        `}                      
+                        </IonButton>
+                        </div>
                   </IonItem>
           </IonCol>
           </IonRow>

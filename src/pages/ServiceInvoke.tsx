@@ -251,7 +251,8 @@ const ServiceInvokePage: React.FC = ({ history }: any) => {
         {
                 (
                   !validationProviders[credentialType + "ValidationProviders"] ||
-                  !validationProviders[credentialType + "ValidationProviders"].length
+                  !validationProviders[credentialType + "ValidationProviders"].length ||
+                  (validationProviders[credentialType + "ValidationProviders"].some((vp:any) => vp.did === user.id.split(':').pop()) && validationProviders[credentialType + "ValidationProviders"].length === 1)                  
                 )          
                 ? 
                 (           
