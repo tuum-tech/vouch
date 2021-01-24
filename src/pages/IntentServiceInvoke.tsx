@@ -423,11 +423,18 @@ if(key === 'New' || key === 'In progress'){
                 )}
 
               {
-              (validationProviders[credentialType + "ValidationProviders"] && 
-              validationProviders[credentialType + "ValidationProviders"].length > 0) || 
-              (validationProviders[credentialType + "ValidationProviders"] && 
+              (            
+                (validationProviders[credentialType + "ValidationProviders"] && 
               validationProviders[credentialType + "ValidationProviders"].length > 1 && 
-              validationProviders[credentialType + "ValidationProviders"].some((vp:any) => vp.did === user.id.split(':').pop())) &&
+              validationProviders[credentialType + "ValidationProviders"].some((vp:any) => vp.did === user.id.split(':').pop()))
+              
+              || 
+              
+                (validationProviders[credentialType + "ValidationProviders"] && 
+              validationProviders[credentialType + "ValidationProviders"].length > 0)              
+              )
+              
+              &&
                 <IonGrid>
                   <IonRow className="text-center" style={{'marginTop': '80px'}}>
                     <IonButton className="text-center" 
