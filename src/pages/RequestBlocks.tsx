@@ -2,7 +2,6 @@ import React from 'react';
 import { IonRow,IonCol,IonLabel, IonThumbnail,IonButton, IonItem } from '@ionic/react';
 import './RequestBlocks.css';
 import moment from 'moment'
-import { textSpanContainsTextSpan } from 'typescript';
 
 const RequestBlocks = (props: any) => {
 
