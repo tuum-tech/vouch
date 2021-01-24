@@ -431,7 +431,8 @@ if(key === 'New' || key === 'In progress'){
               || 
               
                 (validationProviders[credentialType + "ValidationProviders"] && 
-              validationProviders[credentialType + "ValidationProviders"].length > 0)              
+              validationProviders[credentialType + "ValidationProviders"].length > 0 &&
+              validationProviders[credentialType + "ValidationProviders"].some((vp:any) => vp.did !== user.id.split(':').pop()))              
               )
               
               &&
