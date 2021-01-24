@@ -47,10 +47,14 @@ const RequestsPage: React.FC = () => {
     sendGetIncomingRequests( user )
    });
 
+   useEffect(() => {
+    dispatch(setSelectedTabRequests({'name':'all','data':[...requests.txn, ...requests.incoming_txn]}))
+   },[requests.txn, requests.incoming_txn])
+
   const handleClick = function(e: any) {
     let tab_event = e.detail.value;
     if(tab_event === 'all'){
-      dispatch(setSelectedTabRequests({'name':'all','data':requests.txn}))
+      dispatch(setSelectedTabRequests({'name':'all','data':[...requests.txn, ...requests.incoming_txn]}))
     }
     if(tab_event === 'incoming'){
       dispatch(setSelectedTabRequests({'name':'incoming','data':requests.incoming_txn}))      
@@ -116,7 +120,7 @@ const RequestsPage: React.FC = () => {
           </IonCol>
         </IonRow>
 
-        <RequestBlocks requests={requests.selected_tab_txn || {}} tabName={requests.selected_tab_name} />
+        <RequestBlocks requests={requests.selected_tab_txn || {}} tabName={requests.selected_tab_name} user={user} />
 
       </IonGrid>
       </IonContent>
