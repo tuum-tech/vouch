@@ -1,0 +1,48 @@
+{
+  "id": "tech.tuum.vouch",
+  "version": "1.3.0",
+  "version_code": 5,
+  "name": "Vouch",
+  "short_name": "Vouch",
+  "short_description": "Get your DID verified",
+  "description": "Get your DID verified",
+  "start_url": "index.html",
+  "type": "app",
+  "start_visible": "hide",
+  "category": "information",
+  "icons": [
+    {
+      "src": "assets/images/app_logos/logo.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/images/app_logos/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "author": {
+    "name": "Tuum Tech",
+    "email": "dev-support@tuum.tech",
+    "website": "https://www.tuum.tech"
+  },
+  "default_locale": "en",
+  "plugins": [
+    "Device",
+    "SplashScreen",
+    "DIDPlugin",
+    "CarrierPlugin",
+    "NetworkStatus"
+  ],
+  "urls": ["https://vouch-app-restapi.tuum.tech/*"],
+  "startup_service": ["backgroundservice"],
+  "intent_filters": [
+    {
+      "action": "https://did.elastos.net/credverify"
+    }
+  ],
+  "background_color": "#5432D3",
+  "theme_display": "show",
+  "theme_color": "#FFFFFF"
+}
