@@ -48,13 +48,17 @@ const RequestsPage: React.FC = () => {
    });
 
    useEffect(() => {
-    dispatch(setSelectedTabRequests({'name':'all','data':[...requests.txn, ...requests.incoming_txn]}))
-   },[requests.txn, requests.incoming_txn])
+     const outgoingTxn = requests.txn ? requests.txn : [];
+     const incomingTxn = requests.incoming_txn ? requests.incoming_txn : [];
+     dispatch(setSelectedTabRequests({'name':'all','data':[...outgoingTxn, ...incomingTxn]}))
+   },[])
 
   const handleClick = function(e: any) {
     let tab_event = e.detail.value;
     if(tab_event === 'all'){
-      dispatch(setSelectedTabRequests({'name':'all','data':[...requests.txn, ...requests.incoming_txn]}))
+      const outgoingTxn = requests.txn ? requests.txn : [];
+      const incomingTxn = requests.incoming_txn ? requests.incoming_txn : [];
+      dispatch(setSelectedTabRequests({'name':'all','data':[...outgoingTxn, ...incomingTxn]}))
     }
     if(tab_event === 'incoming'){
       dispatch(setSelectedTabRequests({'name':'incoming','data':requests.incoming_txn}))      
