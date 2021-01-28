@@ -94,48 +94,68 @@ export const txnReducer = (
         }            
     case GET_ALL_REQUESTS_SUCCESS:
       {
-        let pending_txn = payload.filter((txn:any) => (txn.status === "New" || txn.status === "In progress" || txn.status === "Cancelation in progress"));
-        let approved_txn = payload.filter((txn:any) => txn.status === "Approved");
-        let rejected_txn = payload.filter((txn:any) => txn.status === "Rejected");
-        let expired_txn = payload.filter((txn:any) => txn.status === "Expired");
+        let pending_txn = payload.filter((txn:any) => (txn.status === "New" || txn.status === "In progress" || txn.status === "Cancelation in progress")).sort((a:any, b:any) => {
+          let c:any = new Date(a.created);
+          let d:any = new Date(b.created);
+          return c < d ? 1 : -1;
+        });
+
+        let approved_txn = payload.filter((txn:any) => txn.status === "Approved").sort((a:any, b:any) => {
+          let c:any = new Date(a.created);
+          let d:any = new Date(b.created);
+          return c < d ? 1 : -1;
+        });
+
+        let rejected_txn = payload.filter((txn:any) => txn.status === "Rejected").sort((a:any, b:any) => {
+          let c:any = new Date(a.created);
+          let d:any = new Date(b.created);
+          return c < d ? 1 : -1;
+        });
+
+        let expired_txn = payload.filter((txn:any) => txn.status === "Expired").sort((a:any, b:any) => {
+          let c:any = new Date(a.created);
+          let d:any = new Date(b.created);
+          return c < d ? 1 : -1;
+        });
+
         // let cancelled_txn = payload.filter((txn:any) => txn.status === "Canceled");
 
         let all_txn = payload.sort((a:any, b:any) => {
-          let c:any = new Date(a.date).getTime();
-          let d:any = new Date(b.date).getTime();
-          return c > d ? 1 : -1;
+          let c:any = new Date(a.created);
+          let d:any = new Date(b.created);
+          return c < d ? 1 : -1;
         });
 
-        pending_txn = pending_txn.sort((a:any, b:any) => {
-          let c:any = new Date(a.date).getTime();
-          let d:any = new Date(b.date).getTime();
-          return c > d ? 1 : -1;
-        });
+        // pending_txn = pending_txn.sort((a:any, b:any) => {
+        //   let c:any = new Date(a.created);
+        //   let d:any = new Date(b.created);
+        //   return c < d ? 1 : -1;
+        // });
 
 
-        approved_txn = approved_txn.sort((a:any, b:any) => {
-          let c:any = new Date(a.date).getTime();
-          let d:any = new Date(b.date).getTime();
-          return c > d ? 1 : -1;
-        });
+        // approved_txn = approved_txn.sort((a:any, b:any) => {
+        //   let c:any = new Date(a.created);
+        //   let d:any = new Date(b.created);
+        //   return c < d ? 1 : -1;
+        // });
 
 
-        rejected_txn = rejected_txn.sort((a:any, b:any) => {
-          let c:any = new Date(a.date).getTime();
-          let d:any = new Date(b.date).getTime();
-          return c > d ? 1 : -1;
-        });
+        // rejected_txn = rejected_txn.sort((a:any, b:any) => {
+        //   let c:any = new Date(a.created);
+        //   let d:any = new Date(b.created);
+        //   return c < d ? 1 : -1;
+        // });
         
-        expired_txn = expired_txn.sort((a:any, b:any) => {
-          let c:any = new Date(a.date).getTime();
-          let d:any = new Date(b.date).getTime();
-          return c > d ? 1 : -1;
-        });        
+        // expired_txn = expired_txn.sort((a:any, b:any) => {
+        //   let c:any = new Date(a.created);
+        //   let d:any = new Date(b.created);
+        //   return c < d ? 1 : -1;
+        // });        
 
         // cancelled_txn = cancelled_txn.sort((a:any, b:any) => {
-        //   let c:any = new Date(a.date).getTime();
-        //   let d:any = new Date(b.date).getTime();
-        //   return c > d ? 1 : -1;
+        //   let c:any = new Date(a.created);
+        //   let d:any = new Date(b.created);
+        //   return c < d ? 1 : -1;
         // });        
 
         return { 
@@ -153,20 +173,29 @@ export const txnReducer = (
       }
       case GET_INCOMING_REQUESTS_SUCCESS:
         {
-          let incoming_txn_new = payload.filter((txn:any) => (txn.status === "New" || txn.status === "In progress" || txn.status === "Cancelation in progress"));
-          let incoming_txn_history = payload.filter((txn:any) => (txn.status === "Approved" || txn.status === "Rejected"));
-
-          incoming_txn_new = incoming_txn_new.sort((a:any, b:any) => {
-            let c:any = new Date(a.date).getTime();
-            let d:any = new Date(b.date).getTime();
-            return c > d ? 1 : -1;
-          });          
-
-          incoming_txn_history = incoming_txn_history.sort((a:any, b:any) => {
-            let c:any = new Date(a.date).getTime();
-            let d:any = new Date(b.date).getTime();
-            return c > d ? 1 : -1;
+          let incoming_txn_new = payload.filter((txn:any) => (txn.status === "New" || txn.status === "In progress" || txn.status === "Cancelation in progress")).sort((a:any, b:any) => {
+            let c:any = new Date(a.created);
+            let d:any = new Date(b.created);
+            return c < d ? 1 : -1;
           });
+
+          let incoming_txn_history = payload.filter((txn:any) => (txn.status === "Approved" || txn.status === "Rejected")).sort((a:any, b:any) => {
+            let c:any = new Date(a.created);
+            let d:any = new Date(b.created);
+            return c < d ? 1 : -1;
+          });
+
+          // incoming_txn_new = incoming_txn_new.sort((a:any, b:any) => {
+          //   let c:any = new Date(a.created);
+          //   let d:any = new Date(b.created);
+          //   return c < d ? 1 : -1;
+          // });          
+
+          // incoming_txn_history = incoming_txn_history.sort((a:any, b:any) => {
+          //   let c:any = new Date(a.created);
+          //   let d:any = new Date(b.created);
+          //   return c < d ? 1 : -1;
+          // });
 
           return { 
             ...state, 

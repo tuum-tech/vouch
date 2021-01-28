@@ -11,9 +11,7 @@ import {
   IonButton,
   IonGrid,
   IonItem,
-  IonThumbnail,
   IonToast,
-  IonAlert,
   IonRefresher,
   IonRefresherContent,
   useIonViewWillEnter,
@@ -32,8 +30,7 @@ import { AppState } from '../store'
 
 import { useRequests } from '../hooks/useRequests'
 import { getAllRequests, getIncomingRequests } from '../store/requests'
-import { useProvider } from '../hooks/useProvider'
-import { getEmailValidationProviders, getProviderServices } from '../store/providers'
+import { getProviderServices } from '../store/providers'
 
 import { useDID } from '../hooks/useDID';
 import { login } from '../store/auth';
@@ -41,6 +38,7 @@ import { useIncomingRequests } from '../hooks/useIncomingRequests';
 import { useProviderServices } from '../hooks/useProviderServices';
 
 import CredentialCode from './CredentialCode';
+import RequestBlocks from './RequestBlocks';
 
 const HomePage: React.FC = ({ history }: any) => {
 
@@ -78,7 +76,6 @@ const HomePage: React.FC = ({ history }: any) => {
     const incoming_requests = useSelector((state:AppState) => state.requests.incoming_txn)    
     const pending_requests = useSelector((state:AppState) => state.requests.pending_txn)
     const notification = useSelector((state:AppState) => state.requests.notification)
-    const validationProviders = useSelector((state:AppState) => state.validationProviders)
     const providerServices = useSelector((state:AppState) => state.validationProviders.providerServices)
 
     const [sendGetProviderServices] = useProviderServices((services:any) => { 
@@ -149,8 +146,13 @@ const HomePage: React.FC = ({ history }: any) => {
       return moment.utc(datetime).fromNow()
     }
 
-    const filterIncomingTxn = function(incoming_requests: any) {
-      let pendingIncomingRequests = incoming_requests.filter((txn: any) => (txn.status === "New" || txn.status === "In progress"))
+    const filterIncomingTxn = async function(incoming_requests: any) {
+      let pendingIncomingRequests = await incoming_requests.filter((txn: any) => (txn.status === "New" || txn.status === "In progress")).sort((a:any, b:any) => {
+        let c:any = new Date(a.created);
+        let d:any = new Date(b.created);
+        return c < d ? 1 : -1;
+      })
+
       setFilteredIncomingTxn(pendingIncomingRequests)
     }
 
@@ -236,67 +238,27 @@ const HomePage: React.FC = ({ history }: any) => {
             style={{display: (providerServices && providerServices.validationTypes.length ? 'block' : 'none')}}
             >
               <IonCol size="12">
-                {/*-- List Header with Button --*/}<br></br>
+                {/*-- List Header with Button --*/}
                 <IonListHeader>
                   <IonLabel className="List-Header">Incoming Requests</IonLabel>
                   <IonButton size="small" color="dark" routerLink='/requests'>See All</IonButton>
                 </IonListHeader>
               </IonCol>
-              <IonCol class="RequestBlock">
-                {/* Items Incoming Active */}
-                {filteredIncomingTxn && filteredIncomingTxn[0] && filteredIncomingTxn[0].id && filteredIncomingTxn.map((txn: any) => 
-                  <IonItem className="request-Item" routerLink={`/requests/details/${txn.id}`} key={txn.id} >
-                  <IonThumbnail slot="start">
-                    <img src={`../assets/images/components/icon-${txn.validationType}--request.svg`} alt="" />
-                  </IonThumbnail>
-                  <IonLabel>
-                    <h5>{txn.did}</h5>
-                    <h4>{txn.validationType.charAt(0).toUpperCase()}{txn.validationType.slice(1)}: {txn.requestParams[txn.validationType]}</h4>
-                    <p>{relativeTime(txn.created)}</p>
-                  </IonLabel>
-                  <IonButton shape="round" className="status" color={`${txn.status === "New" ? "light" : ""}${txn.status === "In progress" ? "primary" : ""}`} 
-                    slot="end">
-                      {`
-                        ${txn.status === "New" ? "New" : ""}
-                        ${txn.status === "In progress" ? "In Progress" : ""}
-                      `}                      
-                      </IonButton>                  
-                </IonItem>
-                )}
-              </IonCol>
             </IonRow>
+            {/* Items Incoming Active */}
+            <RequestBlocks requests={filteredIncomingTxn || {}} tabName="homepage" user={user} />
+            
             <IonRow>
               <IonCol size="12">
-                {/*-- List Header with Button --*/}<br></br>
+                {/*-- List Header with Button --*/}
                 <IonListHeader>
                   <IonLabel className="List-Header">My Requests</IonLabel>
                   <IonButton size="small" color="dark" routerLink='/requests'>See All</IonButton>
                 </IonListHeader>
               </IonCol>
-              <IonCol class="RequestBlock">
-                {/* Items Active */}
-                {pending_requests && pending_requests.map((txn: any) => 
-                  <IonItem className="request-Item" routerLink={`/requests/details/${txn.id}`} key={txn.id} >
-                  <IonThumbnail slot="start">
-                    <img src={`../assets/images/components/icon-${txn.validationType}--request.svg`} alt="" />
-                  </IonThumbnail>
-                  <IonLabel>
-                    <h2>{txn.validationType.charAt(0).toUpperCase()}{txn.validationType.slice(1)} Validation</h2>
-                    <p>{relativeTime(txn.created)}</p>
-                  </IonLabel>
-                  <IonButton shape="round" className="status" color={`${(txn.status === "New" || txn.status === 'Cancelation in progress') ? "light" : ""}${txn.status === "In progress" ? "primary" : ""}`} 
-                    slot="end">
-                      {`
-                        ${txn.status === "New" ? "New" : ""}
-                        ${txn.status === "In progress" ? "In Progress" : ""}
-                        ${txn.status === "Cancelation in progress" ? "Cancelling" : ""}
-                      `}                      
-                      </IonButton>                  
-                </IonItem>
-
-                )}
-              </IonCol>
             </IonRow>
+            {/* Items Active */}
+            <RequestBlocks requests={pending_requests || {}} tabName="homepage" user={user} />
           </IonGrid>
         </IonContent>
       </IonPage>

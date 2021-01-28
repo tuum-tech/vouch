@@ -59,7 +59,12 @@ const RequestBlocks = (props: any) => {
         
         <IonRow>
         <IonCol className="RequestBlock">
+        { tabName === "homepage" &&                    
+          <p>No pending requests found.</p>
+        }
+        { tabName !== "homepage" &&                    
           <p>No request made so far.</p>
+        }
         </IonCol>
       </IonRow>
       }
